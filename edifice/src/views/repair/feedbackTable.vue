@@ -155,7 +155,7 @@
                     page_sizes: [1, 2, 3, 4, 6], //每页显示多少条
                     layout: "total, sizes, prev, pager, next, jumper" // 翻页属性
                 },
-                addDialogVisible: true,
+                addDialogVisible: false,
                 data4Dlg:{
                     feedbackid: 0,
                     userid: 0,
