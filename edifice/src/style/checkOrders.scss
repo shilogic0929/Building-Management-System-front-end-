@@ -1,0 +1,118 @@
+.divisionBox {
+  margin-left: 50px;
+  margin-right: 90px;
+  margin-top: 40px;
+  width: 360px;
+  height: 140px;
+  border-radius: 10px;
+  background-color: transparent;
+  background: -webkit-linear-gradient(right,#FBE8EA 0%,#DEF4FF 100%);
+  border: black solid;
+  text-align: left;
+  display: inline-block;
+}
+.divisionNull {
+  margin-top: 10px;
+}
+.orderId {
+  width: 250px;
+  height: 40px;
+  margin-left: 25px;
+  font-size: 16px;
+}
+.orderTime {
+  width: 250px;
+  height: 40px;
+  margin-left: 25px;
+  font-size: 16px;
+}
+.price {
+  width: 250px;
+  height: 24px;
+  margin-left: 25px;
+  font-size: 16px;
+}
+.stat {
+  height: 0;
+  margin-top: -28px;
+  margin-left: 182px;
+  border: 18px solid transparent;
+  transform: rotate(45deg) translateY(-160px) translateX(8px);
+  font-size: 13px;
+  width: 80px;
+  text-align: center;
+  color: white;
+}
+.blue {
+  border-bottom-color: deepskyblue;
+}
+.red {
+  border-bottom-color: red;
+}
+.orderId {
+  margin-top: 5px;
+}
+.details {
+  margin-top: 5px;
+  margin-left: 150px;
+  font-size: 15px;
+}
+.guaranteeButton {
+  color : white;
+  margin-top: 20px;
+  margin-right: 150px;
+  margin-left: 10px;
+}
+.returnButton {
+  color: white;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+.dueButton {
+  margin-right: 180px;
+  margin-left: 30px;
+}
+.delButton {
+  color: white;
+  margin-top: 20px;
+  margin-right: 190px;
+}
+.dateSelect {
+  margin-top: 30px;
+}
+.Details {
+  text-align: center;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-size: 16px;
+  background-color: transparent;
+}
+.cell-item {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  font-size: 14px;
+  width: 100px;
+}
+.margin-top {
+  margin-top: 20px;
+}
+.bgImage {
+  margin-top:50px;
+  
+	width: 100%;
+  // opacity: 0.9;
+  z-index: -1;
+}
+.orderPages {
+  position: fixed;
+  bottom:3px;
+  background-color: transparent;
+  margin-left: 400px;
+  
+}
+.inputBox {
+  margin-top: 20px;
+  margin-left: -100px;
+  width: 800px;
+}

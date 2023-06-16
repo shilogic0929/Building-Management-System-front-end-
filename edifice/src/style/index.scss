@@ -1,0 +1,231 @@
+@import './login.scss';
+@import './Flow.scss';
+@import './checkOrders.scss';
+@import './seeHouse.scss';
+@import './slide.scss';
+@import './appraise.scss';
+@import './repair.scss';
+@import './pay.scss';
+@import './service.scss';
+@import './contract.scss';
+
+$myColor: #009966;
+
+html,body,#app{
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.MHeader{
+    background-color: #009966;
+    color: #eee;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    padding-top: 10px;
+    margin: 0px;
+
+    .headLeft{
+        float: left;
+        width: 10%;
+        // border-right: 1px solid #eee;
+        .el-button{
+            margin-left:10%;
+            width:30px;
+            background-color:#009966;
+            border:0px solid #eee;
+            .el-icon{
+                color: #fff;
+                text-align: center;
+            }
+        }
+        
+    }
+    .headRight{
+        float: left;
+        text-align: center;
+        width:90%;
+        height: 50px;
+        .headTitle{
+            font-size:16px;
+            line-height: 30px;
+            float: left;
+            margin-left: 5%;
+            width: 80%;
+        }
+        .personalHome{
+            float: right;
+            margin-right:20px;
+            .el-dropdown{
+                color: #fff;
+                .userDrop_text{
+                    line-height: 30px;
+                    float: left;
+                    height: 30px;
+                }
+                .userDrop{
+                    float: left;
+                    margin-top: 7px;
+                    margin-left: 0px;
+                    margin-right: 10px;
+                }
+                .el-avatar{
+                    background-color: #fff;
+                }
+            }
+        }
+    }
+    
+}
+
+
+.el-header{
+    height:50px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.el-container{
+    height: 100%;
+}
+
+.el-menu:not(.el-menu--collapse) {
+    width: 200px;
+    height: 100%;
+}
+
+.el-menu{
+    height: 100%;
+    .el-sub-menu .el-menu-item {
+        min-width: 185px;
+    }
+}
+
+.el-main{
+    text-align: center;
+    height: 95%;
+    padding: 0px;
+    
+}
+
+.el-card{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.sideBarFontSize{
+    font-size:14px;
+}
+
+.home{
+    
+    .UserImage{
+        width:25%;
+        float:left;
+        .UserImageCon{
+            
+        }
+        .UserImageChange{
+            margin-top: 50px;
+            height: 100%;
+        }
+    }
+    .el-form{
+        float: left;
+        width:75%;
+    }
+    .el-input{
+        width:500px;
+    }
+}
+
+a {
+    text-decoration: none;
+  }
+ 
+.router-link-active {
+    text-decoration: none;
+}
+
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    color: #2c3e50;
+  }
+  
+  nav {
+    padding: 30px;
+  
+    a {
+      font-weight: bold;
+      color: #2c3e50;
+  
+      &.router-link-exact-active {
+        color: #42b983;
+      }
+    }
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+.card-content {
+    margin-bottom:10px;
+}
+
+.formStyle{
+    width: 50%;
+    margin-left:200px;
+}
+
+.lizi{
+    position:fixed;
+    height: 100%;
+}
+
+.card-margin{
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top:25px;
+    margin-bottom:25px;
+}
+
+.card-header{
+    margin-top:5px;
+    margin-bottom: 20px;
+    font-size:18px;
+    font-family: "微软雅黑";
+    color: $myColor;
+
+    .el-button{
+        margin-right: 10px;
+    }
+
+}
+
+.title{
+    font-size:20px;
+    font-family: "微软雅黑";
+}
+
+.divpadding{
+    padding: 20px;
+}
+
+.homeImg{
+    width:100%;
+    height:100%;
+}

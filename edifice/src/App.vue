@@ -1,16 +1,30 @@
 <template>
-  <router-view></router-view>
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
 <script>
+
 export default {
-  name: 'App',
-  components: {
-  }
+  mounted() {
+      window.addEventListener('unload',this.saveState)
+  },
+  methods: {
+    saveState(){
+      var data ={
+        isService:this.$store.state.isService,
+        isWorker:this.$store.state.isWorker,
+        username:this.$store.state.username,
+      }
+      sessionStorage.setItem("state",JSON.stringify(data));
+    }
+  },
 }
 </script>
 
-<style>
+
+<style lang="scss">
 body
 {
   margin: 0;
@@ -71,3 +85,10 @@ hr
   border-radius: 32px;
 }
 </style>
+
+
+
+
+
+
+
