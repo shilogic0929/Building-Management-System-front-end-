@@ -6,7 +6,7 @@
         </el-button>
       </div>
       <div class="headRight">
-        <div class="headTitle">青年租房管理系统</div>
+        <div class="headTitle">大厦物业管理系统</div>
           <div class="personalHome">
             <el-dropdown>
               <div class="userDrop_text">{{userName}}</div>
