@@ -44,7 +44,7 @@
             <span class="sideBarFontSize">评价系统</span>
           </el-menu-item>
 
-          <el-menu-item index="/handleRrepair" v-if="this.$store.state.isService">
+          <el-menu-item index="/handleRepair" v-if="this.$store.state.isService">
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">处理报修</span>
           </el-menu-item>
