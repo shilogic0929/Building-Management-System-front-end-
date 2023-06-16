@@ -17,61 +17,49 @@
 
 
     <el-card style="margin-bottom:30px;">
-        <template #header>
-            <div class = "card-header" style="margin-bottom:0px;">
-                <span class="image-font">报修</span>
-                <div>
-                  <el-button type="text" @click="see">查看个人报修</el-button>
-                  <el-button type="text" @click="submit">提交</el-button>
-                </div>
-            </div>
-        </template>
+      <template #header>
+        <div class = "card-header" style="margin-bottom:0px;">
+          <span class="image-font">报修</span>
+        </div>
+      </template>
 
-    <div class="formStyle margin-top">
-        <el-form :model="form" label-width="120px">
-            <el-form-item label="姓名">
-                <el-input v-model="form.name" />
-            </el-form-item>
-            <el-form-item label="电话">
-                <el-input v-model="form.telephone" />
-            </el-form-item>
+      <div class="flexItem">
+        <img src="../../assets/repair.png" style="height: 320px;width: 320px;margin:0 20px 40px -20px"/>
+        <el-form :model="form" label-width="150px">
+          <el-form-item label="联系人姓名：">
+            <el-input v-model="form.name" />
+          </el-form-item>
+          <el-form-item label="联系方式：">
+              <el-input v-model="form.telephone" />
+          </el-form-item>
 
-            <el-form-item label="问题房源">
-                <el-select v-model="value" placeholder="">
-                    <el-option v-for="(item,index) in house" :key="index" :label="item.name" :value="item.rid" />
-                </el-select>
-            </el-form-item>
-
-          <el-form-item label="报修类型">
-            <el-select v-model="value2" placeholder="">
-              <el-option :label="form.info2[0]" value="1" />
-              <el-option :label="form.info2[1]" value="2" />
-              <el-option :label="form.info2[2]" value="3" />
-              <el-option :label="form.info2[3]" value="4" />
+          <el-form-item label="报修房间号：">
+            <el-select v-model="value" placeholder="">
+              <el-option v-for="(item,index) in house" :key="index" :label="item.name" :value="item.rid" />
             </el-select>
           </el-form-item>
-           
 
-
-          <el-form-item label="备注">
-                <el-input v-model="form.desc" type="textarea" />
+          <el-form-item label="报修类型：">
+            <el-select v-model="value2" placeholder="">
+              <el-option v-for="(i,ind) in form.problem" :key="ind" :label="i" :value="ind" />
+            </el-select>
           </el-form-item>
 
-<!--          <el-steps :space="100" :active="statue" finish-status="success">-->
-<!--            <el-step title="Done" />-->
-<!--            <el-step title="Processing" />-->
-<!--            <el-step title="Step 3" />-->
-<!--            <el-step title="Step 3" />-->
-<!--          </el-steps>-->
+          <el-form-item label="报修时间：">
+              <el-input v-model="form.problemTime" />
+          </el-form-item>
 
+          <el-form-item label="问题描述：">
+            <el-input v-model="form.desc" type="textarea" />
+          </el-form-item>
 
           <el-form-item>
-                <el-button type="primary" @click="submit">提交</el-button>
-                <el-button>取消</el-button>
-            </el-form-item>
+            <el-button type="primary" @click="submit">提交</el-button>
+            <el-button @click="clear">清空</el-button>
+          </el-form-item>
         </el-form>
 
-    </div>
+      </div>
     </el-card>
 
   </div>
@@ -79,21 +67,19 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
+//import { ElMessage } from 'element-plus'
 export default {
   data(){
       return {
-        value:"",
+        value:"", //报修房间号
         value2:"",
         house:[],
           form:{
             name:"",
-            telephone:"",
-            date1:"",
-            date2:"",
-            desc:"",
-            info:["房屋1","房屋2","",""],
-            info2:["墙壁损坏","房屋漏水","家电维修","其他"],
+            telephone:"", //报修联系人姓名和联系方式
+            problemTime: "", //报修时间
+            desc:"", //问题描述
+            problem:["墙壁维修","房屋漏水","电器维修","家具维修","网络故障"],
           },
          
       }  
@@ -103,9 +89,11 @@ export default {
     },
     methods:{
       init() {
+        /*
         var data={username: this.$store.state.username} 
         var that=this;
         let uid;
+        
         this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
             console.log(request.data.content);
             uid = request.data.content.uid;
@@ -121,18 +109,17 @@ export default {
               }
             }
         },1000)
-        
-      })
-        
-        },
+        })*/
+      },
       submit(){
           console.log(this.value);
           var data={
             rid:this.value,
-            info:this.form.desc,
-            type:this.value2
+            type:this.value2,
+            info:this.form.desc
           };
           console.log(data);
+          /*
           this.$axios.post('/workorder/create_workorder/',JSON.stringify(data)).then(function (request) {
               if(request.data.errno==0){
                   ElMessage({
@@ -144,11 +131,19 @@ export default {
                   ElMessage.error(request.data.msg)
               } 
           })
+          */
       },
       see(){
           this.$router.push("/myRepair")
-      }
-          
+      },
+      clear(){
+        this.form.name="",
+        this.form.telephone="",
+        this.value="",
+        this.value2="",
+        this.form.problemTime="",
+        this.form.desc=""
+      },
     },
 }
 

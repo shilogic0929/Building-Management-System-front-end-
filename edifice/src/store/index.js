@@ -3,8 +3,9 @@ import { createStore } from 'vuex'
 export default createStore({
   state: sessionStorage.getItem("state")?JSON.parse(sessionStorage.getItem("state")):{
     isCollapsed: false,
-    isService:true,
+    isService:false,
     isWorker:false,
+    isClient:true,
     username:"",
   },
   getters: {

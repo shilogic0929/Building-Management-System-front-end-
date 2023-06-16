@@ -102,10 +102,10 @@ const routes = [
         component:  () => import('../views/Appraise/appraise.vue'),
       },
       {
-        path: 'repair',
-        name: '工单报修界面',
-        meta: { title: "工单报修界面" },
-        component:  () => import('../views/repair/repair.vue'),
+        path: 'repairReport',
+        name: '报修界面',
+        meta: { title: "报修界面" },
+        component:  () => import('../views/repair/repairReport.vue'),
       },
       // {
       //   path: 'uploadContract',
@@ -166,12 +166,6 @@ const routes = [
         name: '审核订单',
         meta: { title: "审核订单" },
         component:  () => import('../views/service/verifyOrders.vue'),
-      },
-      {
-        path:'workers',
-        name:"工人接单",
-        meta: { title: "工人接单" },
-        component:  () => import('../views/worker/worker.vue'),
       },
       {
         path:'myRepair',

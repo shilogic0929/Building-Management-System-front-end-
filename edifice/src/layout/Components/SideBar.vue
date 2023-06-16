@@ -44,7 +44,7 @@
             <span class="sideBarFontSize">评价系统</span>
           </el-menu-item>
 
-          <el-menu-item index="/handleRrepair" v-if="this.$store.state.isService">
+          <el-menu-item index="/handleRepair" v-if="this.$store.state.isService">
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">处理报修</span>
           </el-menu-item>
@@ -52,16 +52,16 @@
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">维修服务</span>
           </el-menu-item>
-          <el-menu-item index="/repair" v-else>
+          <el-menu-item index="/repairReport" v-else>
             <el-icon><Brush /></el-icon>
-            <span class="sideBarFontSize">工单报修系统</span>
+            <span class="sideBarFontSize">报修系统</span>
           </el-menu-item>
 
-
-          <el-menu-item index="/workers" v-if="this.$store.state.isWorker">
-            <el-icon><Promotion /></el-icon>
-            <span class="sideBarFontSize">工人系统</span>
+          <el-menu-item index="/myRepair" v-if="!this.$store.state.isService">
+            <el-icon><Brush /></el-icon>
+            <span class="sideBarFontSize">报修记录</span>
           </el-menu-item>
+
           <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">
             <el-icon><Service /></el-icon>
             <span class="sideBarFontSize">客服系统</span>
