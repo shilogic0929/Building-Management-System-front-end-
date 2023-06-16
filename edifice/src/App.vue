@@ -23,6 +23,12 @@ body
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.flexItem
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 a{text-decoration: none;}
 .el-empty
 {

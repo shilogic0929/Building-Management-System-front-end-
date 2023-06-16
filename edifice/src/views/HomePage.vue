@@ -1,17 +1,14 @@
 <template>
-  
-  <div>
-  </div>
+  <left-navi></left-navi>
 </template>
 
 <script>
-// @ is an alias to /src
-
+import LeftNavi from '../components/LeftNaviBar.vue'
 
 export default {
   name: 'HomeView',
   components: {
-
+    LeftNavi
   }
 }
 </script>
