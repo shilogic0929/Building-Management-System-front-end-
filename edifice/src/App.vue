@@ -1,10 +1,34 @@
 <template>
-  <router-view/>
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
+<script>
+
+export default {
+  mounted() {
+      window.addEventListener('unload',this.saveState)
+  },
+  methods: {
+    saveState(){
+      var data ={
+        isService:this.$store.state.isService,
+        isWorker:this.$store.state.isWorker,
+        username:this.$store.state.username,
+      }
+      sessionStorage.setItem("state",JSON.stringify(data));
+    }
+  },
 }
-</style>
+</script>
+
+
+<style lang="scss"></style>
+
+
+
+
+
+
+
