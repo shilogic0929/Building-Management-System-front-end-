@@ -120,12 +120,6 @@ const routes = [
         component:  () => import('../views/service/serviceHome.vue'),
       },
       {
-        path: 'serviceHome',
-        name: '客服主页',
-        meta: { title: "客服主页" },
-        component:  () => import('../views/service/serviceHome.vue'),
-      },
-      {
         path: 'addHouse',
         name: '添加房源',
         meta: { title: "添加房源" },
@@ -185,7 +179,18 @@ const routes = [
         meta: { title: "个人报修界面" },
         component:  () => import('../views/repair/myRepair.vue'),
       },
-      
+      {
+        path:'handleRepair',
+        name:"处理报修界面",
+        meta: { title: "处理报修界面" },
+        component:  () => import('../views/repair/handleRepair.vue'),
+      },
+      {
+        path:'repairService',
+        name:"维修服务界面",
+        meta: { title: "维修服务界面" },
+        component:  () => import('../views/repair/repairService.vue'),
+      }
     ]
   },
 
