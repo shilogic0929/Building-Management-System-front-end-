@@ -9,27 +9,17 @@
         <div class="headTitle">大厦物业管理系统</div>
           <div class="personalHome">
             <el-dropdown>
-              <div class="userDrop_text">{{userName}}</div>
+              <div class="userDrop_text">exit</div>
               <el-icon :size="15" class="userDrop"><caret-bottom /></el-icon>
               <el-avatar :size="30">
                 <el-icon :size="25" :color="color"><avatar /></el-icon>
               </el-avatar>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <router-link to="/">
+                  <router-link to="/dashboard">
                     <el-dropdown-item :icon="House">首页</el-dropdown-item>
                   </router-link>
-                  <router-link to="/personalPage">
-                    <el-dropdown-item :icon="UserFilled">个人资料</el-dropdown-item>
-                  </router-link>
-                  <router-link to="/about">
-                    <el-dropdown-item :icon="Guide">关于界面</el-dropdown-item>
-                  </router-link>
-                  <!-- <router-link to="/login">
-                  <el-dropdown-item :icon="Setting">登录</el-dropdown-item>
-                  </router-link> -->
-                  
-                  <el-dropdown-item :icon="Setting">设置</el-dropdown-item>
+
 
                   <el-dropdown-item :icon="SwitchButton" @click="quit">注销</el-dropdown-item>
                 </el-dropdown-menu>

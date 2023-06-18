@@ -6,7 +6,7 @@
 
         <div class="music-control">
 
-          <img v-if="!musicState" src="~@/assets/img/exit.png" alt="" @click="docs"/>
+<!--          <img v-if="!musicState" src="~@/assets/img/exit.png" alt="" @click="docs"/>-->
 
 
 
@@ -45,7 +45,7 @@ import { ref, onMounted } from "vue";
 
 // import SlideShow from "@/components/SlideShow.vue";
 import Profile from "@/components/Profile.vue";
-import { getAction,record } from "@/test.js"
+// import { getAction,record } from "@/test.js"
 
 
 
@@ -65,28 +65,28 @@ export default {
       //   //取消操作
       // })
 
-      var that = this
-      that.$confirm({
-        title: '您确定要注销吗?',
-        content: '当前只能报名一种选修课，报名后，不可取消，不可修改',
-        closable: true, //是否显示右上角的x
-        maskClosable: true,//触发阴影层的点击关闭
-        onOk: function () {
-          var id = record.id
-          let httpurl = that.url.addSelectionPeople
-          getAction(httpurl + '?id=' + id).then((res) => {
-            if (res.success) {
-              that.$message.success(res.result);
-              that.loadData();//刷新列表
-            }else {
-              that.$message.warning(res.message);
-            }
-          })
-        },
-        onCancel() {
-          console.log("on取消")
-        },
-      });
+      // var that = this
+      // that.$confirm({
+      //   title: '您确定要注销吗?',
+      //   content: '当前只能报名一种选修课，报名后，不可取消，不可修改',
+      //   closable: true, //是否显示右上角的x
+      //   maskClosable: true,//触发阴影层的点击关闭
+      //   onOk: function () {
+      //     var id = record.id
+      //     let httpurl = that.url.addSelectionPeople
+      //     getAction(httpurl + '?id=' + id).then((res) => {
+      //       if (res.success) {
+      //         that.$message.success(res.result);
+      //         that.loadData();//刷新列表
+      //       }else {
+      //         that.$message.warning(res.message);
+      //       }
+      //     })
+      //   },
+      //   onCancel() {
+      //     console.log("on取消")
+      //   },
+      // });
 
 
       this.$router.push({
