@@ -80,12 +80,8 @@
             <el-card class="myCommit">
                 <div>描述: {{data4Dlg.description}}</div>
             </el-card>
-            <el-card class="picture">
-                <div>图片: </div>
-                    <!-- <img src="http://81.70.132.82:8000/static/media/room/2.jpg" alt="" width="50%" style="float:right"> -->
-            </el-card>
             <el-card style="margin-top: 15px">
-            <div>回复用户: </div>
+            <div>回复用户 </div>
                 <el-input class="input2"
                 type="textarea"
                 :rows="6"
@@ -186,34 +182,35 @@ export default {
         }
     },
     created() { 
-        this.tableData = data4Test.feedbackList;
         this.getFeedbackList(); 
-        setTimeout(this.getOption(), 500);
     },
     updated() { 
         this.workName;
     },
     methods: {
-        async getFeedbackList() {
+        /*async*/ getFeedbackList() {
             //console.log(this.params);
-            try {
-                const res = await axios.post('feedback/feedbackListByAdmin/', {type: this.params.type});
-                if(res.status !== 200) {
-                    this.$message.error('获取用户反馈失败：'+ res.statusText);
-                    return;
-                }
-                this.tableData = res.data.feedback;
-                for(let i = 0; i < this.tableData.length; i++) 
-                    this.tableData[i].status = '未处理'
-            } catch(err) {
-                //this.$message.error('发生未知错误，请重试');
-                //console.log(err);
-            }
-            // this.tableData = data4Test.feedbackList;
+            // try {
+            //     const res = await axios.post('feedback/feedbackListByAdmin/', {type: this.params.type});
+            //     if(res.status !== 200) {
+            //         this.$message.error('获取用户反馈失败：'+ res.statusText);
+            //         return;
+            //     }
+            //     this.tableData = res.data.feedback;
+            //     for(let i = 0; i < this.tableData.length; i++) 
+            //         this.tableData[i].status = '未处理'
+            // } catch(err) {
+            //     //this.$message.error('发生未知错误，请重试');
+            //     //console.log(err);
+            // }
+            this.tableData = data4Test.feedbackList;
+            this.getOption();
             this.count = this.tableData.length;
             //初始化分页表信息
             this.paginations.total = this.tableData.length;
-            this.paginations.page_size = this.tableData.length;
+            //this.paginations.page_size = this.tableData.length;
+            this.paginations.page_size = 6;
+            this.handleSizeChange(this.paginations.page_size)
         },
         getOption() {
             let mp = new Map(), sorted;
@@ -303,7 +300,7 @@ export default {
             }
             this.tableData = this.selected_table_data;
             this.paginations.total = this.tableData.length;
-            this.paginations.page_size = this.tableData.length;
+            this.paginations.page_size = 6;
         },
         async checkOperator(row) {
             let feedbackid = row.feedbackid
@@ -352,6 +349,14 @@ export default {
 </script>
 
 <style scoped>
+/* 定义一个弹性容器 */
+.container {
+  display: flex;
+  /* 设置容器内的项目沿主轴（水平方向）居中对齐 */
+  justify-content: center;
+  /* 设置容器内的项目沿交叉轴（垂直方向）居中对齐 */
+  align-items: center;
+}
 .table-area {
     margin-top: 7px;
     background-color: rgb(245, 244, 246) !important;
@@ -359,10 +364,6 @@ export default {
 }
 .el-pagination {
     margin-top: 5px;
-}
-
-.picture {
-    margin-top: 15px;
 }
 .input1 {
     margin-top: 10px !important;
