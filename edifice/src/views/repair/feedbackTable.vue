@@ -186,8 +186,9 @@ export default {
         }
     },
     created() { 
+        this.tableData = data4Test.feedbackList;
         this.getFeedbackList(); 
-        this.getOption();
+        setTimeout(this.getOption(), 500);
     },
     updated() { 
         this.workName;
@@ -208,26 +209,41 @@ export default {
                 //this.$message.error('发生未知错误，请重试');
                 //console.log(err);
             }
-            this.tableData = data4Test.feedbackList;
+            // this.tableData = data4Test.feedbackList;
             this.count = this.tableData.length;
             //初始化分页表信息
             this.paginations.total = this.tableData.length;
             this.paginations.page_size = this.tableData.length;
         },
         getOption() {
-            const mp = new Map();
+            let mp = new Map(), sorted;
             for(let i = 0; i < this.tableData.length; i++) {
                 let str = this.tableData[i].date;
-                let date;
-                let cnt = 0;
-                for(let j = 0; j < str.length; j++) {
-                    date += str[j];
-                    if(cnt === 2 && (str[j] < '0' && str[j] > '9'))
-                        break;
+                // 使用slice()方法截取前10个字符，即年月日部分
+                let date = str.slice(0, 10);
+                // 判断mp对象是否已经有该日期作为键，如果没有，就初始化为0
+                if(!mp.has(date)) {
+                    mp.set(date, 0);
                 }
-                mp[date]++;
+                // 将mp对象中该日期对应的值加一
+                mp.set(date, mp.get(date) + 1);
             }
-            
+            console.log(mp);
+            // 在统计完日期出现次数后，再创建sorted对象，并将mp对象转换为一个排序后的数组
+            sorted = new Map(Array.from(mp).sort(([a], [b]) => a.localeCompare(b)));
+            // 将排序后的数组赋值给mp对象
+            mp = sorted;
+            console.log([...mp]); // 打印出排好序的键值对数组
+            this.option.xAxis.data = [];
+            // 使用push()方法将键值对添加到数组中
+            for(let [key] of mp) {
+                this.option.xAxis.data.push(key);
+            }
+            this.option.series[0].data = [];
+            for(let [key, value] of mp) {
+                this.option.series[0].data.push([key, value])
+            }
+            console.log([...this.option.series[0].data])
         },
         handleCurrentChange(page) {
             if(this.all_table_data.length === 0) {
