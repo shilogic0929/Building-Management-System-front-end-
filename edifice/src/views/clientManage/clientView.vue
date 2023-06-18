@@ -10,23 +10,23 @@
                               <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
                                 <el-col :span="1"></el-col>
                                 <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">姓名</span></el-col>
-                                <el-col :span="14"><el-input v-model="dialog_name" /></el-col>
+                                <el-col :span="14"><el-input v-model="add_name" /></el-col>
                               </el-row>
                               <el-row :gutter="20" class="dialog_row">
                                 <el-col :span="1"></el-col>
                                 <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电话</span></el-col>
-                                <el-col :span="14"><el-input v-model="dialog_phone" /></el-col>
+                                <el-col :span="14"><el-input v-model="add_phone" /></el-col>
                               </el-row>
                               <el-row :gutter="20" class="dialog_row">
                                 <el-col :span="1"></el-col>
                                 <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">公司名称</span></el-col>
-                                <el-col :span="14"><el-input v-model="dialog_company" /></el-col>
+                                <el-col :span="14"><el-input v-model="add_company" /></el-col>
                               </el-row>
 
                               <el-row :gutter="20" class="dialog_row">
                                 <el-col :span="1"></el-col>
                                 <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">法人名称</span></el-col>
-                                <el-col :span="14"><el-input v-model="dialog_legal" /></el-col>
+                                <el-col :span="14"><el-input v-model="add_legal" /></el-col>
                               </el-row>
                               <el-row :gutter="20" class="dialog_row">
                                 <el-col :span="8"></el-col>
@@ -377,7 +377,10 @@ export default {
         legal_person: 'Jane',
         room:[]
       },
-      dialog_name:'',
+      add_name:'',
+      add_company:'',
+      add_phone:'',
+      add_legal:'',
       dialog_company:'',
       dialog_phone:'',
       dialog_legal:'',
@@ -445,22 +448,30 @@ export default {
       })
     },
     handleAddClient() {
-      ElMessageBox.confirm(
-          '确认新增?',
-          '警告',
-          {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-      ).then(() => {
-        ElMessage({
+      const formData = {
+        new_name: this.add_name,
+        new_phone: this.add_phone,
+        new_company: this.add_company,
+        new_legal:this.add_legal
+      }
+      this.$axios({
+        method: 'POST',
+        url: '/addNewClient',
+        data:JSON.stringify(formData)
+      }).then(res => {
+        if (res.data.status === 1) {
+          ElMessage({
           type: 'success',
-          message: '新增成功'
-        })
-        this.dialogVisible = false
-      }).catch(() => {
-
+          message: '添加成功'
+          })
+          this.dialogVisible = false
+        }
+        else {
+          ElMessage({
+          type: 'fail',
+          message: '添加失败'
+          })
+        }
       })
     },
     dialogCancel(){
