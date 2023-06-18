@@ -5,7 +5,42 @@
                     <div class = "card-header" style="margin-bottom:0px;">
                         <span class="image-font" style="font-size:20px;">客户信息</span>
                         <div>
-                        <el-button type="text" @click="visible=true">增删改查</el-button>
+                            <el-button type="success" @click="dialogVisible = true">新增用户</el-button>
+                            <el-dialog
+                                v-model="dialogVisible"
+                                title="Tips"
+                                width="50%"
+                                :before-close="handleClose"
+                                >
+                                <el-table :data="tableData" :border="parentBorder" style="width: 100%">
+                                    <el-table-column >
+                                    <template #default="props">
+                                        <div m="4">
+                                        <p m="t-0 b-2">State: {{ props.row.state }}</p>
+                                        <p m="t-0 b-2">City: {{ props.row.city }}</p>
+                                        <p m="t-0 b-2">Address: {{ props.row.address }}</p>
+                                        <p m="t-0 b-2">Zip: {{ props.row.zip }}</p>
+                                        <h3>Family</h3>
+                                        <el-table :data="props.row.family" :border="childBorder">
+                                            <el-table-column label="Name" prop="name" />
+                                            <el-table-column label="State" prop="state" />
+                                            <el-table-column label="City" prop="city" />
+                                            <el-table-column label="Address" prop="address" />
+                                            <el-table-column label="Zip" prop="zip" />
+                                        </el-table>
+                                        </div>
+                                    </template>
+                                    </el-table-column>
+                                </el-table>
+                                    <template #footer>
+                                    <span class="dialog-footer">
+                                        <el-button @click="dialogVisible = false">Cancel</el-button>
+                                        <el-button type="primary" @click="dialogVisible = false">
+                                        Confirm
+                                        </el-button>
+                                    </span>
+                                    </template>
+                                </el-dialog>
                         </div>
                     </div>
                 </template>
@@ -113,11 +148,10 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 export default {
   data(){
         return {
-        dialogTableVisible : ref(false),
+            dialogVisible:false,
         visible:false,
         bscroll:null,
         curPage:1,
