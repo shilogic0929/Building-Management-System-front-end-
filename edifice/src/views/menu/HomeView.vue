@@ -4,14 +4,14 @@
     <div class="h-title">
       <div class="div-title">
 
-        <div class="music-control">
-
-          <img v-if="!musicState" src="~@/assets/img/exit.png" alt="" @click="docs"/>
-
-
+        <div class="music-control" @click="musicCtrol">
+          <img v-if="!musicState" src="~@/assets/img/music.png" alt="" />
+          <img v-else src="~@/assets/img/music.png" alt="" />
 
         </div>
-
+        <audio ref="audio" controls hidden>
+          <source src="~@/assets/music/777888.mp3" type="audio/mpeg" />
+        </audio>
         <!-- <iframe
           ref="audio"
           allow="autoplay"
@@ -24,7 +24,29 @@
     <!-- 轮播图 -->
     <!-- <slide-show></slide-show> -->
 
-
+    <div class="flow">
+      <el-carousel class="repairCarousel"  :interval="5000"  style="margin-bottom: 50px;height:620px;" indicator-position="none">
+        <el-carousel-item class="repairImage" style="height:620px;">
+          <img class="homeImg" src="@/assets/img/2.jpg" alt="img30">
+        </el-carousel-item>
+        <el-carousel-item class="repairImage" style="height:620px;">
+          <img class="homeImg" src="@/assets/img/1.jpg" alt="img30">
+        </el-carousel-item>
+        <el-carousel-item class="repairImage" style="height:620px;">
+          <img class="homeImg" src="@/assets/img/3.jpg" alt="img30">
+        </el-carousel-item>
+        <el-carousel-item class="repairImage" style="height:620px;">
+          <img class="homeImg" src="@/assets/img/4.jpg" alt="img30">
+        </el-carousel-item>
+        <el-carousel-item class="repairImage" style="height:620px;">
+          <img class="homeImg" src="@/assets/img/5.jpg" alt="img30">
+        </el-carousel-item>
+        <el-carousel-item class="repairImage" style="height:620px;">
+          <img class="homeImg" src="@/assets/img/6.jpg" alt="img30">
+        </el-carousel-item>
+      </el-carousel>
+      <!-- <div class="repairTitle" style="left:47%;">首页</div> -->
+    </div>
 
     <!-- 主体 -->
     <div class="main-area">
@@ -33,74 +55,42 @@
 
 
       <!-- 长引用 -->
-
-
-
+      <div class="quote-wrap">
+        <blockquote>
+          <p>Long time no see.</p>
+        </blockquote>
+      </div>
+      <!-- 照片墙 -->
+      <picture-wall></picture-wall>
+      <!-- 计时器 -->
+      <section class="timer" id="time">
+        <div class="timer-wrap">
+          <div class="time-header">
+            <h2 class="newh2" style="margin-top:20px;margin-bottom:20px;">当前时间</h2>
+            <hr class="line" />
+            <span class="intro">Current&nbsp;Time</span>
+          </div>
+          <div class="time-area">
+            <div>{{ hour }}</div>
+            <div>{{ minute }}</div>
+            <div>{{ second }}</div>
+          </div>
+        </div>
+      </section>
+      <footer><div class="fotter"></div></footer>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-
 // import SlideShow from "@/components/SlideShow.vue";
 import Profile from "@/components/Profile.vue";
-import { getAction,record } from "@/test.js"
 
 
+import PictureWall from "@/components/PictureWall.vue";
 
 export default {
-
-  methods: {
-    docs() {
-      // this.$confirm("是否确认该操作","提示",{
-      //   iconClass: "el-icon-question",//自定义图标样式
-      //   confirmButtonText: "确认",//确认按钮文字更换
-      //   cancelButtonText: "取消",//取消按钮文字更换
-      //   showClose: true,//是否显示右上角关闭按钮
-      //   type: "warning",//提示类型  success/info/warning/error
-      // }).then(function(){
-      //   //确认操作
-      // }).then(() => {
-      //   //取消操作
-      // })
-
-      var that = this
-      that.$confirm({
-        title: '您确定要注销吗?',
-        content: '当前只能报名一种选修课，报名后，不可取消，不可修改',
-        closable: true, //是否显示右上角的x
-        maskClosable: true,//触发阴影层的点击关闭
-        onOk: function () {
-          var id = record.id
-          let httpurl = that.url.addSelectionPeople
-          getAction(httpurl + '?id=' + id).then((res) => {
-            if (res.success) {
-              that.$message.success(res.result);
-              that.loadData();//刷新列表
-            }else {
-              that.$message.warning(res.message);
-            }
-          })
-        },
-        onCancel() {
-          console.log("on取消")
-        },
-      });
-
-
-      this.$router.push({
-        name: 'Login',
-        params: {
-
-        }
-      })
-
-
-    },
-  },
-
-
   setup() {
     const audio = ref(null);
     const musicState = ref(false);
@@ -147,7 +137,7 @@ export default {
   components: {
     // SlideShow,
     Profile,
-
+    PictureWall,
   },
 };
 </script>
@@ -278,42 +268,5 @@ ul {
   color: #666;
   line-height: 60px;
   font-family: "Ek Mukta", sans-serif;
-}
-</style>
-
-<style lang='scss' scoped>
-.mb10{
-  margin-bottom: 10px;
-}
-.mt20{
-  margin-top: 20px;
-}
-.avatar {
-  // 父容器
-  width: 400px;
-  height: 400px;
-  overflow: hidden;
-  position: relative;
-
-  // 角标
-  .angle_mark {
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    background-color: #7173da;
-    width: 100px;
-    height: 100px;
-    transform: rotate(45deg);
-    // 角标文字
-    span {
-      position: absolute;
-      display: inline-block;
-      color: #fff;
-      width: 100%;
-      bottom: 0;
-      left: 0;
-      text-align: center;
-    }
-  }
 }
 </style>
