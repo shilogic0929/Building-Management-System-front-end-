@@ -249,6 +249,7 @@ export default {
             if(this.all_table_data.length === 0) {
                 this.all_table_data = this.tableData;
             }
+            this.paginations.page_index = page;
             // 当前页
             let sortnum = this.paginations.page_size * (page - 1);
             let table = this.all_table_data.filter((item, index) => {
@@ -305,22 +306,22 @@ export default {
             this.paginations.page_size = this.tableData.length;
         },
         async checkOperator(row) {
-            //let feedbackid = row.feedbackid
+            let feedbackid = row.feedbackid
             console.log(row);
             this.addDialogVisible = true
-            // try {
-            //     this.addDialogVisible = true
-            //     const res = await axios.post('feedback/feedbackInfo/', {feedbackid: feedbackid});
-            //     console.log(res);
-            //     if(res.status !== 200) {
-            //         this.$message.error('获取信息失败：'+ res.statusText);
-            //         return;
-            //     } 
-            //     this.data4Dlg = res.data;
-            // } catch(err) {
-            //     this.$message.error('发生未知错误,请重试!' + err);
-            //     console.log(err);
-            // }
+            try {
+                this.addDialogVisible = true
+                const res = await axios.post('feedback/feedbackInfo/', {feedbackid: feedbackid});
+                console.log(res);
+                if(res.status !== 200) {
+                    this.$message.error('获取信息失败：'+ res.statusText);
+                    return;
+                } 
+                this.data4Dlg = res.data;
+            } catch(err) {
+                this.$message.error('发生未知错误,请重试!' + err);
+                console.log(err);
+            }
         },
         async callWorkers(feedbackid) {
             const res = await axios.get('feedback/sendWorker/', {params: {feedbackid: feedbackid}});
