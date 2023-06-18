@@ -131,7 +131,6 @@ const routes = [
         meta: { title: "添加房源" },
         component:  () => import('../views/service/addHouse.vue'),
       },
-
       {
         path: 'addHouseDetail',
         name: '添加房源细节',
