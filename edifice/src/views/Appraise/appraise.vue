@@ -83,7 +83,7 @@ export default {
   methods:{
     init(){
         var that=this;
-        var data={complaint:"complaint"} 
+        var data={complaint:"complaint"}
         this.$axios.post('/complaint/search_complaints/',JSON.stringify(data)).then(function (request) {
             console.log(request.data.content);
             that.complaint = request.data.content;
@@ -99,7 +99,7 @@ export default {
                 starValue:this.value2,
                 info:this.textarea,
             }
-        
+
         this.complaint.push(data);
         this.$axios.post('/complaint/submit_complaint/',JSON.stringify(data)).then(function (request) {
             console.log(request.data);
@@ -107,13 +107,13 @@ export default {
                 ElMessage({
                       message: request.data.msg,
                       type: 'success',
-                    }) 
+                    })
             }
             else{
                 ElMessage.error(request.data.msg)
             }
         })
-    
+
         this.ifSee=false;
     }
   }
