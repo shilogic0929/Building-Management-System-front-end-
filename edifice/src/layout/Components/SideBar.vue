@@ -43,10 +43,21 @@
             <el-icon><ChatLineRound /></el-icon>
             <span class="sideBarFontSize">评价系统</span>
           </el-menu-item>
-          <el-menu-item index="/repair">
+
+          <el-menu-item index="/handleRepair" v-if="this.$store.state.isService">
+            <el-icon><Brush /></el-icon>
+            <span class="sideBarFontSize">处理报修</span>
+          </el-menu-item>
+          <el-menu-item index="/repairService" v-else-if="this.$store.state.isWorker">
+            <el-icon><Brush /></el-icon>
+            <span class="sideBarFontSize">维修服务</span>
+          </el-menu-item>
+          <el-menu-item index="/repair" v-else>
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">工单报修系统</span>
           </el-menu-item>
+
+
           <el-menu-item index="/workers" v-if="this.$store.state.isWorker">
             <el-icon><Promotion /></el-icon>
             <span class="sideBarFontSize">工人系统</span>
