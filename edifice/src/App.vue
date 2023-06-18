@@ -25,6 +25,7 @@ export default {
 
 
 <style lang="scss">
+<<<<<<< HEAD
 body
 {
   margin: 0;
@@ -83,6 +84,11 @@ hr
 {
   background-color: transparent;
   border-radius: 32px;
+=======
+*{
+  margin: 0px;
+  padding: 0px;
+>>>>>>> 8106e18422d20dd65fe8a656a4f79c396d08867b
 }
 </style>
 

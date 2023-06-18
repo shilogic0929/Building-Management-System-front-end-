@@ -1,25 +1,25 @@
 <template>
   <div class="login">
 
-<!--    <vue-particles-->
-<!--        color="#fff"-->
-<!--        :particleOpacity="0.7"-->
-<!--        :particlesNumber="100"-->
-<!--        shapeType="circle"-->
-<!--        :particleSize="8"-->
-<!--        linesColor="#fff"-->
-<!--        :linesWidth="1"-->
-<!--        :lineLinked="false"-->
-<!--        :lineOpacity="0.4"-->
-<!--        :linesDistance="150"-->
-<!--        :moveSpeed="2"-->
-<!--        :hoverEffect="true"-->
-<!--        hoverMode="grab"-->
-<!--        :clickEffect="true"-->
-<!--        clickMode="push"-->
-<!--        class="lizi"-->
-<!--      >-->
-<!--      </vue-particles>-->
+    <vue-particles
+        color="#fff"
+        :particleOpacity="0.7"
+        :particlesNumber="100"
+        shapeType="circle"
+        :particleSize="8"
+        linesColor="#fff"
+        :linesWidth="1"
+        :lineLinked="false"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="2"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+        class="lizi"
+      >
+      </vue-particles>
       
     <!-- <div class="slideShadow" v-show="showSlide">
       <transition>
@@ -33,7 +33,7 @@
       </transition>
     </div> -->
     <div class="loginBox">
-      <h2 class="loginH2"><strong>大厦</strong>物业管理系统</h2>
+      <h2 class="loginH2"><strong>青年</strong>租房管理系统</h2>
       <div class="loginCon">
         <div class="titleDiv">
           <h3  v-if="dialogVisible==false">现在登录</h3>

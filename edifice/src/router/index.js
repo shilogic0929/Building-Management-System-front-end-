@@ -84,16 +84,16 @@ const routes = [
         component:  () => import('../views/pay/pay.vue'),
       },
       {
-        path: 'seeContract',
+        path: 'clientView',
         name: '查看合同',
         meta: { title: "查看合同" },
-        component:  () => import('../views/seeContract/seeContract.vue'),
+        component:  () => import('../views/clientManage/clientView.vue'),
       },
       {
         path: 'contractDetail',
         name: '合同信息',
         meta: { title: "合同信息" },
-        component:  () => import('../views/seeContract/contractDetail.vue'),
+        component:  () => import('../views/clientManage/contractDetail.vue'),
       },
       {
         path: 'appraise',
@@ -125,7 +125,6 @@ const routes = [
         meta: { title: "添加房源" },
         component:  () => import('../views/service/addHouse.vue'),
       },
-
       {
         path: 'addHouseDetail',
         name: '添加房源细节',
@@ -194,9 +193,8 @@ const routes = [
       }
     ]
   },
-  
-]
 
+]
 
 
 
