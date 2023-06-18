@@ -38,7 +38,7 @@
                     </div>
                 </template>
             <div class="ato-list">
-              <el-table :data="filtertableData" :border="false" style="width: 100%; " :row-style="{ height: '100px'}">
+              <el-table :data="filterClients" :border="false" style="width: 100%; " :row-style="{ height: '100px'}">
                 <el-table-column type="expand" align="center">
                   <template #default="props">
                       <el-row :gutter="20" style="padding-left: 200px">
@@ -91,7 +91,7 @@
             </el-space>
 
             </el-card>
-       <el-dialog v-model="show_dialog" :title='this.dialog_name+"的信息"'>
+       <el-dialog v-model="show_dialog" :title='this.dialog_person.name+"的信息"'>
          <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
            <el-col :span="1"></el-col>
            <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">姓名</span></el-col>
@@ -210,8 +210,9 @@ const debounce = (fn, delay) => {
 export default {
   data(){
     return{
-      tableData: [
+      Clients: [
         {
+          id:1,
           name: 'Jack',
           phone: '123456789',
           company:'a公司',
@@ -241,6 +242,7 @@ export default {
           ],
         },
         {
+          id:1,
           name: 'Tom',
           phone: '123456789',
           company:'a公司',
@@ -270,6 +272,7 @@ export default {
           ],
         },
         {
+          id:1,
           name: 'Tom',
           phone: '123456789',
           company:'a公司',
@@ -299,6 +302,7 @@ export default {
           ],
         },
         {
+          id:1,
           name: 'Tom',
           phone: '123456789',
           company:'a公司',
@@ -328,6 +332,7 @@ export default {
           ],
         },
         {
+          id:1,
           name: 'Tom',
           phone: '123456789',
           company:'a公司',
@@ -358,18 +363,26 @@ export default {
         },
       ],
       dialogVisible:false,
-      filtertableData:[],
+      filterClients:[],
       parentBorder:false,
       childBorder:false,
       search:'',
       show_dialog: false,
       show_lease_dialog: false,
-      dialog_name: '',
-      dialog_phone:'',
+      dialog_person: {
+        id: 1,
+        name: 'Tom',
+        phone: '123456789',
+        company: 'a公司',
+        legal_person: 'Jane',
+        room:[]
+      },
+      dialog_name:'',
       dialog_company:'',
+      dialog_phone:'',
       dialog_legal:'',
-      dialog_name_before: '',
       lease_person:{
+        id: 0,
         name: '',
         phone: '',
         company:'',
@@ -382,7 +395,7 @@ export default {
   },
   methods:{
     handleEdit(index,client){
-      this.dialog_name_before = client.name
+      this.dialog_person = client
       this.dialog_name = client.name
       this.dialog_phone = client.phone
       this.dialog_company = client.company
@@ -425,6 +438,8 @@ export default {
           message: '修改成功'
         })
         this.show_dialog = false
+        // const that = this
+        // this.$axios.post()
       }).catch(() => {
 
       })
@@ -483,22 +498,29 @@ export default {
   },
   watch:{
     search(newValue){
-      this.filtertableData = computed(() =>
-          this.tableData.filter(
+      this.filterClients = computed(() =>
+          this.Clients.filter(
               (data) =>
                   !newValue ||
                   data.name.toLowerCase().includes(newValue.toLowerCase())
           ))
     },
-    tableData(newValue){
-      this.filtertableData = newValue
+    Clients(newValue){
+      this.filterClients = newValue
     }
   },
   created() {
+    const that = this
     this.parentBorder = ref(false)
     this.childBorder = ref(false)
     this.search = ref('')
-    this.filtertableData = this.tableData
+    this.filterClients = this.Clients
+    this.$axios({
+      method:'POST',
+      url:'/get_client_info',
+    }).then(res => {
+      that.Clients = res.data.clients
+    })
   }
 }
 </script>
