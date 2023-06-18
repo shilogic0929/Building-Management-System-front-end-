@@ -1,84 +1,82 @@
 <template>
   <div >
     <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
-        <div class="zz">
-            <h2>工人接单</h2>
-        </div>
+      <div class="zz">
+        <h2>工人接单</h2>
+      </div>
     </div>
     <div class="serviceGrid">
-        <el-card>
-            <template #header>
-                <div class = "card-header" style = "margin:0px;">
-                    <span class="image-font">报修申请列表</span>
-                    <div>
-                        <!-- <el-button class="button" type="text" @click="this.$router.go(-1)">返回</el-button> -->
-                    </div>
-                </div>
-            </template>
-            <div v-for="(item,index) in repair" :key="index">
-                <div class="container">
-                    <span class="title">报修{{item.wid}}</span>
-                    <div>
-                        <el-button type="primary" size="large"  @click="see(index)">查看报修申请</el-button>
-                        <!-- <el-button type="primary" size="large" @click="ensure(index)">报修解决</el-button> -->
-                    </div>
-                </div>
-                <el-divider></el-divider>
+      <el-card>
+        <template #header>
+          <div class = "card-header" style = "margin:0px;">
+            <span class="image-font">报修申请列表</span>
+            <div v-if="!isfinished" >
+              <el-button class="button" type="text" @click="this.isfinished=true">查看已完成报修</el-button>
             </div>
-        </el-card>
-    </div>
-
-    <el-dialog v-model="visible">
-        <el-descriptions :column="1" border>
+            <div v-else>
+              <el-button class="button" type="text" @click="this.isfinished=false">返回</el-button>
+            </div>
+          </div>
+        </template>
         
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <user />
-            </el-icon>
-            报修房间编号
-          </div>
-        </template>
-        {{rid}}
-      </el-descriptions-item>
+        <el-table v-if="!isfinished" :data="table1" style="width: 100%">
+          <el-table-column
+            label="序号"
+            width="180">
+            <template #default="scope">
+              <span class="red" v-if="scope.row.isNew"></span>
+              <a @click="lookInfo(scope.row)" style="cursor: pointer;">
+                  {{scope.row.wid}}
+              </a>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="reportTime"
+            label="申请时间"
+            sortable
+            column-key="reportTime">
+          </el-table-column>
+          <el-table-column
+            prop="status"
+            label="报修状态"
+            width="150">
+            <template #default="scope">
+              <el-tag
+                :type="buttonTypes[scope.row.status]"
+                disable-transitions>{{process[scope.row.status]}}</el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
 
+        <el-table v-else :data="table2" style="width: 100%">
+          <el-table-column
+            label="序号"
+            width="180">
+            <template #default="scope">
+              <span class="red" v-if="scope.row.isNew"></span>
+              <a @click="lookInfo(scope.row)" style="cursor: pointer;">
+                  {{scope.row.wid}}
+              </a>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="reportTime"
+            label="申请时间"
+            sortable
+            column-key="reportTime">
+          </el-table-column>
+          <el-table-column
+            prop="status"
+            label="报修状态"
+            width="150">
+            <el-tag
+              type="success"
+              disable-transitions>已完成</el-tag>
+          </el-table-column>
+        </el-table>
 
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <user />
-            </el-icon>
-            报修类型
-          </div>
-        </template>
-        {{type}}
-      </el-descriptions-item>
-      
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <user />
-            </el-icon>
-            信息
-          </div>
-        </template>
-        {{info}}
-      </el-descriptions-item>
-
-        </el-descriptions>
-
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="visible = true">取消</el-button>
-                <el-button type="primary" @click="visible = false">确认</el-button>
-            </span>
-        </template>
-
-    </el-dialog>
-
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -89,58 +87,88 @@ export default {
   data(){
     return{
         img:require("@/assets/image/inner-banner3.jpg"),
-        visible:false,
+        isfinished: false,
         rid:"",
         type:"",
         info:"",
+        uid: "",
+        process:["未处理","进行中"],
+        buttonTypes:["info","warning"],
+        table1: [],
+        table2: [],
         repair:[
             {
                 wid: "1",
-                id:0,
+                rid:0,
+                type: "机械",
+                reportTime: "2023-6-16",
+                status: 0,
+                info: "隔墙有眼",
+                adv: "",
+                isNew: false
             },
             {
                 wid: "2",
-                id:0,
+                rid:0,
+                type: "水",
+                reportTime: "2023-6-11",
+                status: 1,
+                info: "太水了！！",
+                adv: "无所谓，我会出手",
+                isNew: true
+            },
+            {
+                wid: "33",
+                rid:3113,
+                type: "电",
+                reportTime: "2023-6-20",
+                status: 2,
+                info: "功率不够！",
+                adv: "Okok",
+                isNew: false
             }
         ]
     }
   },
   mounted() {
-      this.init();
+      //this.init();
+      for(let i=0;i<this.repair.length;i++)
+      {
+        if(this.repair[i].status==2)
+          this.table2.push(this.repair[i])
+        else
+          this.table1.push(this.repair[i])
+      }
   },
   methods:{
     init(){
         
       var data={username: this.$store.state.username} 
       var that=this;
-      let uid;
       this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
           console.log(request.data.content);
-          uid = request.data.content.uid;
+          that.uid = request.data.content.uid;
       })
       data={name:"search_workorders"};
       this.repair=[];
       this.$axios.post('/workorder/search_workorders/',JSON.stringify(data)).then(function (request) {
           console.log(request.data.content);
           for(var i=0; i<request.data.content.length; i++){
-              if(request.data.content[i].worker==uid&&request.data.content[i].status==2){
+              if(request.data.content[i].worker==this.uid&&request.data.content[i].status==2){
                   that.repair.push(request.data.content[i])
               }
           }
       })
     },
-    see(index){
-        this.visible=true;
-        this.info=this.repair[index].info;
-        this.rid=this.repair[index].rid;
-        if(this.repair[index].type==1)
-          this.type="墙壁损坏";
-        else if(this.repair[index].type==2)
-          this.type="房屋漏水"
-        else if(this.repair[index].type==3)
-          this.type="家电维修"
-        else if(this.repair[index].type==4)
-          this.type="其他"
+    lookInfo(index){
+      this.$router.push({
+        name: '报修内容界面',
+        params: {
+            uid:this.uid,
+            rid:index.rid,
+            wid:index.wid,
+        }
+      })
     },
     ensure(index){
       var data={wid: this.repair[index].wid} 

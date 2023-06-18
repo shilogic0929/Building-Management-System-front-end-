@@ -79,7 +79,7 @@ export default {
             telephone:"", //报修联系人姓名和联系方式
             problemTime: "", //报修时间
             desc:"", //问题描述
-            problem:["墙壁维修","房屋漏水","电器维修","家具维修","网络故障"],
+            problem:["水","电","机械","其他"],
           },
          
       }  

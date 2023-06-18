@@ -145,14 +145,14 @@ export default {
         type:"",
         info:"",
         advice: "",
-        types: ["墙壁维修","房屋漏水","电器维修","家具维修","网络故障"],
+        types: ["水","电","机械","其他"],
         process:["申请中","进行中","已完成"],
         buttonTypes:["info","primary","success"],
         repair:[
             {
                 wid: "1",
                 rid:0,
-                type: "墙壁维修",
+                type: "机械",
                 reportTime: "2023-6-16",
                 status: 0,
                 info: "隔墙有眼",
@@ -162,7 +162,7 @@ export default {
             {
                 wid: "2",
                 rid:0,
-                type: "房屋漏水",
+                type: "水",
                 reportTime: "2023-6-11",
                 status: 2,
                 info: "太水了！！",
@@ -232,17 +232,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-.red::before
-{
-    content: "";
-    position: absolute;
-    left: 0;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: red;
-    top: 16px;
-}
-</style>
