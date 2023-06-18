@@ -5,7 +5,7 @@ $myBlue:#19b9e7;
 .login{
     width: 100%;
     height: 100%;
-    background-image: url("@/assets/img/4.jpg");
+    background-image: url("@/assets/img/ba1.jpg");
     background-position: center center;
     background-repeat: no-repeat;
     background-size:cover; 
@@ -17,21 +17,21 @@ $myBlue:#19b9e7;
     width: 550px;
     margin: 0 auto;
     position: relative;
-    top: 70%;
+    top: 65%;
     margin-top: -287px;
   }
   .loginH2 {
     font-size: 38px;
-    color: #fff;
+    color: #111111;
     text-align: center;
   }
   .loginCon {
-    margin-top: 30px;
+    margin-top: 50px;
     background: rgb(239, 236, 236);
     border-radius: 4px;
     .titleDiv {
       padding: 0 28px;
-      background: $myColor;
+      background: #111111;
       position: relative;
       height: 120px;
       border-radius: 4px 4px 0 0;
@@ -62,7 +62,7 @@ $myBlue:#19b9e7;
   }
   .loginBtn {
     width: 100%;
-    background: $myColor;
+    background: #111111;
     color: #fff !important;
   }
   .slideShadow {
