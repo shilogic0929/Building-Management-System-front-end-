@@ -9,6 +9,15 @@
         <div class="headTitle">青年租房管理系统</div>
           <div class="personalHome">
             <el-dropdown>
+              <el-icon :size="21" class="icon"><User /></el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="">个人信息</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            
+            <!-- <el-dropdown>
               <div class="userDrop_text">{{userName}}</div>
               <el-icon :size="15" class="userDrop"><caret-bottom /></el-icon>
               <el-avatar :size="30">
@@ -25,16 +34,16 @@
                   <router-link to="/about">
                     <el-dropdown-item :icon="Guide">关于界面</el-dropdown-item>
                   </router-link>
-                  <!-- <router-link to="/login">
+                  <router-link to="/login">
                   <el-dropdown-item :icon="Setting">登录</el-dropdown-item>
-                  </router-link> -->
+                  </router-link>
                   
                   <el-dropdown-item :icon="Setting">设置</el-dropdown-item>
 
                   <el-dropdown-item :icon="SwitchButton" @click="quit">注销</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
-            </el-dropdown>
+            </el-dropdown> -->
           </div>
 
       </div>
@@ -51,7 +60,8 @@ import { ElMessage } from 'element-plus'
     Plus,
     House,
     Guide,
-    SwitchButton
+    SwitchButton,
+    User
   } from '@element-plus/icons-vue'
 
   export default {
@@ -110,3 +120,9 @@ import { ElMessage } from 'element-plus'
 
   }
 </script>
+<style>
+.icon {
+  top: 5px;
+  cursor: pointer;
+}
+</style>

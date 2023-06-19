@@ -1,16 +1,23 @@
 <template>
   <div class="home" style="margin-top:20px;">
-    <h1 style="margin-bottom:30px;">这是个人资料页</h1>
-    <el-card>
-        <div class="UserImage">
+    <h1 style="margin-bottom:30px;">个人基本信息</h1>
+    <el-card class="card">
+        <!-- <div class="UserImage">
             <div class="UserImageCon">
                 <el-avatar :size="200" :src="url"/>
+                <el-image style="" :src="url" :fit="contain" />
             </div>
             <div class="UserImageChange">
                 <el-button type="primary">更换头像</el-button>
             </div>
+        </div> -->
+        <div class="patton">
+          <p><el-text class="text">法人名称:{{ legal }}</el-text></p>
+          <p><el-text class="text">公司名称:{{ company }}</el-text></p>
+          <p><el-text class="text">姓名:{{ name }}</el-text></p>
+          <p><el-text class="text">电话:{{ phone }}</el-text></p>
         </div>
-        <el-form class="personalPage" :model="form" label-width="120px">
+        <!-- <el-form class="personalPage" :model="form" label-width="120px">
             <el-form-item label="姓名">
                 <el-input v-model="form.name" />
             </el-form-item>
@@ -40,7 +47,7 @@
                 <el-button type="primary" @click="onSubmit">保存</el-button>
                 <el-button>取消</el-button>
             </el-form-item>
-        </el-form>
+        </el-form> -->
     </el-card>
   </div>
 </template>
@@ -60,7 +67,11 @@ import { ElMessage } from 'element-plus'
                     IdNumber:'',
                     email: '',
                 },
-                url:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+                name: '小王',
+                phone: '123',
+                legal: '徐惠彬',
+                company:'北京航空航天大学',
             }
         },
         mounted() {
@@ -107,5 +118,21 @@ import { ElMessage } from 'element-plus'
 
 
 </script>
-
+<style>
+.text {
+    font-size: 20px;
+    line-height: 2;
+}
+.patton {
+    text-align: left;
+    margin-left: 30px;
+}
+.card {
+    width: 500px;
+    position: absolute;
+    
+    top: 20;
+    right: 0;
+}
+</style>
 

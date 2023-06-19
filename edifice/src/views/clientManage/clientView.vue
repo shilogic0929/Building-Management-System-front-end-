@@ -186,8 +186,7 @@
 <script>
 import {computed,ref} from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-
-
+import { User } from '@element-plus/icons-vue'
 const _ResizeObserver = window.ResizeObserver;
 window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
   constructor(callback) {
