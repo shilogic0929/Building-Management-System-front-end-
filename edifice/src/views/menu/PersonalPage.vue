@@ -42,17 +42,23 @@ import { ElMessage } from 'element-plus'
         },
         methods:{
             init(){
-                
                 var that=this;
-                this.$axios.post('/test/get_user_info',JSON.stringify(data)).then(function (request) {
-                    var content=request.data.content;
-                    console.log(content)
-                    that.form.name=content.realname;
-                    that.form.username=content.username;
-                    that.form.email=content.email;
-                    that.form.phoneNumber=content.mobile;
-                    that.form.sex=content.sex;
-                    that.form.IdNumber=content.id_number;
+                const data = new FormData()
+                data.append('token', localStorage.getItem.token)
+                this.$axios({
+                    method:'POST',
+                    url: '/test/get_user_info',
+                    data: data
+                }).then(res => {
+                    if (res.data.errno === 0) {
+                        this.name = res.data.username,
+                        this.phone = res.data.phone,
+                        this.legal = res.data.legal_person,
+                        this.company = res.data.company
+                    }
+                    else {
+
+                    }
                 })
             },
             onSubmit(){

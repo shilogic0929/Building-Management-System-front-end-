@@ -4,6 +4,42 @@
       <template #header>
         <div class = "card-header" style="margin-bottom:0px;">
           <span class="image-font" style="font-size:20px; margin: 0 auto">客户信息</span>
+          <div>
+            <el-button type="success" @click="dialogVisible = true">新增用户</el-button>
+            <el-dialog v-model="dialogVisible" title="编辑信息">
+              <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">姓名</span></el-col>
+                <el-col :span="14"><el-input v-model="add_name" /></el-col>
+              </el-row>
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电话</span></el-col>
+                <el-col :span="14"><el-input v-model="add_phone" /></el-col>
+              </el-row>
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">公司名称</span></el-col>
+                <el-col :span="14"><el-input v-model="add_company" /></el-col>
+              </el-row>
+
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">法人名称</span></el-col>
+                <el-col :span="14"><el-input v-model="add_legal" /></el-col>
+              </el-row>
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电子邮箱</span></el-col>
+                <el-col :span="14"><el-input v-model="add_email" /></el-col>
+              </el-row>
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="8"></el-col>
+                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="dialogVisible = false">取消</el-button></el-col>
+                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="handleAddClient()">确认</el-button></el-col>
+              </el-row>
+            </el-dialog>
+          </div>
         </div>
       </template>
       <div class="ato-list">
@@ -186,7 +222,13 @@ const debounce = (fn, delay) => {
 
 export default {
   data(){
-    return{
+    return {
+      dialogVisible: false,
+      add_name: '',
+      add_phone: '',
+      add_legal: '',
+      add_company: '',
+      add_email:'',
       clients: [
         {
           id:1,
@@ -566,7 +608,7 @@ export default {
         url: '/addNewClient',
         data: formData
       }).then(res => {
-        if (res.data.status === 1) {
+        if (res.data.errno === 0) {
           ElMessage({
             type: 'success',
             message: '添加成功'
