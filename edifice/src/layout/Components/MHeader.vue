@@ -13,10 +13,11 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="this.$router.push('/personalPage')">个人信息</el-dropdown-item>
+                  <el-dropdown-item @click="this.$router.push('')">注销</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
-            
+
             <!-- <el-dropdown>
               <div class="userDrop_text">{{userName}}</div>
               <el-icon :size="15" class="userDrop"><caret-bottom /></el-icon>

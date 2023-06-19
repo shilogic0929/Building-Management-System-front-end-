@@ -29,6 +29,11 @@
                                 <el-col :span="14"><el-input v-model="add_legal" /></el-col>
                               </el-row>
                               <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电子邮箱</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_email" /></el-col>
+                              </el-row>
+                              <el-row :gutter="20" class="dialog_row">
                                 <el-col :span="8"></el-col>
                                 <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="dialogVisible = false">取消</el-button></el-col>
                                 <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="handleAddClient()">确认</el-button></el-col>
@@ -216,14 +221,14 @@ const debounce = (fn, delay) => {
 }
 
 export default {
-  data(){
-    return{
+  data() {
+    return {
       Clients: [
         {
-          id:1,
+          id: 1,
           name: 'Jack',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -250,10 +255,10 @@ export default {
           ],
         },
         {
-          id:2,
+          id: 2,
           name: 'Tom',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -280,10 +285,10 @@ export default {
           ],
         },
         {
-          id:3,
+          id: 3,
           name: 'Tom',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -310,10 +315,10 @@ export default {
           ],
         },
         {
-          id:4,
+          id: 4,
           name: 'Tom',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -340,10 +345,10 @@ export default {
           ],
         },
         {
-          id:5,
+          id: 5,
           name: 'Tom',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -370,10 +375,10 @@ export default {
           ],
         },
         {
-          id:6,
+          id: 6,
           name: 'Jack',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -400,10 +405,10 @@ export default {
           ],
         },
         {
-          id:7,
+          id: 7,
           name: 'Jack',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -430,10 +435,10 @@ export default {
           ],
         },
         {
-          id:8,
+          id: 8,
           name: 'Jack',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -460,10 +465,10 @@ export default {
           ],
         },
         {
-          id:9,
+          id: 9,
           name: 'Jack',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -490,10 +495,10 @@ export default {
           ],
         },
         {
-          id:10,
+          id: 10,
           name: 'Jack',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -520,10 +525,10 @@ export default {
           ],
         },
         {
-          id:11,
+          id: 11,
           name: 'Jack',
           phone: '123456789',
-          company:'a公司',
+          company: 'a公司',
           legal_person: 'Jane',
           room: [
             {
@@ -553,12 +558,12 @@ export default {
       getRowKeys(row) {
         return row.id;
       },
-      dialogVisible:false,
-      filterClients:[],
-      showClients:[],
-      parentBorder:false,
-      childBorder:false,
-      search:'',
+      dialogVisible: false,
+      filterClients: [],
+      showClients: [],
+      parentBorder: false,
+      childBorder: false,
+      search: '',
       show_dialog: false,
       show_lease_dialog: false,
       dialog_person: {
@@ -567,43 +572,44 @@ export default {
         phone: '123456789',
         company: 'a公司',
         legal_person: 'Jane',
-        room:[]
+        room: []
       },
-      add_name:'',
-      add_company:'',
-      add_phone:'',
-      add_legal:'',
-      dialog_company:'',
-      dialog_phone:'',
-      dialog_legal:'',
-      lease_person:{
+      add_name: '',
+      add_company: '',
+      add_phone: '',
+      add_legal: '',
+      add_email: '',
+      dialog_company: '',
+      dialog_phone: '',
+      dialog_legal: '',
+      lease_person: {
         id: 0,
         name: '',
         phone: '',
-        company:'',
+        company: '',
         legal_person: '',
         room: []
       },
-      language : "zhCn",
+      language: "zhCn",
       currentPage: 1,
-      expands:[]
+      expands: []
     }
   },
   mounted() {
   },
-  methods:{
-    getClientsInfo(){
+  methods: {
+    getClientsInfo() {
       const that = this
       this.$axios({
-        method:'POST',
-        url:'/get_client_info',
+        method: 'POST',
+        url: '/get_client_info',
       }).then(res => {
         that.clients = res.data.clients
       })
       this.filterClients = this.clients
-      this.showClients = this.filterClients.slice(0,10)
+      this.showClients = this.filterClients.slice(0, 10)
     },
-    clickRowHandle(row,column,event){
+    clickRowHandle(row, column, event) {
       if (this.expands.includes(row.id)) {
         this.expands = this.expands.filter(val => val !== row.id);
         console.log(this.expands)
@@ -612,7 +618,7 @@ export default {
         console.log(this.expands)
       }
     },
-    handleEdit(index,client){
+    handleEdit(index, client) {
       this.dialog_person = client
       this.dialog_name = client.name
       this.dialog_phone = client.phone
@@ -620,15 +626,15 @@ export default {
       this.dialog_legal = client.legal_person
       this.show_dialog = true
     },
-    handleDelete(){
+    handleDelete() {
       ElMessageBox.confirm(
-          '确认删除该用户?',
-          '警告',
-          {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
+        '确认删除该用户?',
+        '警告',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
       ).then(() => {
         ElMessage({
           type: 'success',
@@ -636,20 +642,21 @@ export default {
         })
         this.show_dialog = false
       }).catch(() => {
-          ElMessage({
-            type: 'info',
-            message: '取消删除'
-          })
-      })},
-    dialogConfirm(){
+        ElMessage({
+          type: 'info',
+          message: '取消删除'
+        })
+      })
+    },
+    dialogConfirm() {
       ElMessageBox.confirm(
-          '确认修改?',
-          '警告',
-          {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
+        '确认修改?',
+        '警告',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
       ).then(() => {
         ElMessage({
           type: 'success',
@@ -667,48 +674,49 @@ export default {
         new_name: this.add_name,
         new_phone: this.add_phone,
         new_company: this.add_company,
-        new_legal:this.add_legal
+        new_legal: this.add_legal,
+        new_email: this.add_email
       }
       this.$axios({
         method: 'POST',
         url: '/addNewClient',
-        data:JSON.stringify(formData)
+        data: JSON.stringify(formData)
       }).then(res => {
         if (res.data.status === 1) {
           ElMessage({
-          type: 'success',
-          message: '添加成功'
+            type: 'success',
+            message: '添加成功'
           })
           this.dialogVisible = false
         }
         else {
           ElMessage({
-          type: 'fail',
-          message: '添加失败'
+            type: 'fail',
+            message: '添加失败'
           })
         }
       })
     },
-    dialogCancel(){
+    dialogCancel() {
       ElMessageBox.confirm(
-          '取消修改?',
-          '警告',
-          {
-            confirmButtonText: '确认',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
+        '取消修改?',
+        '警告',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
       ).then(() => {
         this.show_dialog = false
       }).catch(() => {
 
       })
     },
-    editLease(client){
+    editLease(client) {
       this.lease_person = client
       this.show_lease_dialog = true
     },
-    addNewRoom(person){
+    addNewRoom(person) {
       let newRoom = {
         id: '',
         start_time: '',
@@ -718,11 +726,11 @@ export default {
       }
       person.room.push(newRoom)
     },
-    saveRoom(room){
+    saveRoom(room) {
       console.log(room)
     },
-    deleteRoom(index){
-      const formData ={
+    deleteRoom(index) {
+      const formData = {
         id: this.lease_person.id,
         room_id: this.lease_person.room[index].id
       }
@@ -731,9 +739,9 @@ export default {
         method: 'POST',
         url: '/deleteLeaseInfo',
         data: JSON.stringify(formData)
-      }).then(res =>{
-        if(res.data.status === 1){
-          that.lease_person.room.splice(index,1)
+      }).then(res => {
+        if (res.data.status === 1) {
+          that.lease_person.room.splice(index, 1)
           ElMessage({
             type: 'success',
             message: '删除成功'
@@ -741,37 +749,38 @@ export default {
           this.getClientsInfo()
         }
       })
-    changePage(val){
-      console.log(val)
-      this.currentPage = val
-      let start_index = (val-1) * 10
-      let end_index = start_index + 10
-      this.showClients = this.filterClients.slice(start_index,end_index)
     },
-  },
-  watch:{
-    search(newValue){
-      this.filterClients = computed(() =>
+      changePage(val){
+        console.log(val)
+        this.currentPage = val
+        let start_index = (val - 1) * 10
+        let end_index = start_index + 10
+        this.showClients = this.filterClients.slice(start_index, end_index)
+      }
+    },
+    watch: {
+      search(newValue) {
+        this.filterClients = computed(() =>
           this.Clients.filter(
-              (data) =>
-                  !newValue ||
-                  data.name.toLowerCase().includes(newValue.toLowerCase())
+            (data) =>
+              !newValue ||
+              data.name.toLowerCase().includes(newValue.toLowerCase())
           ))
-      this.showClients = this.filterClients.slice(0,10)
+        this.showClients = this.filterClients.slice(0, 10)
+      },
+      Clients(newValue) {
+        this.filterClients = newValue
+        this.showClients = this.filterClients.slice(0, 10)
+      },
     },
-    Clients(newValue){
-      this.filterClients = newValue
-      this.showClients = this.filterClients.slice(0,10)
-    },
-  },
-  created() {
-    const that = this
-    this.parentBorder = ref(false)
-    this.childBorder = ref(false)
-    this.search = ref('')
-    this.getClientsInfo()
+    created() {
+      const that = this
+      this.parentBorder = ref(false)
+      this.childBorder = ref(false)
+      this.search = ref('')
+      this.getClientsInfo()
+    }
   }
-}
 </script>
 
 <style>
