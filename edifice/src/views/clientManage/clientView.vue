@@ -187,7 +187,7 @@ const debounce = (fn, delay) => {
 export default {
   data(){
     return{
-      clients: [
+      Clients: [
         {
           id:1,
           name: 'Jack',
@@ -519,6 +519,10 @@ export default {
           ],
         },
       ],
+      getRowKeys(row) {
+        return row.id;
+      },
+      dialogVisible:false,
       filterClients:[],
       showClients:[],
       parentBorder:false,
@@ -534,7 +538,10 @@ export default {
         legal_person: 'Jane',
         room:[]
       },
-      dialog_name:'',
+      add_name:'',
+      add_company:'',
+      add_phone:'',
+      add_legal:'',
       dialog_company:'',
       dialog_phone:'',
       dialog_legal:'',
@@ -586,7 +593,7 @@ export default {
       this.dialog_legal = client.legal_person
       this.show_dialog = true
     },
-    handleDelete(index,client){
+    handleDelete(){
       ElMessageBox.confirm(
           '确认删除该用户?',
           '警告',
@@ -619,6 +626,7 @@ export default {
             })
           }
         })
+        this.show_dialog = false
       }).catch(() => {
         ElMessage({
           type: 'info',
@@ -664,6 +672,33 @@ export default {
         }).catch({
 
         })
+      })
+    },
+    handleAddClient() {
+      const formData = {
+        new_name: this.add_name,
+        new_phone: this.add_phone,
+        new_company: this.add_company,
+        new_legal:this.add_legal
+      }
+      this.$axios({
+        method: 'POST',
+        url: '/addNewClient',
+        data:JSON.stringify(formData)
+      }).then(res => {
+        if (res.data.status === 1) {
+          ElMessage({
+          type: 'success',
+          message: '添加成功'
+          })
+          this.dialogVisible = false
+        }
+        else {
+          ElMessage({
+          type: 'fail',
+          message: '添加失败'
+          })
+        }
       })
     },
     dialogCancel(){
@@ -760,19 +795,20 @@ export default {
   watch:{
     search(newValue){
       this.filterClients = computed(() =>
-          this.clients.filter(
+          this.Clients.filter(
               (data) =>
                   !newValue ||
                   data.name.toLowerCase().includes(newValue.toLowerCase())
           ))
       this.showClients = this.filterClients.slice(0,10)
     },
-    clients(newValue){
+    Clients(newValue){
       this.filterClients = newValue
       this.showClients = this.filterClients.slice(0,10)
     },
   },
   created() {
+    const that = this
     this.parentBorder = ref(false)
     this.childBorder = ref(false)
     this.search = ref('')
