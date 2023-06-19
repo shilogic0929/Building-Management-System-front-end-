@@ -38,7 +38,7 @@
                     </div>
                 </template>
             <div class="ato-list">
-              <el-table :data="filterClients" :border="false" style="width: 100%; " :row-style="{ height: '100px'}">
+              <el-table :data="filterClients" :border="false" style="width: 100%; " :row-style="{ height: '100px'}" >
                 <el-table-column type="expand" align="center">
                   <template #default="props">
                       <el-row :gutter="20" style="padding-left: 200px">
