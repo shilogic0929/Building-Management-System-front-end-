@@ -10,10 +10,13 @@ import * as ElIconModules from '@element-plus/icons-vue'
 import SlideVerify from 'vue-monoplasty-slide-verify';
 import axios from 'axios'
 import VueSuperSlide from 'vue-superslide'
-import VueParticles from 'vue-particles'  
+import VueParticles from 'vue-particles'
+
 
 
 const app=createApp(App);
+
+
 app.use(store);
 app.use(router);
 app.mount('#app');

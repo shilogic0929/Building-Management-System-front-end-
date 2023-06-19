@@ -84,6 +84,18 @@ html,body,#app{
     
 }
 
+.end{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    line-height: var(--footer-height);
+    //height:100%;
+    //position:relative;
+    //margin-top: 200px;
+}
+.main_container{
+    margin-top: 50px ;
+}
 
 .el-header{
     height:50px;
