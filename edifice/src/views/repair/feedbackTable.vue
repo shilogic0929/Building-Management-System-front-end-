@@ -10,10 +10,10 @@
     <el-card>
         <el-form :inline="true" ref="add_data" :model="search_data">
             <el-form-item label="房号：">
-                <el-input prefix-icon="el-icon-search" v-model="search_data.search_roomid" clearable></el-input>
+                <el-input prefix-icon="el-icon-search" v-model="search_data.search_room_id" clearable></el-input>
             </el-form-item>
             <el-form-item label="用户号：">
-                <el-input prefix-icon="el-icon-search" v-model="search_data.search_userid" clearable></el-input>
+                <el-input prefix-icon="el-icon-search" v-model="search_data.search_user_id" clearable></el-input>
             </el-form-item>
             <el-form-item class="btnSearch">
                 <el-button type="primary" size="small"  @click="handleSearch()">筛选</el-button>
@@ -27,17 +27,17 @@
         label="#">
         </el-table-column>
         <el-table-column
-            prop="feedbackid"
+            prop="form_id"
             label="反馈号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="userid"
+            prop="user_id"
             label="用户号"
             width="150">
         </el-table-column>
         <el-table-column
-            prop="roomid"
+            prop="room_id"
             label="房间号"
             width="150">
         </el-table-column>
@@ -90,7 +90,7 @@
                 </el-input>
                 <el-button 
                     class="submit" size="small"
-                    @click="submitInput(data4Dlg.type, input2, data4Dlg.feedbackid)">
+                    @click="submitInput(data4Dlg.type, input2, data4Dlg.form_id)">
                     提 交
                     <el-icon><Upload /></el-icon>
                 </el-button>
@@ -100,7 +100,7 @@
             <el-card style="margin-bottom: 10px">
                 <span class="demonstration">联系维修人员处理: </span>
                 <el-button size="small" round
-                @click="callWorkers(data4Dlg.feedbackid)">
+                @click="callWorkers(data4Dlg.form_id)">
                 <el-icon><PhoneFilled /></el-icon>分派维修人员</el-button>
             </el-card>
             <el-card class="input-card">
@@ -137,7 +137,7 @@
                 </el-form>
                 <el-button 
                     class="submit" size="small" 
-                    @click="submitInput(data4Dlg.type, input1, data4Dlg.feedbackid)">
+                    @click="submitInput(data4Dlg.type, input1, data4Dlg.form_id)">
                     生成初步反馈意见
                     <el-icon><Promotion /></el-icon>
                 </el-button>
@@ -145,8 +145,8 @@
         </el-tab-pane>
     </el-tabs>
     <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="addDialogVisible = false">取消</el-button>
-        <el-button size="small" type="primary" @click="addDialogVisible = false">确定</el-button>       
+        <el-button size="small" @click="closeDlg()">取消</el-button>
+        <el-button size="small" type="primary" @click="closeDlg()">确定</el-button>       
     </span>
     </el-dialog>
 </div>
@@ -177,8 +177,8 @@ export default {
             all_table_data: [],
             //筛选条件数据
             search_data:{
-                search_roomid:'',
-                search_userid:''
+                search_room_id:'',
+                search_user_id:''
             },
             //format_status_list:['全部','已处理','未处理'],
             // 分页属性
@@ -191,14 +191,19 @@ export default {
             },
             addDialogVisible: false,
             data4Dlg:{
-                feedbackid: 0,
-                userid: 0,
-                roomid: 0,
+                form_id: 0,
+                user_id: 0,
+                room_id: 0,
                 description: '',
                 date: '',
                 type: 1,
                 status: '',
-                reply: '',
+                reply: {
+                    // maintainer_id: '',
+                    // maintainer_name: '',
+                    // maintainer_phone: '',
+                    // maintain_time: '',
+                },
                 star: null,
             },
             workerName: '',
@@ -218,7 +223,7 @@ export default {
         this.workName;
     },
     methods: {
-        /*async*/ getFeedbackList() {
+        getFeedbackList() {
             //console.log(this.params);
             // try {
             //     const res = await axios.post('feedback/feedbackListByAdmin/', {type: this.params.type});
@@ -235,12 +240,36 @@ export default {
             // }
             this.tableData = data4Test.feedbackList;
             this.getOption();
+            axios.post("/repairList", {params: {"token" : '1'}}).then((res)=>{
+                if(res.status == 200) {
+                    this.tableData = res.data.feedbackList;
+                    //console.log(this.tableData);
+                    if(this.tableData==null) 
+                        this.tableData = data4Test.feedbackList
+                }
+            })
             this.count = this.tableData.length;
             //初始化分页表信息
             this.paginations.total = this.tableData.length;
             //this.paginations.page_size = this.tableData.length;
             this.paginations.page_size = 10;
             this.handleSizeChange(this.paginations.page_size)
+            console.log(this.params)
+            console.log(localStorage.getItem('data4Dlg'));
+            if(this.params.name !== '' && localStorage.getItem('data4Dlg') !== null) {
+                let tmp = localStorage.getItem('data4Dlg');
+                this.data4Dlg.form_id = tmp.form_id;
+                this.data4Dlg.user_id = tmp.user_id;
+                this.data4Dlg.description = tmp.description;
+                this.data4Dlg.date = tmp.date;
+                this.data4Dlg.status = tmp.status;
+                this.data4Dlg.room_id = tmp.room_id;
+                console.log(this.params)
+                this.input1.maintainer_id = this.params.maintainer_id;
+                this.input1.maintainer_name = this.params.maintainer_name;
+                this.input1.maintainer_phone = this.params.maintainer_phone;
+                this.addDialogVisible = true;
+            }
         },
         getOption() {
             let mp1 = new Map(), sorted1;
@@ -328,12 +357,12 @@ export default {
             let pojo;
             this.selected_table_data = [];
             pojo = {
-                roomid: this.search_data.search_roomid,  
-                userid: this.search_data.search_userid             
+                room_id: this.search_data.search_room_id,  
+                user_id: this.search_data.search_user_id             
             }
             for(let item of this.all_table_data) {
-                if((pojo.roomid === '' || item.roomid === pojo.roomid) &&
-                (pojo.userid === '' || item.userid === pojo.userid)) {
+                if((pojo.room_id === '' || item.room_id === pojo.room_id) &&
+                (pojo.user_id === '' || item.user_id === pojo.user_id)) {
                     this.selected_table_data.push(item);
                 }
             }
@@ -342,13 +371,18 @@ export default {
             this.paginations.page_size = 10;
         },
         async checkOperator(row) {
-            let feedbackid = row.feedbackid
-            this.data4Dlg.feedbackid = row.feedbackid
+            let form_id = row.form_id
+            this.data4Dlg.form_id = row.form_id;
+            this.data4Dlg.user_id = row.user_id;
+            this.data4Dlg.description = row.description;
+            this.data4Dlg.room_id = row.room_id;
+            this.data4Dlg.status = row.status;
+            this.data4Dlg.date = row.date;
             console.log(row);
             this.addDialogVisible = true
             try {
                 this.addDialogVisible = true
-                const res = await axios.post('feedback/feedbackInfo/', {feedbackid: feedbackid});
+                const res = await axios.post('feedback/feedbackInfo/', {form_id: form_id});
                 console.log(res);
                 if(res.status !== 200) {
                     this.$message.error('获取信息失败：'+ res.statusText);
@@ -360,20 +394,21 @@ export default {
                 console.log(err);
             }
         },
-        callWorkers(feedbackid) {
-            console.log(feedbackid); 
+        callWorkers(form_id) {
+            console.log(form_id); 
+            localStorage.setItem('data4Dlg', JSON.stringify(this.data4Dlg));
             this.$router.push({
                 name: '工人信息', 
                 params: {
-                    feedbackid: feedbackid
+                    form_id: form_id
                 } 
             })
         },
-        async submitInput(type, input, feedbackid) {
+        async submitInput(type, input, form_id) {
             if(input === '') {
                 this.$message("请输入内容");
             }
-            const res = await axios.post('feedback/reply/', {feedbackid: feedbackid, reply: input});
+            const res = await axios.post('feedback/reply/', {form_id: form_id, reply: input});
             if(res.status !== 200) {
                 this.$message.error('建立工单失败：'+ res.statusText);
                 return;
@@ -383,6 +418,14 @@ export default {
             this.input1 = '';
             this.input2 = '';
         },
+        closeDlg() {
+            this.input1.maintainer_id = '';
+            this.input1.maintainer_name = '';
+            this.input1.maintainer_phone = '';
+            this.input1.maintain_time = '';
+            this.addDialogVisible = false;
+            localStorage.removeItem('data4Dlg');
+        }
     }
 }
 </script>
