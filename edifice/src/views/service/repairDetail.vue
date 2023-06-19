@@ -1,9 +1,6 @@
 <template>
   <div>
     <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
-      <div class="zz">
-        <h2>报修信息</h2>
-      </div>
     </div>
 
     <div class="desLeft" style="padding-bottom:20px;">
@@ -128,7 +125,7 @@ import { ElMessage } from 'element-plus'
 export default {
   data(){
     return{
-        img:require("@/assets/image/inner-banner6.jpg"),
+        img:require("@/assets/image/inner-banner6.png"),
         visible: false,
         uid:0,
         rid:0,
@@ -209,7 +206,7 @@ export default {
       //submit repair info
       if(this.form.solveWay&&this.form.date1&&this.form.date2)
       {
-
+        
         this.visible = false
       }
       else

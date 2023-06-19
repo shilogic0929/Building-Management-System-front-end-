@@ -1,12 +1,8 @@
 <template>
   <div id="app">
-<<<<<<< HEAD
     <el-config-provider :locale="zhCn">
       <router-view/>
     </el-config-provider>
-=======
-    <router-view />
->>>>>>> master
   </div>
 </template>
 

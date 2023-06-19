@@ -1,29 +1,14 @@
 <template>
   <div class="divpadding">
-    <div class="flow">
-      <el-carousel class="repairCarousel" :interval="5000"  style="margin-bottom: 50px" indicator-position="none">
-        <el-carousel-item class="repairImage">
-          <img src="@/assets/image/bx2.jpg" alt="img30">
-        </el-carousel-item>
-        <el-carousel-item class="repairImage">
-          <img src="@/assets/image/bx3.jpg" alt="img30">
-        </el-carousel-item>
-        <el-carousel-item class="repairImage">
-          <img src="@/assets/image/bx1.jpg" alt="img30">
-        </el-carousel-item>
-      </el-carousel>
-      <div class="repairTitle">报修界面</div>
-    </div>
-
 
     <el-card style="margin-bottom:30px;">
       <template #header>
         <div class = "card-header" style="margin-bottom:0px;">
-          <span class="image-font">报修</span>
+          <span class="image-font">工单报修</span>
         </div>
       </template>
 
-      <div class="flexItem">
+      <div class="flexItem" style="padding:40px 0;">
         <img src="../../assets/repair.png" style="height: 320px;width: 320px;margin:0 20px 40px -20px"/>
         <el-form :model="form" label-width="150px" :rules="rules">
           <el-form-item label="联系人姓名：" prop="name">
@@ -50,7 +35,8 @@
           </el-form-item>
 
           <el-form-item label="问题描述：">
-            <el-input v-model="form.description" type="textarea" />
+            <el-input v-model="form.description" type="textarea" maxlength="100" resize="none"
+            show-word-limit  :autosize="{ minRows: 5}" placeholder="请描述问题详情"/>
           </el-form-item>
 
           <el-form-item>
