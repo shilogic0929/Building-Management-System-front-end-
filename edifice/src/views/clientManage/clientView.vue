@@ -670,17 +670,16 @@ export default {
       })
     },
     handleAddClient() {
-      const formData = {
-        new_name: this.add_name,
-        new_phone: this.add_phone,
-        new_company: this.add_company,
-        new_legal: this.add_legal,
-        new_email: this.add_email
-      }
+      const formData = new FormData()
+      formData.append('new_name', this.add_name)
+      formData.append('new_phone', this.add_phone)
+      formData.append('new_company', this.add_company)
+      formData.append('new_legal', this.add_legal)
+      formData.append('new_email',this.add_email)
       this.$axios({
         method: 'POST',
         url: '/addNewClient',
-        data: JSON.stringify(formData)
+        data: formData
       }).then(res => {
         if (res.data.status === 1) {
           ElMessage({

@@ -42,7 +42,7 @@ import { ElMessage } from 'element-plus'
         },
         methods:{
             init(){
-                var data={token: };
+                
                 var that=this;
                 this.$axios.post('/test/get_user_info',JSON.stringify(data)).then(function (request) {
                     var content=request.data.content;
