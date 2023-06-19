@@ -143,8 +143,8 @@
            <el-table-column label="操作" align="center" >
              <template #default="rooms">
              <el-button size="small" v-show="!rooms.row.is_edit" @click="rooms.row.is_edit=true">编辑</el-button>
-             <el-button size="small" v-show="rooms.row.is_edit" @click="rooms.row.is_edit=false">保存</el-button>
-             <el-button size="small" v-show="!rooms.row.is_edit" type="danger" @click="console.log(rooms.row)">删除</el-button>
+             <el-button size="small" v-show="rooms.row.is_edit" @click="saveRoom(rooms.$index)">保存</el-button>
+             <el-button size="small" v-show="!rooms.row.is_edit" type="danger" @click="deleteRoom(rooms.$index)">删除</el-button>
              </template>
            </el-table-column>
          </el-table>
@@ -178,7 +178,7 @@ const debounce = (fn, delay) => {
 export default {
   data(){
     return{
-      Clients: [
+      clients: [
         {
           id:1,
           name: 'Jack',
@@ -361,6 +361,16 @@ export default {
   mounted() {
   },
   methods:{
+    getClientsInfo(){
+      const that = this
+      this.$axios({
+        method:'POST',
+        url:'/get_client_info',
+      }).then(res => {
+        that.clients = res.data.clients
+      })
+      this.filterClients = this.clients
+    },
     handleEdit(index,client){
       this.dialog_person = client
       this.dialog_name = client.name
@@ -369,7 +379,7 @@ export default {
       this.dialog_legal = client.legal_person
       this.show_dialog = true
     },
-    handleDelete(){
+    handleDelete(index,client){
       ElMessageBox.confirm(
           '确认删除该用户?',
           '警告',
@@ -379,11 +389,28 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        ElMessage({
-          type: 'success',
-          message: '删除成功'
+        const that = this
+        const formData ={
+          id : client.id
+        }
+        this.$axios({
+          method:'POST',
+          url:'/deleteClientInfo',
+          data:JSON.stringify(formData)
+        }).then(res =>{
+          if(res.data.id === 1){
+            ElMessage({
+              type: 'success',
+              message: '删除成功'
+            })
+            that.getClientsInfo()
+          }else{
+            ElMessage({
+              type: 'error',
+              message: '删除出错'
+            })
+          }
         })
-        this.show_dialog = false
       }).catch(() => {
           ElMessage({
             type: 'info',
@@ -400,13 +427,33 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        ElMessage({
-          type: 'success',
-          message: '修改成功'
-        })
         this.show_dialog = false
-        // const that = this
-        // this.$axios.post()
+        const that = this
+        const formData={
+          id : that.dialog_person.id,
+          new_name : that.dialog_name,
+          new_phone: that.dialog_phone,
+          new_company: that.dialog_company,
+          new_legal: that.dialog_legal
+        }
+        this.$axios({
+          method:'POST',
+          url: '/changeClientInfo',
+          data: JSON.stringify(formData)
+        }).then( res => {
+          if(res.data.status === 1){
+            ElMessage({
+              type: 'success',
+              message: '修改成功'
+            })
+            that.getClientsInfo()
+          }else{
+            ElMessage({
+              type: 'error',
+              message: '修改失败'
+            })
+          }
+        })
       }).catch(() => {
 
       })
@@ -440,35 +487,75 @@ export default {
       }
       person.room.push(newRoom)
     },
-    saveRoom(room){
-      console.log(room)
+    saveRoom(index){
+      const formData ={
+        id: this.lease_person.id,
+        room_id: this.lease_person.room[index].id,
+        start_time: this.lease_person.room[index].start_time,
+        end_time: this.lease_person.room[index].end_time,
+        sign_time: this.lease_person.room[index].sign_time
+      }
+      this.$axios({
+        method:'POST',
+        url:'/saveLeaseInfo',
+        data: JSON.stringify(formData)
+      }).then(res =>{
+        if(res.data.status === 1){
+          ElMessage({
+            type: 'success',
+            message: '保存成功'
+          })
+          this.getClientsInfo()
+        }else{
+          ElMessage({
+            type: 'error',
+            message: '保存出错'
+          })
+        }
+      })
+      this.lease_person.room[index].is_edit = false
     },
+    deleteRoom(index){
+      const formData ={
+        id: this.lease_person.id,
+        room_id: this.lease_person.room[index].id
+      }
+      const that = this
+      this.$axios({
+        method: 'POST',
+        url: '/deleteLeaseInfo',
+        data: JSON.stringify(formData)
+      }).then(res =>{
+        if(res.data.status === 1){
+          that.lease_person.room.splice(index,1)
+          ElMessage({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.getClientsInfo()
+        }
+      })
+    }
   },
   watch:{
     search(newValue){
       this.filterClients = computed(() =>
-          this.Clients.filter(
+          this.clients.filter(
               (data) =>
                   !newValue ||
                   data.name.toLowerCase().includes(newValue.toLowerCase())
           ))
     },
-    Clients(newValue){
+    clients(newValue){
       this.filterClients = newValue
     }
   },
   created() {
-    const that = this
     this.parentBorder = ref(false)
     this.childBorder = ref(false)
     this.search = ref('')
-    this.filterClients = this.Clients
-    this.$axios({
-      method:'POST',
-      url:'/get_client_info',
-    }).then(res => {
-      that.Clients = res.data.clients
-    })
+    this.filterClients = this.clients
+    this.getClientsInfo()
   }
 }
 </script>
