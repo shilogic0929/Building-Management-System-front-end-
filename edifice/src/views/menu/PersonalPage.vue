@@ -42,9 +42,9 @@ import { ElMessage } from 'element-plus'
         },
         methods:{
             init(){
-                var data={username: this.$store.state.username};
+                var data={token: };
                 var that=this;
-                this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
+                this.$axios.post('/test/get_user_info',JSON.stringify(data)).then(function (request) {
                     var content=request.data.content;
                     console.log(content)
                     that.form.name=content.realname;
