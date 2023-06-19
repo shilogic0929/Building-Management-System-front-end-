@@ -1,25 +1,25 @@
 <template>
   <div class="login">
 
-<!--    <vue-particles-->
-<!--        color="#fff"-->
-<!--        :particleOpacity="0.7"-->
-<!--        :particlesNumber="100"-->
-<!--        shapeType="circle"-->
-<!--        :particleSize="8"-->
-<!--        linesColor="#fff"-->
-<!--        :linesWidth="1"-->
-<!--        :lineLinked="false"-->
-<!--        :lineOpacity="0.4"-->
-<!--        :linesDistance="150"-->
-<!--        :moveSpeed="2"-->
-<!--        :hoverEffect="true"-->
-<!--        hoverMode="grab"-->
-<!--        :clickEffect="true"-->
-<!--        clickMode="push"-->
-<!--        class="lizi"-->
-<!--      >-->
-<!--      </vue-particles>-->
+    <vue-particles
+        color="#fff"
+        :particleOpacity="0.7"
+        :particlesNumber="100"
+        shapeType="circle"
+        :particleSize="8"
+        linesColor="#fff"
+        :linesWidth="1"
+        :lineLinked="false"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="2"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+        class="lizi"
+      >
+      </vue-particles>
       
     <!-- <div class="slideShadow" v-show="showSlide">
       <transition>
@@ -36,34 +36,36 @@
       <h2 class="loginH2"><strong>大厦</strong>物业管理系统</h2>
       <div class="loginCon">
         <div class="titleDiv">
-          <h3  v-if="dialogVisible==false">现在登录</h3>
-          <h3 v-if="dialogVisible">现在注册</h3>
-          <p>请输入用户名和密码</p>
+
+
           <i class="el-icon-key"></i>
         </div>
         <el-form ref="loginForm" :rules="rules" :model="ruleForm">
           <el-form-item prop="username">
             <el-input placeholder="请输入账号" prefix-icon="el-icon-user" v-model="ruleForm.username"></el-input>
           </el-form-item>
-          <el-form-item prop="telephone" v-if="dialogVisible">
-            <el-input placeholder="请输入电话" prefix-icon="el-icon-lock" v-model="ruleForm.telephone"></el-input>
-          </el-form-item>
-          <el-form-item prop="mail" v-if="dialogVisible">
-            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>
-          </el-form-item>
+<!--          <el-form-item prop="telephone" v-if="dialogVisible">-->
+<!--            <el-input placeholder="请输入电话" prefix-icon="el-icon-lock" v-model="ruleForm.telephone"></el-input>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item prop="mail" v-if="dialogVisible">-->
+<!--            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>-->
+<!--          </el-form-item>-->
           <el-form-item prop="password">
             <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password" show-password></el-input>
           </el-form-item>
-          <el-form-item prop="password2" v-if="dialogVisible">
-            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2" show-password></el-input>
-          </el-form-item>
+<!--          <el-form-item prop="password2" v-if="dialogVisible">-->
+<!--            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2" show-password></el-input>-->
+<!--          </el-form-item>-->
           <el-row gutter="10">
             <el-col :span="12">
-              <el-button color="#2b4a85"  class="loginBtn" @click="login()">登录</el-button>
+
+              <el-button
+                          color="#2b4a85"  class="loginBtn" @click="login()">登录</el-button>
+
             </el-col>
-            <el-col :span="12">
-              <el-button color="#2b4a85"  class="loginBtn" @click="register()">注册</el-button>
-            </el-col>
+<!--            <el-col :span="12">-->
+<!--              <el-button color="#2b4a85"  class="loginBtn" @click="register()">注册</el-button>-->
+<!--            </el-col>-->
           </el-row> 
         </el-form>
       </div>
@@ -212,20 +214,26 @@ export default {
           var that=this;
           this.$refs["loginForm"].validate((valid) => {
             if (valid) {
-                this.$axios.post('/user/login/',JSON.stringify(data)).then(function (request) {
+                this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/login',JSON.stringify(data)).then(function (request) {
                   console.log(request.data);
-                  if(request.data.errno==0){
+                  if(request.errno==0){
+                    var imgs = request.data.token;  //声明个变量存储下数据
+                    localStorage.setItem('token',imgs);
+                    var imgs1 = request.data.user_id;  //声明个变量存储下数据
+                    localStorage.setItem('user_id',imgs1);
+                    var imgs2 = request.data.email;  //声明个变量存储下数据
+                    localStorage.setItem('email',imgs2);
                     ElMessage({
-                      message: request.data.msg,
+                      message: request.msg,
                       type: 'success',
                     }) 
-                    that.$store.state.isService=request.data.admin;
-                    that.$store.state.isWorker=request.data.worker;
-                    var data ={
-                      isService:that.$store.state.isService,
-                      username:that.$store.state.username,
-                    }
-                    sessionStorage.setItem("state",JSON.stringify(data));
+                    // that.$store.state.isService=request.data.admin;
+                    // that.$store.state.isWorker=request.data.worker;
+                    // var data ={
+                    //   isService:that.$store.state.isService,
+                    //   username:that.$store.state.username,
+                    // }
+                    // sessionStorage.setItem("state",JSON.stringify(data));
 
                     that.$router.push({
                       name: "首页",

@@ -1,26 +1,8 @@
 <template>
   <div id="div-main-wrap">
-    <!-- header -->
-    <div class="h-title">
-      <div class="div-title">
-
-        <div class="music-control">
-
-<!--          <img v-if="!musicState" src="~@/assets/img/exit.png" alt="" @click="docs"/>-->
 
 
 
-        </div>
-
-        <!-- <iframe
-          ref="audio"
-          allow="autoplay"
-          style="display: none"
-          src="~@/assets/music/777888.mp3"
-        ></iframe> -->
-      </div>
-
-    </div>
     <!-- 轮播图 -->
     <!-- <slide-show></slide-show> -->
 
@@ -34,22 +16,29 @@
 
       <!-- 长引用 -->
 
+      <!-- 照片墙 -->
+
+      <!-- 计时器 -->
 
 
-    </div>
+  </div>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-
 // import SlideShow from "@/components/SlideShow.vue";
 import Profile from "@/components/Profile.vue";
+
 // import { getAction,record } from "@/test.js"
 
 
 
+
+
+
 export default {
+
 
   methods: {
     docs() {
@@ -99,6 +88,7 @@ export default {
 
     },
   },
+
 
 
   setup() {
@@ -215,6 +205,7 @@ ul {
 .main-area {
   width: 100vw;
   background-color: rgb(247, 247, 247);
+  z-index:1;
 }
 /* 长引用 */
 .quote-wrap {
@@ -278,42 +269,5 @@ ul {
   color: #666;
   line-height: 60px;
   font-family: "Ek Mukta", sans-serif;
-}
-</style>
-
-<style lang='scss' scoped>
-.mb10{
-  margin-bottom: 10px;
-}
-.mt20{
-  margin-top: 20px;
-}
-.avatar {
-  // 父容器
-  width: 400px;
-  height: 400px;
-  overflow: hidden;
-  position: relative;
-
-  // 角标
-  .angle_mark {
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    background-color: #7173da;
-    width: 100px;
-    height: 100px;
-    transform: rotate(45deg);
-    // 角标文字
-    span {
-      position: absolute;
-      display: inline-block;
-      color: #fff;
-      width: 100%;
-      bottom: 0;
-      left: 0;
-      text-align: center;
-    }
-  }
 }
 </style>

@@ -84,16 +84,16 @@ const routes = [
         component:  () => import('../views/pay/pay.vue'),
       },
       {
-        path: 'seeContract',
+        path: 'clientView',
         name: '查看合同',
         meta: { title: "查看合同" },
-        component:  () => import('../views/seeContract/seeContract.vue'),
+        component:  () => import('../views/clientManage/clientView.vue'),
       },
       {
         path: 'contractDetail',
         name: '合同信息',
         meta: { title: "合同信息" },
-        component:  () => import('../views/seeContract/contractDetail.vue'),
+        component:  () => import('../views/clientManage/contractDetail.vue'),
       },
       {
         path: 'appraise',
@@ -120,12 +120,6 @@ const routes = [
         component:  () => import('../views/service/serviceHome.vue'),
       },
       {
-        path: 'serviceHome',
-        name: '客服主页',
-        meta: { title: "客服主页" },
-        component:  () => import('../views/service/serviceHome.vue'),
-      },
-      {
         path: 'addHouse',
         name: '添加房源',
         meta: { title: "添加房源" },
@@ -137,7 +131,6 @@ const routes = [
         meta: { title: "工人信息" },
         component:  () => import('../views/workerInformation/workerInformation.vue'),
       },
-
       {
         path: 'addHouseDetail',
         name: '添加房源细节',
@@ -192,12 +185,22 @@ const routes = [
         meta: { title: "个人报修界面" },
         component:  () => import('../views/repair/myRepair.vue'),
       },
-      
+      {
+        path:'handleRepair',
+        name:"处理报修界面",
+        meta: { title: "处理报修界面" },
+        component:  () => import('../views/repair/handleRepair.vue'),
+      },
+      {
+        path:'repairService',
+        name:"维修服务界面",
+        meta: { title: "维修服务界面" },
+        component:  () => import('../views/repair/repairService.vue'),
+      }
     ]
   },
-  
-]
 
+]
 
 
 

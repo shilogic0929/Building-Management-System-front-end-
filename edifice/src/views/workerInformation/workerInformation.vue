@@ -44,6 +44,7 @@
             <el-button size="mini" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">change</el-button>
           </template>
         </el-table-column>
+        <el-table-column prop="worker_id" label="" width="0px"></el-table-column>
       </el-table>
 
       <div class = "main_container">
@@ -118,11 +119,15 @@ export default {
   },
   methods: {
     init(){
+
+
+      var naid = localStorage.getItem("token");
       var data={
         page:this.queryInfo.pagenum,
-        total:this.queryInfo.pagesize,
-
+        numInOnePage:this.queryInfo.pagesize,
+        token:naid,
       };
+
 
       this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getWorker',JSON.stringify(data)).then(function(request){
         console.log(request);
@@ -173,13 +178,25 @@ export default {
       alert(row.isMaintainer);
     },
     removeById(row) {
-      if (row.isMaintainer == '可用'){
-        row.isMaintainer= '不可用';
-        alert('派遣成功');
+
+      if (row.isMaintainer == 0){
+
+        alert('不是维修人员！');
       }
       else {
-        row.isMaintainer = '可用';
-        alert('已完成派遣');
+
+        alert('成功派遣！');
+        this.$router.push({
+          // path:'/',
+          name: '处理报修界面',
+          params: {
+            form_id:this.row.worker_id,
+            maintainer_name: this.row.name,
+            // maintainer_id: ,
+            maintainer_phone: this.row.tel,
+
+          }
+        })
       }
     },
 

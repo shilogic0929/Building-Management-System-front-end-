@@ -10,9 +10,33 @@ import * as ElIconModules from '@element-plus/icons-vue'
 import SlideVerify from 'vue-monoplasty-slide-verify';
 import axios from 'axios'
 import VueSuperSlide from 'vue-superslide'
+
 import VueParticles from 'vue-particles'
 
 
+
+
+
+//解决ResizeObserver loop limit exceeded报错
+const debounce = (fn, delay) => {
+  let timer = null;
+  return function () {
+    let context = this;
+    let args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      fn.apply(context, args);
+    }, delay);
+  }
+}
+
+const _ResizeObserver = window.ResizeObserver;
+window.ResizeObserver = class ResizeObserver extends _ResizeObserver{
+  constructor(callback) {
+    callback = debounce(callback, 16);
+    super(callback);
+  }
+}
 
 const app=createApp(App);
 
