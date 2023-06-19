@@ -1,5 +1,5 @@
 <template>
-        <el-menu :collapse="isCollapse" default-active="$route.path" router active-text-color="#009966" background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose" >
+        <el-menu :collapse="isCollapse" default-active="$route.path" router active-text-color="#0066CC" background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose" >
           <el-menu-item index="/dashboard">
             <el-icon><house /></el-icon>
             <span class="sideBarFontSize">首页</span>
@@ -97,3 +97,8 @@
 
   }
 </script>
+<style>
+.el-submenu.is-active{
+  width: 150px;
+}
+</style>
