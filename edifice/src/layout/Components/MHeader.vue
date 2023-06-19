@@ -67,7 +67,7 @@ import { ElMessage } from 'element-plus'
   export default {
     data(){
       return{
-        color:"#009966",
+        color:"#0066CC",
         userName:"",
         Plus:Plus,
         Check:Check,

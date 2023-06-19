@@ -38,7 +38,14 @@
                     </div>
                 </template>
             <div class="ato-list">
-              <el-table :data="filterClients" :border="false" style="width: 100%; " :row-style="{ height: '100px'}" >
+              <el-table :data="showClients"
+                        :border="false" style="width: 100%; "
+                        :row-style="{ height: '100px'}"
+                        :expand-row-keys="expands"
+                        @row-click="clickRowHandle"
+                        row-key="id"
+                        row-class-name="table_row"
+               >
                 <el-table-column type="expand" align="center">
                   <template #default="props">
                       <el-row :gutter="20" style="padding-left: 200px">
@@ -87,6 +94,7 @@
             </div>
             <el-space>
                 <div class="title">
+                  <el-pagination layout="prev, pager, next" :total="this.clients.length" hide-on-single-page="true" @current-change="changePage" :current-page="currentPage"/>
                 </div>
             </el-space>
 
@@ -186,7 +194,8 @@
 <script>
 import {computed,ref} from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { User } from '@element-plus/icons-vue'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+
 const _ResizeObserver = window.ResizeObserver;
 window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
   constructor(callback) {
@@ -241,7 +250,7 @@ export default {
           ],
         },
         {
-          id:1,
+          id:2,
           name: 'Tom',
           phone: '123456789',
           company:'a公司',
@@ -271,7 +280,7 @@ export default {
           ],
         },
         {
-          id:1,
+          id:3,
           name: 'Tom',
           phone: '123456789',
           company:'a公司',
@@ -301,7 +310,7 @@ export default {
           ],
         },
         {
-          id:1,
+          id:4,
           name: 'Tom',
           phone: '123456789',
           company:'a公司',
@@ -331,8 +340,188 @@ export default {
           ],
         },
         {
-          id:1,
+          id:5,
           name: 'Tom',
+          phone: '123456789',
+          company:'a公司',
+          legal_person: 'Jane',
+          room: [
+            {
+              id: '201',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '202',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '203',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+          ],
+        },
+        {
+          id:6,
+          name: 'Jack',
+          phone: '123456789',
+          company:'a公司',
+          legal_person: 'Jane',
+          room: [
+            {
+              id: '201',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '202',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '203',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+          ],
+        },
+        {
+          id:7,
+          name: 'Jack',
+          phone: '123456789',
+          company:'a公司',
+          legal_person: 'Jane',
+          room: [
+            {
+              id: '201',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '202',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '203',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+          ],
+        },
+        {
+          id:8,
+          name: 'Jack',
+          phone: '123456789',
+          company:'a公司',
+          legal_person: 'Jane',
+          room: [
+            {
+              id: '201',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '202',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '203',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+          ],
+        },
+        {
+          id:9,
+          name: 'Jack',
+          phone: '123456789',
+          company:'a公司',
+          legal_person: 'Jane',
+          room: [
+            {
+              id: '201',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '202',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '203',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+          ],
+        },
+        {
+          id:10,
+          name: 'Jack',
+          phone: '123456789',
+          company:'a公司',
+          legal_person: 'Jane',
+          room: [
+            {
+              id: '201',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '202',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+            {
+              id: '203',
+              start_time: '2002-09-10',
+              end_time: '2005-09-10',
+              sign_time: '2001-06-20',
+              is_edit: false,
+            },
+          ],
+        },
+        {
+          id:11,
+          name: 'Jack',
           phone: '123456789',
           company:'a公司',
           legal_person: 'Jane',
@@ -361,8 +550,12 @@ export default {
           ],
         },
       ],
+      getRowKeys(row) {
+        return row.id;
+      },
       dialogVisible:false,
       filterClients:[],
+      showClients:[],
       parentBorder:false,
       childBorder:false,
       search:'',
@@ -391,11 +584,34 @@ export default {
         legal_person: '',
         room: []
       },
+      language : "zhCn",
+      currentPage: 1,
+      expands:[]
     }
   },
   mounted() {
   },
   methods:{
+    getClientsInfo(){
+      const that = this
+      this.$axios({
+        method:'POST',
+        url:'/get_client_info',
+      }).then(res => {
+        that.clients = res.data.clients
+      })
+      this.filterClients = this.clients
+      this.showClients = this.filterClients.slice(0,10)
+    },
+    clickRowHandle(row,column,event){
+      if (this.expands.includes(row.id)) {
+        this.expands = this.expands.filter(val => val !== row.id);
+        console.log(this.expands)
+      } else {
+        this.expands.push(row.id);
+        console.log(this.expands)
+      }
+    },
     handleEdit(index,client){
       this.dialog_person = client
       this.dialog_name = client.name
@@ -505,6 +721,33 @@ export default {
     saveRoom(room){
       console.log(room)
     },
+    deleteRoom(index){
+      const formData ={
+        id: this.lease_person.id,
+        room_id: this.lease_person.room[index].id
+      }
+      const that = this
+      this.$axios({
+        method: 'POST',
+        url: '/deleteLeaseInfo',
+        data: JSON.stringify(formData)
+      }).then(res =>{
+        if(res.data.status === 1){
+          that.lease_person.room.splice(index,1)
+          ElMessage({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.getClientsInfo()
+        }
+      })
+    changePage(val){
+      console.log(val)
+      this.currentPage = val
+      let start_index = (val-1) * 10
+      let end_index = start_index + 10
+      this.showClients = this.filterClients.slice(start_index,end_index)
+    },
   },
   watch:{
     search(newValue){
@@ -514,23 +757,19 @@ export default {
                   !newValue ||
                   data.name.toLowerCase().includes(newValue.toLowerCase())
           ))
+      this.showClients = this.filterClients.slice(0,10)
     },
     Clients(newValue){
       this.filterClients = newValue
-    }
+      this.showClients = this.filterClients.slice(0,10)
+    },
   },
   created() {
     const that = this
     this.parentBorder = ref(false)
     this.childBorder = ref(false)
     this.search = ref('')
-    this.filterClients = this.Clients
-    this.$axios({
-      method:'POST',
-      url:'/get_client_info',
-    }).then(res => {
-      that.Clients = res.data.clients
-    })
+    this.getClientsInfo()
   }
 }
 </script>
@@ -557,5 +796,8 @@ export default {
 }
 .dialog_row {
   padding: 10px;
+}
+.table_row :hover{
+  cursor: pointer;
 }
 </style>
