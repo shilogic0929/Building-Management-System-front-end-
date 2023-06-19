@@ -22,19 +22,19 @@
         <el-table v-if="!isfinished" :data="table1" style="width: 100%">
           <el-table-column
             label="序号"
-            width="180">
+            width="250">
             <template #default="scope">
-              <span class="red"></span>
+              <!-- <span class="red"></span> -->
               <a @click="lookInfo(scope.row)" style="cursor: pointer;">
                   {{scope.row.wid}}
               </a>
             </template>
           </el-table-column>
           <el-table-column
-            prop="reportTime"
+            prop="repair_time"
             label="申请时间"
             sortable
-            column-key="reportTime">
+            column-key="repair_time">
           </el-table-column>
           <el-table-column
             prop="status"
@@ -51,7 +51,7 @@
         <el-table v-else :data="table2" style="width: 100%">
           <el-table-column
             label="序号"
-            width="180">
+            width="250">
             <template #default="scope">
               <a @click="lookInfo(scope.row)" style="cursor: pointer;">
                   {{scope.row.wid}}
@@ -59,10 +59,10 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="reportTime"
+            prop="repair_time"
             label="申请时间"
             sortable
-            column-key="reportTime">
+            column-key="repair_time">
           </el-table-column>
           <el-table-column
             prop="status"
@@ -80,7 +80,6 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
 
 export default {
   data(){
@@ -98,79 +97,44 @@ export default {
         repair:[
             {
                 wid: "1",
-                rid:0,
-                reportTime: "2023-6-16",
+                repair_time: "2023-6-16",
                 status: 0,
-            },
-            {
-                wid: "2",
-                rid:0,
-                reportTime: "2023-6-11",
-                status: 1,
-            },
-            {
-                wid: "33",
-                rid:3113,
-                reportTime: "2023-6-20",
-                status: 2,
-                isNew: false
             }
         ]
     }
   },
   mounted() {
-      //this.init();
-      for(let i=0;i<this.repair.length;i++)
-      {
-        if(this.repair[i].status==2)
-          this.table2.push(this.repair[i])
-        else
-          this.table1.push(this.repair[i])
-      }
+      this.init();
   },
   methods:{
     init(){
-        
-      var data={username: this.$store.state.username} 
       var that=this;
-      this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
-          console.log(request.data.content);
-          that.uid = request.data.content.uid;
-      })
-      data={name:"search_workorders"};
-      this.repair=[];
-      this.$axios.post('/workorder/search_workorders/',JSON.stringify(data)).then(function (request) {
-          console.log(request.data.content);
-          for(var i=0; i<request.data.content.length; i++){
-              if(request.data.content[i].worker==this.uid&&request.data.content[i].status==2){
-                  that.repair.push(request.data.content[i])
-              }
+      const formData=new FormData();
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+      
+      this.$axios({
+        method: 'POST',
+        url: '/repairService',
+        data: formData})
+        .then(function (request) {
+          that.repair=request.data.data
+          for(let i=0;i<that.repair.length;i++)
+          {
+            if(that.repair[i].status==2)
+              that.table2.push(that.repair[i])
+            else
+              that.table1.push(that.repair[i])
           }
       })
+
+
     },
     lookInfo(index){
       this.$router.push({
         name: '报修内容界面',
         params: {
-            uid:this.uid,
-            rid:index.rid,
             wid:index.wid,
         }
-      })
-    },
-    ensure(index){
-      var data={wid: this.repair[index].wid} 
-      this.$axios.post('/workorder/ensure_workorder/',JSON.stringify(data)).then(function (request) {
-          console.log(request.data);
-          if(request.data.errno==0){
-                    ElMessage({
-                      message: request.data.msg,
-                      type: 'success',
-                    }) 
-            }
-            else{
-                ElMessage.error(request.data.msg)
-            }
       })
     }
   }

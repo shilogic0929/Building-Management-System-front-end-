@@ -17,7 +17,7 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon :style="iconStyle">
+                <el-icon>
                   <user />
                 </el-icon>
                 房间id
@@ -25,23 +25,11 @@
             </template>
             {{rid}}
           </el-descriptions-item>
-
-          <el-descriptions-item>
-            <template #label>
-              <div class="cell-item">
-                <el-icon :style="iconStyle">
-                  <iphone />
-                </el-icon>
-                房间地址
-              </div>
-            </template>
-            {{address}}
-          </el-descriptions-item>
           
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon :style="iconStyle">
+                <el-icon>
                   <office-building />
                 </el-icon>
                 报修类型
@@ -49,6 +37,19 @@
             </template>
             <div>{{ types[type] }}</div>
           </el-descriptions-item>
+
+          <el-descriptions-item>
+            <template #label>
+              <div class="cell-item">
+                <el-icon>
+                  <iphone />
+                </el-icon>
+                维修时间
+              </div>
+            </template>
+            {{repair_time}}
+          </el-descriptions-item>
+
         </el-descriptions>
 
       </el-card>
@@ -74,8 +75,8 @@
         </template>
         <div>
           <div style="margin-top:-15px;">
-            <p>姓名：{{username}}</p>
-            <p>电话：{{telephone}}</p>
+            <p>姓名：{{name}}</p>
+            <p>电话：{{phone}}</p>
           </div>
         </div>
       </el-card>
@@ -106,7 +107,7 @@
           </el-col>
         </el-form-item>
         <el-form-item label="解决办法：">
-          <el-input type="textarea" v-model="form.solveWay"></el-input>
+          <el-input type="textarea" v-model="form.solution"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -127,14 +128,14 @@ export default {
     return{
         img:require("@/assets/image/inner-banner6.png"),
         visible: false,
-        uid:0,
         rid:0,
         wid:0,
+        name: "",
         username:"张洪源",
-        address:"",
+        repair_time:"",
         type:3,
         types: ["水","电","机械","其他"],
-        telephone:18904672108,
+        phone:18904672108,
         desc:"",
         value:"",
   
@@ -145,69 +146,65 @@ export default {
           solver: "",
           date1: "",
           date2: "",
-          solveWay: ""
+          solution: ""
         }
     }
   },
   mounted() {
-    this.uid=this.$route.params.uid;
-    this.rid=this.$route.params.rid;
     this.wid=this.$route.params.wid;
-    
+    console.log(this.wid)
     this.init();
     this.form.solver=this.username
   },
   methods:{
     init(){
-      var data={rid:this.rid};
       var that=this;
-      this.$axios.post('/room/lookup_room/',JSON.stringify(data)).then(function (request) {
-        var content=request.data.content;
-        console.log(content)
-        that.address=content.address;
+      const formData=new FormData();
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+      formData.append('wid',this.wid)
+      this.$axios({
+        method: 'POST',
+        url: '/repairDetail',
+        data: formData})
+        .then(function (request) {
+          var res=request.data.data;
+          that.rid=res.rid;
+          that.type=res.type;
+          that.repair_time=res.repair_time
+          that.status=res.status;
+          that.desc=res.description;
+          that.name=res.contact_name;
+          that.phone=res.contact_phone;
       })
-
-      data={username: this.$store.state.username};
       
-      this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
-        var content=request.data.content;
-        console.log(content)
-        that.username=content.name;
-        that.email=content.email;
-        that.telephone=content.mobile;
-      })
-
-      data={wid:this.wid};
-      this.$axios.post('/workorder/lookup_workorder/',JSON.stringify(data)).then(function (request) {
-        var content=request.data.content;
-        console.log(content)
-        that.type=content.type;
-        that.desc=content.info;
-      })
-
-      data="search_users";
-      this.$axios.post('/user/search_users/',JSON.stringify(data)).then(function (request) {
-            console.log(request.data.content);
-            for (var i=0; i<request.data.content.length; i++){
-              if(request.data.content[i].worker){
-                that.worker.push(request.data.content[i]);
-              }
-            }
-            console.log(that.worker);
-        })
-      
-
-    },
-    serciceBegin() {
-      //change status to 1 -- in process
-      this.status=1;
     },
     finishDeal() {
       //submit repair info
-      if(this.form.solveWay&&this.form.date1&&this.form.date2)
+      if(this.form.solution&&this.form.date1&&this.form.date2)
       {
-        
-        this.visible = false
+        var ymd=new Date(this.form.date1).toLocaleDateString()
+        var hms=new Date(this.form.date2).toLocaleTimeString()
+
+        console.log(ymd.split("/").join("-")+' '+hms)
+        var that=this;
+        const formData=new FormData();
+        formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+        formData.append('wid',that.wid)
+        formData.append('solve_time',ymd.split("/").join("-")+' '+hms)
+        formData.append('solution',that.form.solution)
+        this.$axios({
+          method: 'POST',
+          url: '/repairComplete',
+          data: formData})
+          .then(function (request) {
+            console.log(request.data)
+            ElMessage({
+                    message: request.data.msg,
+                    type: 'success',
+                  })
+            this.visible = false
+        })
+        this.init()
       }
       else
       {

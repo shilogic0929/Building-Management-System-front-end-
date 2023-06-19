@@ -13,18 +13,6 @@
           </div>
         </template>
 
-<!--
-        <div v-for="(item,index) in repair" :key="index">
-          <div class="container">
-            <span class="title">报修{{item.wid}}</span>
-            <div>
-              <el-button type="primary" size="large"  @click="see(index)">查看报修申请</el-button>
-              <el-button type="primary" size="large" @click="ensure(index)">报修解决</el-button>
-            </div>
-          </div>
-          <el-divider></el-divider>
-        </div>
--->
         <el-table :data="repair" style="width: 100%">
           <el-table-column
             label="序号"
@@ -45,12 +33,15 @@
             prop="type"
             label="报修类型"
             width="200">
+            <template #default="scope">
+              {{types[scope.row.type]}}
+            </template>
           </el-table-column>
           <el-table-column
-            prop="reportTime"
+            prop="repair_time"
             label="申请时间"
             sortable
-            column-key="reportTime">
+            column-key="repair_time">
           </el-table-column>
           <el-table-column
             prop="status"
@@ -79,7 +70,7 @@
         <el-descriptions-item width="100px">
           <template #label>
             <div class="cell-item">
-              <el-icon :style="iconStyle">
+              <el-icon>
                 <user />
               </el-icon>
               报修房间编号
@@ -90,7 +81,7 @@
         <el-descriptions-item>
           <template #label>
             <div class="cell-item">
-              <el-icon :style="iconStyle">
+              <el-icon>
                 <user />
               </el-icon>
               报修类型
@@ -101,7 +92,7 @@
         <el-descriptions-item>
           <template #label>
             <div class="cell-item">
-              <el-icon :style="iconStyle">
+              <el-icon>
                 <user />
               </el-icon>
               信息
@@ -109,17 +100,54 @@
           </template>
           {{info}}
         </el-descriptions-item>
-        <el-descriptions-item align="left">
+        <!-- <el-descriptions-item align="left">
           <template #label>
             <div class="cell-item">
-              <el-icon :style="iconStyle">
+              <el-icon>
                 <user />
               </el-icon>
               初步反馈意见
             </div>
           </template>
           <span>{{advice}}</span>
+        </el-descriptions-item> -->
+
+        <el-descriptions-item v-if="status!=0">
+          <template #label>
+            <div class="cell-item">
+              <el-icon>
+                <user />
+              </el-icon>
+              维修人
+            </div>
+          </template>
+          {{name}}
         </el-descriptions-item>
+
+        <el-descriptions-item v-if="status!=0">
+          <template #label>
+            <div class="cell-item">
+              <el-icon>
+                <user />
+              </el-icon>
+              维修人联系电话
+            </div>
+          </template>
+          {{phone}}
+        </el-descriptions-item>
+
+        <el-descriptions-item v-if="status!=0">
+          <template #label>
+            <div class="cell-item">
+              <el-icon>
+                <user />
+              </el-icon>
+              维修时间
+            </div>
+          </template>
+          {{time}}
+        </el-descriptions-item>
+
       </el-descriptions>
 
       <template #footer>
@@ -145,55 +173,45 @@ export default {
         type:"",
         info:"",
         advice: "",
+        time: "",
+        name: "",
+        phone: "",
+        status: "",
         types: ["水","电","机械","其他"],
         process:["申请中","进行中","已完成"],
-        buttonTypes:["info","primary","success"],
+        buttonTypes:["info","","success"],
         repair:[
             {
                 wid: "1",
                 rid:0,
                 type: "机械",
-                reportTime: "2023-6-16",
+                repair_time: "2023-6-16",
                 status: 0,
-                info: "隔墙有眼",
-                adv: "",
+                description: "隔墙有眼",
+                maintain_time: "",
+                maintainer_name: "",
+                maintainer_phone: "",
                 isNew: false
-            },
-            {
-                wid: "2",
-                rid:0,
-                type: "水",
-                reportTime: "2023-6-11",
-                status: 2,
-                info: "太水了！！",
-                adv: "无所谓，我会出手",
-                isNew: true
             }
         ]
     }
   },
   mounted() {
-      //this.init();
+      this.init();
   },
   methods:{
     init(){
-      var data={username: this.$store.state.username} 
       var that=this;
-      let uid;
-      this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
-          console.log(request.data.content);
-          uid = request.data.content.uid;
-      })
-      data={name:"search_workorders"};
-      this.repair=[];
-      this.$axios.post('/workorder/search_workorders/',JSON.stringify(data)).then(function (request) {
-          console.log(request.data.content);
-          for(var i=0; i<request.data.content.length; i++){
-              if(request.data.content[i].uid==uid&&request.data.content[i].status==2){
-                  that.repair.push(request.data.content[i])
-              }
-              
-          }
+      
+      const formData=new FormData();
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+      this.$axios({
+        method: 'POST',
+        url: '/myRepair',
+        data: formData})
+        .then(function (request) {
+          console.log(request.data.data);
+          that.repair=request.data.data
       })
     },
   
@@ -203,30 +221,14 @@ export default {
     lookInfo(index){
         this.visible=true;
         this.rid=index.rid;
-        this.info=index.info;
+        this.info=index.description;
         this.type=index.type;
-        if(index.adv==="")
-          this.advice="暂无";
-        else
-          this.advice=index.adv;
-    },
-    /*
-    ensure(index){
-      var data={wid: this.repair[index].wid} 
-      this.$axios.post('/workorder/ensure_workorder/',JSON.stringify(data)).then(function (request) {
-          console.log(request.data);
-          if(request.data.errno==0){
-                    ElMessage({
-                      message: request.data.msg,
-                      type: 'success',
-                    }) 
-            }
-            else{
-                ElMessage.error(request.data.msg)
-            }
-      })
+        this.time=index.maintain_time;
+        this.name=index.maintainer_name;
+        this.phone=index.maintainer_phone;
+        this.status=index.status
     }
-    */
+
   }
   
 

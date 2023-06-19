@@ -4,44 +4,23 @@
             <el-icon><house /></el-icon>
             <span class="sideBarFontSize">首页</span>
           </el-menu-item>
+
           <el-sub-menu>
             <template #title>
               <el-icon><OfficeBuilding /></el-icon>
               <span class="sideBarFontSize">租房系统</span>
             </template>
-             
               <el-menu-item index="/seeHouse">查看房源</el-menu-item>
-               
-              <!-- <el-menu-item index="/shortRent">选择短租申请</el-menu-item>
-            
-              <el-menu-item index="/longRent">选择长租申请</el-menu-item> -->
-            
-            <!-- <el-sub-menu index="1-4">
-              <template #title>item four</template>
-              <el-menu-item index="1-4-1">item one</el-menu-item>
-            </el-sub-menu> -->
           </el-sub-menu>
+
           <el-menu-item index="/checkOrders">
             <el-icon><guide /></el-icon>
             <span class="sideBarFontSize">查看订单</span>
           </el-menu-item>
           
-          <!-- <el-menu-item index="/pay">
-            <el-icon><WalletFilled /></el-icon>
-            <span class="sideBarFontSize">缴费界面</span>
-          </el-menu-item> -->
-          
           <el-menu-item index="/clientView">
             <el-icon><View /></el-icon>
             <span class="sideBarFontSize">客户信息</span>
-          </el-menu-item>
-          <!-- <el-menu-item index="/uploadContract">
-            <el-icon><Upload /></el-icon>
-            <span class="sideBarFontSize">上传合同界面</span>
-          </el-menu-item> -->
-          <el-menu-item index="/appraise">
-            <el-icon><ChatLineRound /></el-icon>
-            <span class="sideBarFontSize">评价系统</span>
           </el-menu-item>
 
           <el-menu-item index="/handleRepair" v-if="this.$store.state.isService">

@@ -57,11 +57,11 @@ import { ElMessage } from 'element-plus'
 export default {
   data(){
       return {
-        house:[12,23,44],
+        house:[],
         problem:["水","电","机械","其他"],
         form:{
           name:"",
-          rid: 99, //报修房间号
+          rid: "", //报修房间号
           phone:"", //报修联系人姓名和联系方式
           repair_time: "", //报修时间
           description:"", //问题描述
@@ -91,50 +91,61 @@ export default {
     },
     methods:{
       init() {
-        /*
-        var data={username: this.$store.state.username} 
         var that=this;
-        let uid;
-        
-        this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
-            console.log(request.data.content);
-            uid = request.data.content.uid;
-          })
-        
-        data="search_room";
-        setTimeout(() =>{
-          this.$axios.post('/room/search_rooms/',JSON.stringify(data)).then(function (request) {
-            var content=request.data.content;
-            for (var i=0; i< content.length; i++) {
-              if(content[i].uid==uid) {
-                that.house.push(content[i]);
-              }
-            }
-        },1000)
-        })*/
+        const formData=new FormData();
+        formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+        this.$axios({
+          method: 'POST',
+          url: '/get_user_info',
+          data: formData})
+          .then(function (request) {
+            console.log(request.data.data);
+            that.form.name=request.data.data.name
+            that.form.phone=request.data.data.phone
+        })
+        this.$axios({
+          method: 'POST',
+          url: '/getLeaseRoom',
+          data: formData})
+          .then(function (request) {
+            //console.log(request.data.data);
+            for(var i=0;i<request.data.data.length;i++)
+              that.house.push(request.data.data[i].room_id)
+        })
+
       },
       submit(){
           if(this.form.name&&this.form.rid&&this.form.phone&&this.form.repair_time)
           {
-            var data={
-            rid:this.value,
-            type:this.value2,
-            info:this.form.desc
-            };
-            console.log(data);
-            /*
-            this.$axios.post('/workorder/create_workorder/',JSON.stringify(data)).then(function (request) {
-                if(request.data.errno==0){
-                    ElMessage({
-                          message: request.data.msg,
-                          type: 'success',
-                        }) 
+            var that=this;
+            const formData=new FormData();
+            formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+            formData.append('name',this.form.name)
+            formData.append('phone',this.form.phone)
+            formData.append('rid',this.form.rid)
+            formData.append('type',this.form.type)
+            formData.append('description',this.form.description)
+            this.$axios({
+              method: 'POST',
+              url: '/repairReport',
+              data: formData})
+              .then(function (request) {
+                //console.log(request.data);
+                if(request.data.errno==1004)
+                {
+                  ElMessage({
+                        message: request.data.msg,
+                        type: 'error',
+                      })
                 }
-                else{
-                    ElMessage.error(request.data.msg)
-                } 
+                else
+                {
+                  ElMessage({
+                        message: request.data.msg,
+                        type: 'success',
+                      })
+                }
             })
-            */
           }
           else
           {
@@ -149,10 +160,10 @@ export default {
       },
       clear(){
         this.form.name="",
-        this.form.telephone="",
+        this.form.phone="",
         this.value="",
         this.value2="",
-        this.form.problemTime="",
+        this.form.time="",
         this.form.desc=""
       },
     },
