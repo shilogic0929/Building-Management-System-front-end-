@@ -16,22 +16,10 @@
               </el-avatar>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <router-link to="/">
-                    <el-dropdown-item :icon="House">首页</el-dropdown-item>
-                  </router-link>
                   <router-link to="/personalPage">
                     <el-dropdown-item :icon="UserFilled">个人资料</el-dropdown-item>
                   </router-link>
-                  <router-link to="/about">
-                    <el-dropdown-item :icon="Guide">关于界面</el-dropdown-item>
-                  </router-link>
-                  <!-- <router-link to="/login">
-                  <el-dropdown-item :icon="Setting">登录</el-dropdown-item>
-                  </router-link> -->
-                  
-                  <el-dropdown-item :icon="Setting">设置</el-dropdown-item>
-
-                  <el-dropdown-item :icon="SwitchButton" @click="quit">注销</el-dropdown-item>
+                    <el-dropdown-item :icon="SwitchButton" @click="quit">注销</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -72,6 +60,7 @@ import { ElMessage } from 'element-plus'
     mounted() {
       
       this.userName=this.$store.state.username
+      this.userName=23
     },
     methods:{
         
