@@ -13,10 +13,10 @@
               <el-menu-item index="/seeHouse">查看房源</el-menu-item>
           </el-sub-menu>
 
-          <el-menu-item index="/checkOrders">
+          <!-- <el-menu-item index="/checkOrders">
             <el-icon><guide /></el-icon>
             <span class="sideBarFontSize">查看订单</span>
-          </el-menu-item>
+          </el-menu-item> -->
           
           <el-menu-item index="/clientView">
             <el-icon><View /></el-icon>
