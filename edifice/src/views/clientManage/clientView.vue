@@ -519,9 +519,6 @@ export default {
           ],
         },
       ],
-      getRowKeys(row) {
-        return row.id;
-      },
       filterClients:[],
       showClients:[],
       parentBorder:false,
@@ -559,11 +556,15 @@ export default {
   methods:{
     getClientsInfo(){
       const that = this
+      const formData = new FormData();
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
       this.$axios({
         method:'POST',
         url:'/get_client_info',
+        data: formData
       }).then(res => {
         that.clients = res.data.clients
+        console.log(res.data.clients)
       })
       this.filterClients = this.clients
       this.showClients = this.filterClients.slice(0,10)
@@ -574,8 +575,8 @@ export default {
         console.log(this.expands)
       } else {
         this.expands.push(row.id);
-        console.log(this.expands)
       }
+      console.log(row.room)
     },
     handleEdit(index,client){
       this.dialog_person = client
@@ -596,15 +597,16 @@ export default {
           }
       ).then(() => {
         const that = this
-        const formData ={
-          id : client.id
-        }
+        const formData = new FormData();
+        formData.append('id',client.id)
+        formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
         this.$axios({
           method:'POST',
           url:'/deleteClientInfo',
-          data:JSON.stringify(formData)
+          data: formData
         }).then(res =>{
-          if(res.data.id === 1){
+          console.log(res.data)
+          if(res.data.errno === 0){
             ElMessage({
               type: 'success',
               message: '删除成功'
@@ -635,19 +637,19 @@ export default {
       ).then(() => {
         this.show_dialog = false
         const that = this
-        const formData={
-          id : that.dialog_person.id,
-          new_name : that.dialog_name,
-          new_phone: that.dialog_phone,
-          new_company: that.dialog_company,
-          new_legal: that.dialog_legal
-        }
+        const formData = new FormData()
+        formData.append('id',that.dialog_person.id)
+        formData.append('new_name',that.dialog_name)
+        formData.append('new_phone',that.dialog_phone)
+        formData.append('new_company',that.dialog_company)
+        formData.append('new_legal',that.dialog_legal)
         this.$axios({
           method:'POST',
           url: '/changeClientInfo',
-          data: JSON.stringify(formData)
+          data: formData
         }).then( res => {
-          if(res.data.status === 1){
+          console.log(res.data)
+          if(res.data.errno === 0){
             ElMessage({
               type: 'success',
               message: '修改成功'
@@ -659,9 +661,9 @@ export default {
               message: '修改失败'
             })
           }
-        })
-      }).catch(() => {
+        }).catch({
 
+        })
       })
     },
     dialogCancel(){
@@ -694,19 +696,23 @@ export default {
       person.room.push(newRoom)
     },
     saveRoom(index){
-      const formData ={
-        id: this.lease_person.id,
-        room_id: this.lease_person.room[index].id,
-        start_time: this.lease_person.room[index].start_time,
-        end_time: this.lease_person.room[index].end_time,
-        sign_time: this.lease_person.room[index].sign_time
-      }
+      const formData = new FormData()
+      const start_time = new Date(this.lease_person.room[index].start_time)
+      const end_time = new Date(this.lease_person.room[index].end_time)
+      const sign_time = new Date(this.lease_person.room[index].sign_time)
+      formData.append('id', this.lease_person.id)
+      formData.append('room_id',this.lease_person.room[index].id)
+      formData.append('start_time',start_time.getTime()/1000)
+      formData.append('end_time',end_time.getTime()/1000)
+      formData.append('sign_time',sign_time.getTime()/1000)
+      formData.append('token',"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE")
       this.$axios({
         method:'POST',
         url:'/saveLeaseInfo',
-        data: JSON.stringify(formData)
+        data: formData
       }).then(res =>{
-        if(res.data.status === 1){
+        console.log(res.data)
+        if(res.data.errno === 0){
           ElMessage({
             type: 'success',
             message: '保存成功'
@@ -722,17 +728,18 @@ export default {
       this.lease_person.room[index].is_edit = false
     },
     deleteRoom(index){
-      const formData ={
-        id: this.lease_person.id,
-        room_id: this.lease_person.room[index].id
-      }
+      const formData = new FormData()
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
+      formData.append('id',this.lease_person.id)
+      formData.append('room_id',this.lease_person.room[index].id)
       const that = this
       this.$axios({
         method: 'POST',
         url: '/deleteLeaseInfo',
-        data: JSON.stringify(formData)
+        data: formData
       }).then(res =>{
-        if(res.data.status === 1){
+        console.log(res.data)
+        if(res.data.errno === 0){
           that.lease_person.room.splice(index,1)
           ElMessage({
             type: 'success',

@@ -52,4 +52,4 @@ for (const iconName in ElIconModules) {
 import global from './global.js'
 app.config.globalProperties.global = global;
 app.config.globalProperties.$axios = axios;
-axios.defaults.baseURL="/api"
+axios.defaults.baseURL = 'http://10.251.252.218/test'
