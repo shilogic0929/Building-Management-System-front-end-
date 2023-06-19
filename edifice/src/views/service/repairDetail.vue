@@ -1,113 +1,122 @@
 <template>
-  <div >
+  <div>
     <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
-        <div class="zz">
-            <h2>报修信息界面</h2>
-        </div>
     </div>
 
     <div class="desLeft" style="padding-bottom:20px;">
-    <el-card >
-      <template #header>
-            <div class = "card-header" style="margin-bottom:0px;">
-                <span class="image-font" style="color:black;">报修信息</span>
-                <el-button type="primary" @click="this.$router.go(-1)">返回</el-button>
-            </div>
-      </template>
-      
-    <el-descriptions :column="1" :size="large" border>
-    
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <user />
-            </el-icon>
-            房间id
+      <el-card >
+        <template #header>
+          <div class = "card-header" style="margin-bottom:0px;">
+            <span class="image-font" style="color:black;">报修信息</span>
+            <el-button type="primary" @click="this.$router.go(-1)">返回</el-button>
           </div>
         </template>
-        {{rid}}
-      </el-descriptions-item>
+        
+        <el-descriptions :column="1" :size="large" border>
+        
+          <el-descriptions-item>
+            <template #label>
+              <div class="cell-item">
+                <el-icon>
+                  <user />
+                </el-icon>
+                房间id
+              </div>
+            </template>
+            {{rid}}
+          </el-descriptions-item>
+          
+          <el-descriptions-item>
+            <template #label>
+              <div class="cell-item">
+                <el-icon>
+                  <office-building />
+                </el-icon>
+                报修类型
+              </div>
+            </template>
+            <div>{{ types[type] }}</div>
+          </el-descriptions-item>
 
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <iphone />
-            </el-icon>
-            房间地址
+          <el-descriptions-item>
+            <template #label>
+              <div class="cell-item">
+                <el-icon>
+                  <iphone />
+                </el-icon>
+                维修时间
+              </div>
+            </template>
+            {{repair_time}}
+          </el-descriptions-item>
+
+        </el-descriptions>
+
+      </el-card>
+
+      <el-card>
+        <template #header>
+          <div class = "card-header" style="margin-bottom:0px;">
+            <span class="image-font" style="color:black;">问题描述</span>
           </div>
         </template>
-        {{address}}
-      </el-descriptions-item>
-
-      
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <office-building />
-            </el-icon>
-            报修类型
-          </div>
-        </template>
-        <div v-if="type==1">墙壁损坏</div>
-        <div v-if="type==2">房屋漏水</div>
-        <div v-if="type==3">家电维修</div>
-        <div v-else>其他</div>
-      </el-descriptions-item>
-  </el-descriptions>
-
-  </el-card>
-
-  <el-card>
-      <template #header>
-            <div class = "card-header" style="margin-bottom:0px;">
-                <span class="image-font" style="color:black;">问题描述</span>
-            </div>
-      </template>
-      <div class = "card-description">{{desc}}
-      </div>
-  </el-card>
-
-
-  </div>
-
-
-  <div class="desRight" style="padding-bottom:20px;">
-    <el-card>
-      <template #header>
-            <div class = "card-header" style="margin-bottom:0px;">
-                <span class="image-font" style="color:black;font-size:16px;">申请人</span>
-            </div>
-      </template>
-      <div>
-        <img class="tx" src="@/assets/image/头像1.jpg">
-        <h2>{{username}}</h2>
-        <div style="margin-top:5px;">
-          <p>邮箱：{{email}}</p>
-          <p>电话：{{telephone}}</p>
+        <div class = "card-description">{{desc}}
         </div>
-      </div>
-    </el-card>
+      </el-card>
+    </div>
 
-    <el-card>
-      <template #header>
-            <div class = "card-header" style="margin-bottom:0px;">
-                <span class="image-font" style="color:black;font-size:16px;">处理报修</span>
-            </div>
+
+    <div class="desRight" style="padding-bottom:20px;">
+      <el-card>
+        <template #header>
+              <div class = "card-header" style="margin-bottom:0px;">
+                  <span class="image-font" style="color:black;font-size:16px;">申请人</span>
+              </div>
+        </template>
+        <div>
+          <div style="margin-top:-15px;">
+            <p>姓名：{{name}}</p>
+            <p>电话：{{phone}}</p>
+          </div>
+        </div>
+      </el-card>
+
+      <el-card>
+        <div class = "card-header" style="margin-bottom:0px;">
+          <span class="image-font" style="color:black;font-size:16px;">处理报修</span>
+
+          <el-button type="primary" v-if="status==0" @click="serciceBegin()" round>进行处理</el-button>
+          <el-button type="success" v-else-if="status==1" @click="visible=true">完成处理提交</el-button>
+          <el-button type="info" v-else>已完成</el-button>
+        </div>
+      </el-card>
+    </div>
+
+    <el-dialog v-model="visible" title="报修记录提交" style="width: 40% !important; min-width: 100px !important;">
+      <el-form label-position="right" label-width="120px" :model="form">
+        <el-form-item label="解决人：">
+          <el-input v-model="form.solver" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="解决时间：">
+          <el-col :span="11">
+            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="11">
+            <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="解决办法：">
+          <el-input type="textarea" v-model="form.solution"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="info" @click="visible = false">取消</el-button>
+          <el-button type="primary" @click="finishDeal()">确认</el-button>
+        </span>
       </template>
-      <el-space>
-      <el-select v-model="value" placeholder="请选择师傅">
-                <el-option v-for="(item,index) in worker" :key="index" :label="item.username" :value="item.uid"></el-option>
-        </el-select>
-      <el-button type="primary" @click="assignWorker()">引入师傅</el-button>
-      </el-space>
-    </el-card>
-
-  </div>
-
-
+    </el-dialog>
   </div>
 </template>
 
@@ -117,86 +126,95 @@ import { ElMessage } from 'element-plus'
 export default {
   data(){
     return{
-        img:require("@/assets/image/inner-banner6.jpg"),
-        uid:0,
+        img:require("@/assets/image/inner-banner6.png"),
+        visible: false,
         rid:0,
         wid:0,
-        username:"",
-        address:"",
-        type:"",
-        telephone:18904672108,
+        name: "",
+        username:"张洪源",
+        repair_time:"",
+        type:3,
+        types: ["水","电","机械","其他"],
+        phone:18904672108,
         desc:"",
-        email:"1741858932@qq.com",
-        worker:[],
         value:"",
+  
+        status: 0,
+
+        form: {
+          //问题解决办法，解决时间，解决人
+          solver: "",
+          date1: "",
+          date2: "",
+          solution: ""
+        }
     }
   },
   mounted() {
-    this.uid=this.$route.params.uid;
-    this.rid=this.$route.params.rid;
     this.wid=this.$route.params.wid;
+    console.log(this.wid)
     this.init();
+    this.form.solver=this.username
   },
   methods:{
     init(){
-      var data={rid:this.rid};
       var that=this;
-      this.$axios.post('/room/lookup_room/',JSON.stringify(data)).then(function (request) {
-        var content=request.data.content;
-        console.log(content)
-        that.address=content.address;
+      const formData=new FormData();
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+      formData.append('wid',this.wid)
+      this.$axios({
+        method: 'POST',
+        url: '/repairDetail',
+        data: formData})
+        .then(function (request) {
+          var res=request.data.data;
+          that.rid=res.rid;
+          that.type=res.type;
+          that.repair_time=res.repair_time
+          that.status=res.status;
+          that.desc=res.description;
+          that.name=res.contact_name;
+          that.phone=res.contact_phone;
       })
-
-      data={username: this.$store.state.username};
       
-      this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
-        var content=request.data.content;
-        console.log(content)
-        that.username=content.name;
-        that.email=content.email;
-        that.telephone=content.mobile;
-      })
-
-      data={wid:this.wid};
-      this.$axios.post('/workorder/lookup_workorder/',JSON.stringify(data)).then(function (request) {
-        var content=request.data.content;
-        console.log(content)
-        that.type=content.type;
-        that.desc=content.info;
-      })
-
-      data="search_users";
-      this.$axios.post('/user/search_users/',JSON.stringify(data)).then(function (request) {
-            console.log(request.data.content);
-            for (var i=0; i<request.data.content.length; i++){
-              if(request.data.content[i].worker){
-                that.worker.push(request.data.content[i]);
-              }
-            }
-            console.log(that.worker);
-        })
-      
-
     },
-    assignWorker(){
-      var data={
-        worker:this.value,
-        wid:this.wid
-      };
-      console.log(data)
-      this.$axios.post('/workorder/assign_worker/',JSON.stringify(data)).then(function (request) {
-        if(request.data.errno==0){
-                ElMessage({
-                  message: request.data.msg,
-                  type: 'success',
-                })  
-              }
-              else{
-                ElMessage.error(request.data.msg)
-              }
-      })
+    finishDeal() {
+      //submit repair info
+      if(this.form.solution&&this.form.date1&&this.form.date2)
+      {
+        var ymd=new Date(this.form.date1).toLocaleDateString()
+        var hms=new Date(this.form.date2).toLocaleTimeString()
+
+        console.log(ymd.split("/").join("-")+' '+hms)
+        var that=this;
+        const formData=new FormData();
+        formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+        formData.append('wid',that.wid)
+        formData.append('solve_time',ymd.split("/").join("-")+' '+hms)
+        formData.append('solution',that.form.solution)
+        this.$axios({
+          method: 'POST',
+          url: '/repairComplete',
+          data: formData})
+          .then(function (request) {
+            console.log(request.data)
+            ElMessage({
+                    message: request.data.msg,
+                    type: 'success',
+                  })
+            this.visible = false
+        })
+        this.init()
+      }
+      else
+      {
+        ElMessage({
+                    message: "请完善维修信息",
+                    type: 'warning',
+                  })
+      }
+      
     }
   }
 }
 </script>
-
