@@ -31,9 +31,9 @@
             <span class="sideBarFontSize">缴费界面</span>
           </el-menu-item> -->
           
-          <el-menu-item index="/seeContract">
+          <el-menu-item index="/clientView">
             <el-icon><View /></el-icon>
-            <span class="sideBarFontSize">查看合同界面</span>
+            <span class="sideBarFontSize">客户信息</span>
           </el-menu-item>
           <!-- <el-menu-item index="/uploadContract">
             <el-icon><Upload /></el-icon>
