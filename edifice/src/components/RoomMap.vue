@@ -9,7 +9,8 @@ import * as echarts from 'echarts';
 export default {
   data() {
     return {
-      myChart: null
+      myChart: null,
+      Level: '1',
     }
   },
   mounted() {
@@ -17,6 +18,15 @@ export default {
   },
   methods: {
     initChart() {
+      //axios以get方式请求数据
+      var formdata = {
+        level: this.Level,
+      }
+      this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getRoomStatus', formdata)
+        .then(function (response) {
+          console.log(response.data);
+        })
+
       // 初始化 ECharts 实例
       this.myChart = echarts.init(this.$refs.echartsMap)
 
@@ -28,7 +38,12 @@ export default {
         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
       ];
-
+      // var room1 = [2403, 0, '梁宇辰', '2022.1.13~2023.1.13'];
+      /*       var room = [[room1, room1, room1, room1, room1, room1, room1, room1, room1, room1],
+            [room1, room1, room1, room1, room1, room1, room1, room1, room1, room1],
+            [room1, room1, room1, room1, room1, room1, room1, room1, room1, room1],
+            [room1, room1, room1, room1, room1, room1, room1, room1, room1, room1],
+            [room1, room1, room1, room1, room1, room1, room1, room1, room1, room1]]; */
       // 转换数据格式
       var seriesData = [];
       for (var i = 0; i < data.length; i++) {
