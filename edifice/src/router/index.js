@@ -126,6 +126,12 @@ const routes = [
         component:  () => import('../views/service/addHouse.vue'),
       },
       {
+        path: 'woIn',
+        name: '工人信息',
+        meta: { title: "工人信息" },
+        component:  () => import('../views/workerInformation/workerInformation.vue'),
+      },
+      {
         path: 'addHouseDetail',
         name: '添加房源细节',
         meta: { title: "添加房源细节" },

@@ -29,22 +29,22 @@
         <el-table-column
             prop="feedbackid"
             label="反馈号"
-            width="120">
+            width="150">
         </el-table-column>
         <el-table-column
             prop="userid"
             label="用户号"
-            width="120">
+            width="150">
         </el-table-column>
         <el-table-column
             prop="roomid"
             label="房间号"
-            width="120">
+            width="150">
         </el-table-column>
         <el-table-column
             prop="status"
             label="状态"
-            width="140">
+            width="150">
         </el-table-column>
         <el-table-column
             prop="date"
@@ -98,18 +98,43 @@
         </el-tab-pane>
         <el-tab-pane label="处理反馈">
             <el-card style="margin-bottom: 10px">
-                <span class="demonstration">联系师傅处理: </span>
+                <span class="demonstration">联系维修人员处理: </span>
                 <el-button size="small" round
-                icon="el-icon-s-custom" @click="callWorkers(data4Dlg.feedbackid)">分派维修人员</el-button>
+                @click="callWorkers(data4Dlg.feedbackid)">
+                <el-icon><PhoneFilled /></el-icon>分派维修人员</el-button>
             </el-card>
             <el-card class="input-card">
                 <div>回复用户: </div>
-                <el-input class="input1"
+                <!-- <el-input class="input1"
                 type="textarea"
                 :rows="4"
                 placeholder="请输入内容: 必须包括维修师傅姓名、联系方式以及维修时间"
                 v-model="input1">
-                </el-input>
+                </el-input> -->
+                <div style="margin: 20px" />
+                <el-form
+                    :label-position="top"
+                    label-width="200px"
+                    :model="formLabelAlign"
+                    style="max-width: 800px"
+                >
+                    <el-form-item label="维修人员姓名">
+                    <el-input v-model="input1.maintainer_name" />
+                    </el-form-item>
+                    <el-form-item label="维修人员id">
+                    <el-input v-model="input1.maintainer_id" />
+                    </el-form-item>
+                    <el-form-item label="维修人员电话">
+                    <el-input v-model="input1.maintainer_phone" />
+                    </el-form-item>
+                    <el-form-item label="维修时间">
+                        <el-time-picker
+                        v-model="input1.maintain_time"
+                        placeholder="选择时间"
+                        style="width: 100%"
+                        />
+                    </el-form-item>
+                </el-form>
                 <el-button 
                     class="submit" size="small" 
                     @click="submitInput(data4Dlg.type, input1, data4Dlg.feedbackid)">
@@ -161,7 +186,7 @@ export default {
                 page_index: 1, // 当前位于哪页
                 total: 0, // 总数
                 page_size: 0, // 1页显示多少条
-                page_sizes: [1, 2, 3, 4, 6], //每页显示多少条
+                page_sizes: [1, 2, 5, 10], //每页显示多少条
                 layout: "total, sizes, prev, pager, next, jumper" // 翻页属性
             },
             addDialogVisible: false,
@@ -177,7 +202,12 @@ export default {
                 star: null,
             },
             workerName: '',
-            input1: '',
+            input1: {
+                maintainer_id: '',
+                maintainer_name: '',
+                maintainer_phone: '',
+                maintain_time: '',
+            },
             input2: '',
         }
     },
@@ -209,38 +239,47 @@ export default {
             //初始化分页表信息
             this.paginations.total = this.tableData.length;
             //this.paginations.page_size = this.tableData.length;
-            this.paginations.page_size = 6;
+            this.paginations.page_size = 10;
             this.handleSizeChange(this.paginations.page_size)
         },
         getOption() {
-            let mp = new Map(), sorted;
+            let mp1 = new Map(), sorted1;
+            let mp2 = new Map(), sorted2;
             for(let i = 0; i < this.tableData.length; i++) {
                 let str = this.tableData[i].date;
                 // 使用slice()方法截取前10个字符，即年月日部分
                 let date = str.slice(0, 10);
                 // 判断mp对象是否已经有该日期作为键，如果没有，就初始化为0
-                if(!mp.has(date)) {
-                    mp.set(date, 0);
+                if(!mp1.has(date)) 
+                    mp1.set(date, 0);
+                if(!mp2.has(date)) 
+                    mp2.set(date, 0);
+                if(this.tableData[i].status == '已处理') {
+                    // 将mp对象中该日期对应的值加一
+                    mp1.set(date, mp1.get(date) + 1);
                 }
-                // 将mp对象中该日期对应的值加一
-                mp.set(date, mp.get(date) + 1);
+                else 
+                    mp2.set(date, mp2.get(date) + 1);
             }
-            console.log(mp);
             // 在统计完日期出现次数后，再创建sorted对象，并将mp对象转换为一个排序后的数组
-            sorted = new Map(Array.from(mp).sort(([a], [b]) => a.localeCompare(b)));
+            sorted1 = new Map(Array.from(mp1).sort(([a], [b]) => a.localeCompare(b)));
+            sorted2 = new Map(Array.from(mp2).sort(([a], [b]) => a.localeCompare(b)));
             // 将排序后的数组赋值给mp对象
-            mp = sorted;
-            console.log([...mp]); // 打印出排好序的键值对数组
+            mp1 = sorted1;
+            mp2 = sorted2;
+            //console.log([...mp]); // 打印出排好序的键值对数组
             this.option.xAxis.data = [];
             // 使用push()方法将键值对添加到数组中
-            for(let [key] of mp) {
+            for(let [key] of mp1) {
                 this.option.xAxis.data.push(key);
             }
             this.option.series[0].data = [];
-            for(let [key, value] of mp) {
+            this.option.series[1].data = [];
+            for(let [key, value] of mp1) 
                 this.option.series[0].data.push([key, value])
-            }
-            console.log([...this.option.series[0].data])
+            for(let [key, value] of mp2) 
+                this.option.series[1].data.push([key, value])
+            //console.log([...this.option.series[0].data])
         },
         handleCurrentChange(page) {
             if(this.all_table_data.length === 0) {
@@ -300,10 +339,11 @@ export default {
             }
             this.tableData = this.selected_table_data;
             this.paginations.total = this.tableData.length;
-            this.paginations.page_size = 6;
+            this.paginations.page_size = 10;
         },
         async checkOperator(row) {
             let feedbackid = row.feedbackid
+            this.data4Dlg.feedbackid = row.feedbackid
             console.log(row);
             this.addDialogVisible = true
             try {
@@ -320,15 +360,14 @@ export default {
                 console.log(err);
             }
         },
-        async callWorkers(feedbackid) {
-            const res = await axios.get('feedback/sendWorker/', {params: {feedbackid: feedbackid}});
-            console.log(res);
-            //this.message.error('联系失败，请稍后再试');
-            this.workerName = data4Test.workerName;
-            this.input1 = '已为您联系到' + this.workerName + '师傅';
-            console.log(this.input1);
-            return;
-            
+        callWorkers(feedbackid) {
+            console.log(feedbackid); 
+            this.$router.push({
+                name: '工人信息', 
+                params: {
+                    feedbackid: feedbackid
+                } 
+            })
         },
         async submitInput(type, input, feedbackid) {
             if(input === '') {
