@@ -44,7 +44,7 @@
             <el-button size="mini" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">change</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="worker_id" label="" width="0px"></el-table-column>
+<!--        <el-table-column prop="worker_id" label="" width="0px"></el-table-column>-->
       </el-table>
 
       <div class = "main_container">
@@ -179,7 +179,7 @@ export default {
     },
     removeById(row) {
 
-      if (row.isMaintainer == 0){
+      if (row.isMaintainer == false){
 
         alert('不是维修人员！');
       }
@@ -190,10 +190,10 @@ export default {
           // path:'/',
           name: '处理报修界面',
           params: {
-            form_id:this.row.worker_id,
-            maintainer_name: this.row.name,
+            // form_id:this.row.worker_id,
+            maintainer_name: row.name,
             // maintainer_id: ,
-            maintainer_phone: this.row.tel,
+            maintainer_phone: row.tel,
 
           }
         })
