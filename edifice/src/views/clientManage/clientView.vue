@@ -4,6 +4,37 @@
                  <template #header>
                     <div class = "card-header" style="margin-bottom:0px;">
                         <span class="image-font" style="font-size:20px; margin: 0 auto">客户信息</span>
+                        <div>
+                            <el-button type="success" @click="dialogVisible = true">新增用户</el-button>
+                            <el-dialog v-model="dialogVisible" title="编辑信息">
+                              <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">姓名</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_name" /></el-col>
+                              </el-row>
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电话</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_phone" /></el-col>
+                              </el-row>
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">公司名称</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_company" /></el-col>
+                              </el-row>
+
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">法人名称</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_legal" /></el-col>
+                              </el-row>
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="8"></el-col>
+                                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="dialogVisible = false">取消</el-button></el-col>
+                                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="handleAddClient()">确认</el-button></el-col>
+                              </el-row>
+                            </el-dialog>
+                        </div>
                     </div>
                 </template>
             <div class="ato-list">
@@ -14,7 +45,7 @@
                         @row-click="clickRowHandle"
                         row-key="id"
                         row-class-name="table_row"
-              >
+               >
                 <el-table-column type="expand" align="center">
                   <template #default="props">
                       <el-row :gutter="20" style="padding-left: 200px">
@@ -151,8 +182,8 @@
            <el-table-column label="操作" align="center" >
              <template #default="rooms">
              <el-button size="small" v-show="!rooms.row.is_edit" @click="rooms.row.is_edit=true">编辑</el-button>
-             <el-button size="small" v-show="rooms.row.is_edit" @click="saveRoom(rooms.$index)">保存</el-button>
-             <el-button size="small" v-show="!rooms.row.is_edit" type="danger" @click="deleteRoom(rooms.$index)">删除</el-button>
+             <el-button size="small" v-show="rooms.row.is_edit" @click="rooms.row.is_edit=false">保存</el-button>
+             <el-button size="small" v-show="!rooms.row.is_edit" type="danger" @click="console.log(rooms.row)">删除</el-button>
              </template>
            </el-table-column>
          </el-table>
@@ -187,7 +218,7 @@ const debounce = (fn, delay) => {
 export default {
   data(){
     return{
-      clients: [
+      Clients: [
         {
           id:1,
           name: 'Jack',
@@ -522,6 +553,7 @@ export default {
       getRowKeys(row) {
         return row.id;
       },
+      dialogVisible:false,
       filterClients:[],
       showClients:[],
       parentBorder:false,
@@ -537,7 +569,10 @@ export default {
         legal_person: 'Jane',
         room:[]
       },
-      dialog_name:'',
+      add_name:'',
+      add_company:'',
+      add_phone:'',
+      add_legal:'',
       dialog_company:'',
       dialog_phone:'',
       dialog_legal:'',
@@ -585,7 +620,7 @@ export default {
       this.dialog_legal = client.legal_person
       this.show_dialog = true
     },
-    handleDelete(index,client){
+    handleDelete(){
       ElMessageBox.confirm(
           '确认删除该用户?',
           '警告',
@@ -595,28 +630,11 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        const that = this
-        const formData ={
-          id : client.id
-        }
-        this.$axios({
-          method:'POST',
-          url:'/deleteClientInfo',
-          data:JSON.stringify(formData)
-        }).then(res =>{
-          if(res.data.id === 1){
-            ElMessage({
-              type: 'success',
-              message: '删除成功'
-            })
-            that.getClientsInfo()
-          }else{
-            ElMessage({
-              type: 'error',
-              message: '删除出错'
-            })
-          }
+        ElMessage({
+          type: 'success',
+          message: '删除成功'
         })
+        this.show_dialog = false
       }).catch(() => {
           ElMessage({
             type: 'info',
@@ -633,35 +651,42 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        this.show_dialog = false
-        const that = this
-        const formData={
-          id : that.dialog_person.id,
-          new_name : that.dialog_name,
-          new_phone: that.dialog_phone,
-          new_company: that.dialog_company,
-          new_legal: that.dialog_legal
-        }
-        this.$axios({
-          method:'POST',
-          url: '/changeClientInfo',
-          data: JSON.stringify(formData)
-        }).then( res => {
-          if(res.data.status === 1){
-            ElMessage({
-              type: 'success',
-              message: '修改成功'
-            })
-            that.getClientsInfo()
-          }else{
-            ElMessage({
-              type: 'error',
-              message: '修改失败'
-            })
-          }
+        ElMessage({
+          type: 'success',
+          message: '修改成功'
         })
+        this.show_dialog = false
+        // const that = this
+        // this.$axios.post()
       }).catch(() => {
 
+      })
+    },
+    handleAddClient() {
+      const formData = {
+        new_name: this.add_name,
+        new_phone: this.add_phone,
+        new_company: this.add_company,
+        new_legal:this.add_legal
+      }
+      this.$axios({
+        method: 'POST',
+        url: '/addNewClient',
+        data:JSON.stringify(formData)
+      }).then(res => {
+        if (res.data.status === 1) {
+          ElMessage({
+          type: 'success',
+          message: '添加成功'
+          })
+          this.dialogVisible = false
+        }
+        else {
+          ElMessage({
+          type: 'fail',
+          message: '添加失败'
+          })
+        }
       })
     },
     dialogCancel(){
@@ -693,33 +718,8 @@ export default {
       }
       person.room.push(newRoom)
     },
-    saveRoom(index){
-      const formData ={
-        id: this.lease_person.id,
-        room_id: this.lease_person.room[index].id,
-        start_time: this.lease_person.room[index].start_time,
-        end_time: this.lease_person.room[index].end_time,
-        sign_time: this.lease_person.room[index].sign_time
-      }
-      this.$axios({
-        method:'POST',
-        url:'/saveLeaseInfo',
-        data: JSON.stringify(formData)
-      }).then(res =>{
-        if(res.data.status === 1){
-          ElMessage({
-            type: 'success',
-            message: '保存成功'
-          })
-          this.getClientsInfo()
-        }else{
-          ElMessage({
-            type: 'error',
-            message: '保存出错'
-          })
-        }
-      })
-      this.lease_person.room[index].is_edit = false
+    saveRoom(room){
+      console.log(room)
     },
     deleteRoom(index){
       const formData ={
@@ -741,7 +741,6 @@ export default {
           this.getClientsInfo()
         }
       })
-    },
     changePage(val){
       console.log(val)
       this.currentPage = val
@@ -753,19 +752,20 @@ export default {
   watch:{
     search(newValue){
       this.filterClients = computed(() =>
-          this.clients.filter(
+          this.Clients.filter(
               (data) =>
                   !newValue ||
                   data.name.toLowerCase().includes(newValue.toLowerCase())
           ))
       this.showClients = this.filterClients.slice(0,10)
     },
-    clients(newValue){
+    Clients(newValue){
       this.filterClients = newValue
       this.showClients = this.filterClients.slice(0,10)
     },
   },
   created() {
+    const that = this
     this.parentBorder = ref(false)
     this.childBorder = ref(false)
     this.search = ref('')
