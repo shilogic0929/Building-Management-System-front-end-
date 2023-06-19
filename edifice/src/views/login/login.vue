@@ -142,55 +142,67 @@ export default {
     init() {
         console.log("start");
         // 实例化socket
-          this.socket=this.global.ws;
-          
-          this.socket.onopen = this.open;
-          // 监听socket错误信息
-          this.socket.onerror = this.error;
-          this.socket.onclose = this.close;
-          this.socket.onmessage = this.getInput;
+        //   this.socket=this.global.ws;
+        //
+        //   this.socket.onopen = this.open;
+        //   // 监听socket错误信息
+        //   this.socket.onerror = this.error;
+        //   this.socket.onclose = this.close;
+        //   this.socket.onmessage = this.getInput;
 
-          let data={};
-          var that=this;
-          this.$axios.post('/user/login/',JSON.stringify(data)).then(function (request) {
-            console.log(request);
-            if(request.data.msg=="用户已登录"){
-              that.$router.push({
-                      name: "首页",
-                      params:{
-                        
-                      }
-                  });
-            }
-          })
+          // let data={};
+          // var that=this;
+
+
+      //
+      // const formData = new FormData()
+      // formData.append('id',that.dialog_person.id)
+      // this.$axios({
+      //   method:'POST',
+      //   url: '',
+      //   data: formData
+      // }).then（res => {}
+
+
+          // this.$axios.post('/login',JSON.stringify(data)).then(function (request) {
+          //   console.log(request);
+          //   if(request.data.msg=="用户已登录"){
+          //     that.$router.push({
+          //             name: "首页",
+          //             params:{
+          //
+          //             }
+          //         });
+          //   }
+          // })
       },
-      open() {
-        this.flag=1;
-        console.log("socket连接成功");
-      },
-      send(ms) {
-        this.socket.send(ms);
-      },
+      // open() {
+      //   this.flag=1;
+      //   console.log("socket连接成功");
+      // },
+      // send(ms) {
+      //   this.socket.send(ms);
+      // },
       getInput(){
         
       },
       // socket连接失败
-      error() {
-        console.log("连接错误");
-        
-      },
-      close () {
-        console.log("socket已经关闭")
-      },
-    onSuccess(){
-      this.msg = 'login success'
-    },
-    onFail(){
-      this.msg = ''
-    },
-    refresh() {
-      this.$refs.slideDiv.reset();
-    },
+    //   error() {
+    //     console.log("连接错误");
+    //
+    //   },
+    //   close () {
+    //     console.log("socket已经关闭")
+    //   },
+    // onSuccess(){
+    //   this.msg = 'login success'
+    // },
+    // onFail(){
+    //   this.msg = ''
+    // },
+    // refresh() {
+    //   this.$refs.slideDiv.reset();
+    // },
     // loginYz(form) {
     //   this.$refs[form].validate(valid => {
     //     if (valid) {
@@ -201,111 +213,148 @@ export default {
     //   });
     // },
     login() {
-        if(this.dialogVisible==true){
-          this.dialogVisible=false;
-        }
-        else{
-          let data={
-            username:this.ruleForm.username,
-            password:this.ruleForm.password,
+      const formData = new FormData()
+      formData.append('email',this.ruleForm.username)
+      formData.append('password',this.ruleForm.password)
+      this.$axios({
+        method: 'POST',
+        url:'/login',
+        data: formData
+      }).then( res =>{
+        console.log(res.data)
+        if(res.data.errno === 0){
+          localStorage.setItem('token',res.data.token)
+          if(res.data.type === 0){//普通人员
+            this.$router.push({
+              name: '',
+              params: {
+
+              }
+            })
           }
-          this.$store.commit("changeName",data.username);
-          console.log(this.$store.state);
-          var that=this;
-          this.$refs["loginForm"].validate((valid) => {
-            if (valid) {
-                this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/login',JSON.stringify(data)).then(function (request) {
-                  console.log(request.data);
-                  if(request.errno==0){
-                    var imgs = request.data.token;  //声明个变量存储下数据
-                    localStorage.setItem('token',imgs);
-                    var imgs1 = request.data.user_id;  //声明个变量存储下数据
-                    localStorage.setItem('user_id',imgs1);
-                    var imgs2 = request.data.email;  //声明个变量存储下数据
-                    localStorage.setItem('email',imgs2);
-                    ElMessage({
-                      message: request.msg,
-                      type: 'success',
-                    }) 
-                    // that.$store.state.isService=request.data.admin;
-                    // that.$store.state.isWorker=request.data.worker;
-                    // var data ={
-                    //   isService:that.$store.state.isService,
-                    //   username:that.$store.state.username,
-                    // }
-                    // sessionStorage.setItem("state",JSON.stringify(data));
+          else if(res.data.type === -1){//管理人
+            this.$router.push({
+              name: '处理报修界面',
+              params: {
 
-                    that.$router.push({
-                      name: "首页",
-                      params:{
-                        
-                      }
-                    });
+              }
+            })
+          }
+          else{//维修人员
+            this.$router.push({
+              name: '',
+              params: {
 
-                  }
-                  else{
-                    ElMessage.error(request.data.msg)
-                  }
-                })
-              
-              
-
-            }
-            else{
-              ElMessage.error("请填完表单")
-            } 
-          });
-
-           
-        
-      }
-          
-          // if (this.notifyObj) {
-          //   this.notifyObj.close();
-          // }
-          this.notifyObj = null;
-      
+              }
+            })
+          }
+        }
+      })
+        // if(this.dialogVisible==true){
+        //   this.dialogVisible=false;
+        // }
+        // else{
+      //     let data={
+      //       username:this.ruleForm.username,
+      //       password:this.ruleForm.password,
+      //     }
+      //     this.$store.commit("changeName",data.username);
+      //     console.log(this.$store.state);
+      //     var that=this;
+      //     this.$refs["loginForm"].validate((valid) => {
+      //       if (valid) {
+      //           this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/login',JSON.stringify(data)).then(function (request) {
+      //             console.log(request.data);
+      //             if(request.errno==0){
+      //               var imgs = request.data.token;  //声明个变量存储下数据
+      //               localStorage.setItem('token',imgs);
+      //               var imgs1 = request.data.user_id;  //声明个变量存储下数据
+      //               localStorage.setItem('user_id',imgs1);
+      //               var imgs2 = request.data.email;  //声明个变量存储下数据
+      //               localStorage.setItem('email',imgs2);
+      //               ElMessage({
+      //                 message: request.msg,
+      //                 type: 'success',
+      //               })
+      //               // that.$store.state.isService=request.data.admin;
+      //               // that.$store.state.isWorker=request.data.worker;
+      //               // var data ={
+      //               //   isService:that.$store.state.isService,
+      //               //   username:that.$store.state.username,
+      //               // }
+      //               // sessionStorage.setItem("state",JSON.stringify(data));
+      //
+      //               that.$router.push({
+      //                 name: "首页",
+      //                 params:{
+      //
+      //                 }
+      //               });
+      //
+      //             }
+      //             else{
+      //               ElMessage.error(request.data.msg)
+      //             }
+      //           })
+      //
+      //
+      //
+      //       }
+      //       else{
+      //         ElMessage.error("请填完表单")
+      //       }
+      //     });
+      //
+      //
+      //
+      // }
+      //
+      //     // if (this.notifyObj) {
+      //     //   this.notifyObj.close();
+      //     // }
+      //     this.notifyObj = null;
+      //
           
         
     },
-    register(){
-      if(this.dialogVisible==false){
-        this.dialogVisible=true;
-      }
-      else{
-        let data={
-          username:this.ruleForm.username,
-          email:this.ruleForm.mail,
-          password_1:this.ruleForm.password,
-          password_2:this.ruleForm.password2,
-          mobile:this.ruleForm.telephone,
-        }
-
-        // console.log(data);
-
-        this.$refs["loginForm"].validate((valid) => {
-          if (valid) {
-            this.$axios.post('/user/register/',JSON.stringify(data)).then(function (request) {
-              console.log(request.data);
-              if(request.data.errno==0){
-                ElMessage({
-                  message: request.data.msg,
-                  type: 'success',
-                })  
-              }
-              else{
-                ElMessage.error(request.data.msg)
-              }
-            }).catch(function () {
-              
-            });
-          }
-          else{
-              ElMessage.error("请填完表单")
-            }
-        });
-      }
-    },
+    // register(){
+    //   if(this.dialogVisible==false){
+    //     this.dialogVisible=true;
+    //   }
+    //   else{
+    //     let data={
+    //       username:this.ruleForm.username,
+    //       email:this.ruleForm.mail,
+    //       password_1:this.ruleForm.password,
+    //       password_2:this.ruleForm.password2,
+    //       mobile:this.ruleForm.telephone,
+    //     }
+    //
+    //     // console.log(data);
+    //
+    //     this.$refs["loginForm"].validate((valid) => {
+    //       if (valid) {
+    //         this.$axios.post('/user/register/',JSON.stringify(data)).then(function (request) {
+    //           console.log(request.data);
+    //           if(request.data.errno==0){
+    //             ElMessage({
+    //               message: request.data.msg,
+    //               type: 'success',
+    //             })
+    //           }
+    //           else{
+    //             ElMessage.error(request.data.msg)
+    //           }
+    //         }).catch(function () {
+    //
+    //         });
+    //       }
+    //       else{
+    //           ElMessage.error("请填完表单")
+    //         }
+    //     });
+    //   }
+    // },
   },
   
   // watch: {
