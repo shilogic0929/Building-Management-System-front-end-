@@ -25,32 +25,32 @@
 
       <div class="flexItem">
         <img src="../../assets/repair.png" style="height: 320px;width: 320px;margin:0 20px 40px -20px"/>
-        <el-form :model="form" label-width="150px">
-          <el-form-item label="联系人姓名：">
+        <el-form :model="form" label-width="150px" :rules="rules">
+          <el-form-item label="联系人姓名：" prop="name">
             <el-input v-model="form.name" />
           </el-form-item>
-          <el-form-item label="联系方式：">
-              <el-input v-model="form.telephone" />
+          <el-form-item label="联系方式：" prop="phone">
+              <el-input v-model="form.phone" />
           </el-form-item>
 
-          <el-form-item label="报修房间号：">
-            <el-select v-model="value" placeholder="">
-              <el-option v-for="(item,index) in house" :key="index" :label="item.name" :value="item.rid" />
+          <el-form-item label="报修房间号：" prop="rid">
+            <el-select v-model="form.rid" placeholder="">
+              <el-option v-for="(item,index) in house" :key="index" :label="item" :value="item" />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="报修类型：">
-            <el-select v-model="value2" placeholder="">
-              <el-option v-for="(i,ind) in form.problem" :key="ind" :label="i" :value="ind" />
+          <el-form-item label="报修类型：" prop="type">
+            <el-select v-model="form.type" placeholder="">
+              <el-option v-for="(i,ind) in problem" :key="ind" :label="i" :value="ind" />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="报修时间：">
-              <el-input v-model="form.problemTime" />
+          <el-form-item label="报修时间：" prop="repair_time">
+              <el-input v-model="form.repair_time" />
           </el-form-item>
 
           <el-form-item label="问题描述：">
-            <el-input v-model="form.desc" type="textarea" />
+            <el-input v-model="form.description" type="textarea" />
           </el-form-item>
 
           <el-form-item>
@@ -67,21 +67,37 @@
 </template>
 
 <script>
-//import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
 export default {
   data(){
       return {
-        value:"", //报修房间号
-        value2:"",
-        house:[],
-          form:{
-            name:"",
-            telephone:"", //报修联系人姓名和联系方式
-            problemTime: "", //报修时间
-            desc:"", //问题描述
-            problem:["水","电","机械","其他"],
-          },
-         
+        house:[12,23,44],
+        problem:["水","电","机械","其他"],
+        form:{
+          name:"",
+          rid: 99, //报修房间号
+          phone:"", //报修联系人姓名和联系方式
+          repair_time: "", //报修时间
+          description:"", //问题描述
+          type: 1
+        },
+        rules: {
+          name: [
+            { required: true, message: '联系人不能为空', trigger: 'blur' }
+          ],
+          rid: [
+            { required: true, message: '房间号不能为空', trigger: 'blur' }
+          ],
+          phone: [
+            { required: true, message: '联系方式不能为空', trigger: 'blur' }
+          ],
+          repair_time: [
+            { required: true, message: '请填写维修时间', trigger: 'blur' }
+          ],
+          type: [
+            { required: true, message: '请选择报修类型', trigger: 'blur' }
+          ],
+        }
       }  
     },
     mounted() {
@@ -112,26 +128,35 @@ export default {
         })*/
       },
       submit(){
-          console.log(this.value);
-          var data={
+          if(this.form.name&&this.form.rid&&this.form.phone&&this.form.repair_time)
+          {
+            var data={
             rid:this.value,
             type:this.value2,
             info:this.form.desc
-          };
-          console.log(data);
-          /*
-          this.$axios.post('/workorder/create_workorder/',JSON.stringify(data)).then(function (request) {
-              if(request.data.errno==0){
-                  ElMessage({
-                        message: request.data.msg,
-                        type: 'success',
-                      }) 
-              }
-              else{
-                  ElMessage.error(request.data.msg)
-              } 
-          })
-          */
+            };
+            console.log(data);
+            /*
+            this.$axios.post('/workorder/create_workorder/',JSON.stringify(data)).then(function (request) {
+                if(request.data.errno==0){
+                    ElMessage({
+                          message: request.data.msg,
+                          type: 'success',
+                        }) 
+                }
+                else{
+                    ElMessage.error(request.data.msg)
+                } 
+            })
+            */
+          }
+          else
+          {
+            ElMessage({
+                        message: "请完善报修信息",
+                        type: 'warning',
+                      })
+          }
       },
       see(){
           this.$router.push("/myRepair")

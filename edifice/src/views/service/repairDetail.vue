@@ -2,7 +2,7 @@
   <div>
     <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
       <div class="zz">
-        <h2>报修信息界面</h2>
+        <h2>报修信息</h2>
       </div>
     </div>
 
@@ -76,10 +76,8 @@
               </div>
         </template>
         <div>
-          <img class="tx" src="@/assets/image/头像1.jpg">
-          <h2>{{username}}</h2>
-          <div style="margin-top:5px;">
-            <p>邮箱：{{email}}</p>
+          <div style="margin-top:-15px;">
+            <p>姓名：{{username}}</p>
             <p>电话：{{telephone}}</p>
           </div>
         </div>
@@ -90,7 +88,7 @@
           <span class="image-font" style="color:black;font-size:16px;">处理报修</span>
 
           <el-button type="primary" v-if="status==0" @click="serciceBegin()" round>进行处理</el-button>
-          <el-button type="success" v-else-if="status==1" @click="visible=true">完成处理</el-button>
+          <el-button type="success" v-else-if="status==1" @click="visible=true">完成处理提交</el-button>
           <el-button type="info" v-else>已完成</el-button>
         </div>
       </el-card>
@@ -125,7 +123,7 @@
 </template>
 
 <script>
-//import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 export default {
   data(){
@@ -135,13 +133,12 @@ export default {
         uid:0,
         rid:0,
         wid:0,
-        username:"",
+        username:"张洪源",
         address:"",
         type:3,
         types: ["水","电","机械","其他"],
         telephone:18904672108,
         desc:"",
-        email:"1741858932@qq.com",
         value:"",
   
         status: 0,
@@ -210,7 +207,19 @@ export default {
     },
     finishDeal() {
       //submit repair info
-      this.visible = false
+      if(this.form.solveWay&&this.form.date1&&this.form.date2)
+      {
+
+        this.visible = false
+      }
+      else
+      {
+        ElMessage({
+                    message: "请完善维修信息",
+                    type: 'warning',
+                  })
+      }
+      
     }
   }
 }

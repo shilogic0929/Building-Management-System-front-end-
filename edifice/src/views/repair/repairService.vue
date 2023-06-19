@@ -2,7 +2,7 @@
   <div >
     <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
       <div class="zz">
-        <h2>工人接单</h2>
+        <h2>维修任务</h2>
       </div>
     </div>
     <div class="serviceGrid">
@@ -24,7 +24,7 @@
             label="序号"
             width="180">
             <template #default="scope">
-              <span class="red" v-if="scope.row.isNew"></span>
+              <span class="red"></span>
               <a @click="lookInfo(scope.row)" style="cursor: pointer;">
                   {{scope.row.wid}}
               </a>
@@ -53,7 +53,6 @@
             label="序号"
             width="180">
             <template #default="scope">
-              <span class="red" v-if="scope.row.isNew"></span>
               <a @click="lookInfo(scope.row)" style="cursor: pointer;">
                   {{scope.row.wid}}
               </a>
@@ -100,31 +99,20 @@ export default {
             {
                 wid: "1",
                 rid:0,
-                type: "机械",
                 reportTime: "2023-6-16",
                 status: 0,
-                info: "隔墙有眼",
-                adv: "",
-                isNew: false
             },
             {
                 wid: "2",
                 rid:0,
-                type: "水",
                 reportTime: "2023-6-11",
                 status: 1,
-                info: "太水了！！",
-                adv: "无所谓，我会出手",
-                isNew: true
             },
             {
                 wid: "33",
                 rid:3113,
-                type: "电",
                 reportTime: "2023-6-20",
                 status: 2,
-                info: "功率不够！",
-                adv: "Okok",
                 isNew: false
             }
         ]
