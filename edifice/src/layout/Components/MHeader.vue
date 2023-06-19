@@ -12,7 +12,7 @@
               <el-icon :size="21" class="icon"><User /></el-icon>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="">个人信息</el-dropdown-item>
+                  <el-dropdown-item @click="this.$router.push('/personalPage')">个人信息</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>

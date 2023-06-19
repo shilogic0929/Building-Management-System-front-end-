@@ -1,54 +1,17 @@
 <template>
   <div class="home" style="margin-top:20px;">
-    <h1 style="margin-bottom:30px;">个人基本信息</h1>
-    <el-card class="card">
-        <!-- <div class="UserImage">
-            <div class="UserImageCon">
-                <el-avatar :size="200" :src="url"/>
-                <el-image style="" :src="url" :fit="contain" />
+    <h1 style="font-size: 30px;">个人基本信息</h1>
+    <div class="rrrr">
+        <img style="height: 350px;" src="@/assets/img/2.jpg"  />
+        <el-card class="card">
+            <div class="patton">
+            <p class="text"><el-text class="text">法人名称:{{ legal }}</el-text></p>
+            <p class="text"><el-text class="text">公司名称:{{ company }}</el-text></p>
+            <p class="text"><el-text class="text">姓名:{{ name }}</el-text></p>
+            <p class="text"><el-text class="text">电话:{{ phone }}</el-text></p>
             </div>
-            <div class="UserImageChange">
-                <el-button type="primary">更换头像</el-button>
-            </div>
-        </div> -->
-        <div class="patton">
-          <p><el-text class="text">法人名称:{{ legal }}</el-text></p>
-          <p><el-text class="text">公司名称:{{ company }}</el-text></p>
-          <p><el-text class="text">姓名:{{ name }}</el-text></p>
-          <p><el-text class="text">电话:{{ phone }}</el-text></p>
-        </div>
-        <!-- <el-form class="personalPage" :model="form" label-width="120px">
-            <el-form-item label="姓名">
-                <el-input v-model="form.name" />
-            </el-form-item>
-            <el-form-item label="用户名">
-                <el-input v-model="form.username" />
-            </el-form-item>
-            <el-form-item label="性别">
-                <el-radio-group v-model="form.sex">
-                    <el-radio :label="1">男</el-radio>
-                    <el-radio :label="0">女</el-radio>
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="电话号码">
-                <el-input v-model="form.phoneNumber" />
-            </el-form-item>
-            <el-form-item label="身份证号码">
-                <el-input v-model="form.IdNumber" />
-            </el-form-item>
-            <el-form-item label="邮箱">
-                <el-input v-model="form.email" />
-            </el-form-item>    
-               
-             <el-form-item label="建议区">
-                <el-input v-model="form.desc" type="textarea" />
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">保存</el-button>
-                <el-button>取消</el-button>
-            </el-form-item>
-        </el-form> -->
-    </el-card>
+        </el-card>
+    </div>
   </div>
 </template>
 
@@ -120,19 +83,31 @@ import { ElMessage } from 'element-plus'
 </script>
 <style>
 .text {
-    font-size: 20px;
+    font-size: 25px;
     line-height: 2;
+    flex-grow: 1;
 }
 .patton {
+    height: 350px;
     text-align: left;
     margin-left: 30px;
+    display: flex;
+    flex-direction: column;
 }
 .card {
     width: 500px;
-    position: absolute;
-    
+    height: 350px;
     top: 20;
     right: 0;
+    margin-left: 10px; /* 可根据需要调整卡片与图像的间距 */
 }
+.rrrr {
+display: flex;
+align-items: center; /* 垂直居中对齐 */
+margin-top: 20px;
+margin-left: 10px;
+}
+
+
 </style>
 
