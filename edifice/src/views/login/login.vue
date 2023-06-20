@@ -223,19 +223,15 @@ export default {
       }).then( res =>{
         console.log(res.data)
         if(res.data.errno === 0){
-          alert(res.data.data.token)
+          console.log(res.data)
           localStorage.setItem('token',res.data.data.token)
+          localStorage.setItem('type',res.data.data.type)
+          // localStorage.setItem('type',)
           if(res.data.data.type === 0){//普通人员
-            this.$router.push('/clientView')
-            alert(1)
+            this.$router.push('/repairReport')
           }
-          else if(res.data.type === -1){//管理人
-            this.$router.push({
-              name: '处理报修界面',
-              params: {
-
-              }
-            })
+          else if(res.data.data.type === -1){//管理人
+            this.$router.push('/repairReport')
           }
           else{//维修人员
             this.$router.push({

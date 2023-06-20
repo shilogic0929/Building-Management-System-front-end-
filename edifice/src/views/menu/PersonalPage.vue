@@ -89,7 +89,7 @@ import { ElMessage } from 'element-plus'
 </script>
 <style>
 .text {
-    font-size: 25px;
+    font-size: 15px;
     line-height: 2;
     flex-grow: 1;
 }
