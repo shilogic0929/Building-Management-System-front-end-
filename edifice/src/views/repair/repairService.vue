@@ -24,7 +24,7 @@
             label="序号"
             width="250">
             <template #default="scope">
-              <!-- <span class="red"></span> -->
+              <span class="red"></span>
               <a @click="lookInfo(scope.row)" style="cursor: pointer;">
                   {{scope.row.wid}}
               </a>

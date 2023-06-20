@@ -85,8 +85,8 @@
         <div class = "card-header" style="margin-bottom:0px;">
           <span class="image-font" style="color:black;font-size:16px;">处理报修</span>
 
-          <el-button type="primary" v-if="status==0" @click="serciceBegin()" round>进行处理</el-button>
-          <el-button type="success" v-else-if="status==1" @click="visible=true">完成处理提交</el-button>
+          <!-- <el-button type="primary" v-if="status==0" @click="serciceBegin()" round>进行处理</el-button> -->
+          <el-button type="success" v-if="status==1" @click="visible=true">完成处理提交</el-button>
           <el-button type="info" v-else>已完成</el-button>
         </div>
       </el-card>

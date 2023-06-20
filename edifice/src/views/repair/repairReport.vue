@@ -24,13 +24,15 @@
             </el-select>
           </el-form-item>
 
+          
+
           <el-form-item label="报修类型：" prop="type">
             <el-select v-model="form.type" placeholder="">
               <el-option v-for="(i,ind) in problem" :key="ind" :label="i" :value="ind" />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="问题描述：">
+          <el-form-item label="问题描述：" prop="description">
             <el-input v-model="form.description" type="textarea" maxlength="100" resize="none"
             show-word-limit  :autosize="{ minRows: 5}" placeholder="请描述问题详情"/>
           </el-form-item>
@@ -72,6 +74,9 @@ export default {
           phone: [
             { required: true, message: '联系方式不能为空', trigger: 'blur' }
           ],
+          description: [
+            { required: true, message: '请填写问题描述', trigger: 'blur' }
+          ],
           type: [
             { required: true, message: '请选择报修类型', trigger: 'blur' }
           ],
@@ -107,7 +112,7 @@ export default {
 
       },
       submit(){
-          if(this.form.name&&this.form.rid&&this.form.phone)
+          if(this.form.name&&this.form.rid&&this.form.phone&&this.form.description)
           {
             var that=this;
             const formData=new FormData();

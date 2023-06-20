@@ -31,9 +31,5 @@ module.exports = {
         }
       }
     }
-<<<<<<< HEAD
    }
-=======
-  }
->>>>>>> 91e4e9a294dc4b7849ec2d98bb87f5c273e6e157
 }
