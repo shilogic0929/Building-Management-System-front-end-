@@ -17,34 +17,34 @@
             <el-icon><guide /></el-icon>
             <span class="sideBarFontSize">查看订单</span>
           </el-menu-item> -->
-          
-          <el-menu-item index="/clientView">
+
+          <el-menu-item index="/clientView" v-show="type === '-1'">
             <el-icon><View /></el-icon>
             <span class="sideBarFontSize">客户信息</span>
           </el-menu-item>
 
-          <el-menu-item index="/handleRepair" v-if="this.$store.state.isService">
+          <el-menu-item index="/handleRepair" v-if='type === "-1"'>
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">处理报修</span>
           </el-menu-item>
-          <el-menu-item index="/repairService" v-else-if="this.$store.state.isWorker">
+          <el-menu-item index="/repairReport" v-else-if="type === '0'">
             <el-icon><Brush /></el-icon>
-            <span class="sideBarFontSize">维修服务</span>
+            <span class="sideBarFontSize">用户报修</span>
           </el-menu-item>
           <el-menu-item index="/repairReport" v-else>
             <el-icon><Brush /></el-icon>
-            <span class="sideBarFontSize">报修系统</span>
+            <span class="sideBarFontSize">维修服务</span>
           </el-menu-item>
 
-          <el-menu-item index="/myRepair" v-if="!this.$store.state.isService">
+          <el-menu-item index="/myRepair" v-if=" type === '0'">
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">报修记录</span>
           </el-menu-item>
 
-          <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">
-            <el-icon><Service /></el-icon>
-            <span class="sideBarFontSize">客服系统</span>
-          </el-menu-item>
+<!--          <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">-->
+<!--            <el-icon><Service /></el-icon>-->
+<!--            <span class="sideBarFontSize">客服系统</span>-->
+<!--          </el-menu-item>-->
         </el-menu>
 </template>
 
@@ -53,6 +53,7 @@
     data(){
       return{
         isCollapse:false,
+        type:'',
       }
     },
     computed:{
@@ -73,7 +74,10 @@
         console.log(key, keyPath);
       }
     },
-
+    created() {
+      this.type = localStorage.getItem('type')
+      console.log(this.type)
+    }
   }
 </script>
 <style>

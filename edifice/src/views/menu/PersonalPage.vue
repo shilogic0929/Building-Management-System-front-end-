@@ -23,6 +23,10 @@
               <el-input v-model="form.company" disabled/>
             </el-form-item>
 
+            <el-form-item label="维修类型：" prop="type" v-if="form.type>0">
+              <el-input v-model="types[form.type-1]" disabled/>
+            </el-form-item>
+
             <el-form-item label="邮箱：" prop="email">
                 <el-input v-model="form.email" disabled/>
             </el-form-item>
@@ -49,6 +53,7 @@
     export default{
         data(){
             return{
+              types:['水','电','机械','其他'],
               form:{
                 name: '小王',
                 phone: '123',
@@ -69,6 +74,7 @@
                 var that=this;
                 const data = new FormData()
                 data.append('token', localStorage.getItem('token'))
+                this.form.type=parseInt(localStorage.getItem('type'))
                 this.$axios({
                     method:'POST',
                     url: '/get_user_info',

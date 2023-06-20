@@ -15,11 +15,11 @@
     props: {
       height: {
         type: String,
-        default: '400px'
+        default: '350px'
       },
       width: {
         type: String,
-        default: '1300px'
+        default: '1200px'
       },
   
       options: {
