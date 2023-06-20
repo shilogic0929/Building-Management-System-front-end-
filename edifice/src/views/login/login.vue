@@ -229,16 +229,13 @@ export default {
           // console.log(naid)
           // console.log(res.data.data)
           if(res.data.data.type === 0){//普通人员
-            // this.$router.push('/myRepair')
-            this.$router.push('/woIn')
+            this.$router.push('/dashboard')
           }
           else if(res.data.data.type === -1){//管理人
-            this.$router.push('/woIn')
-            // this.$router.push('/handleRepair')
+            this.$router.push('/handleRepair')
           }
           else{//维修人员
-            this.$router.push('/woIn')
-            // this.$router.push('/handleRepair')
+            this.$router.push('/handleRepair')
           }
         }
       })
