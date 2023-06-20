@@ -1,27 +1,24 @@
 <template>
-  <div class="MHeader">
-    <div class="headLeft" id="headl">
-      <el-button @click="collapse()">
-        <el-icon :size="25">
-          <expand />
-        </el-icon>
-      </el-button>
-    </div>
-    <div class="headRight">
-      <div class="headTitle">青年租房管理系统</div>
-      <div class="personalHome">
-        <el-dropdown>
-          <el-icon :size="21" class="icon">
-            <User />
-          </el-icon>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="this.$router.push('/personalPage')">个人信息</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+    <div class="MHeader">
+      <div class="headLeft" id="headl">
+        <el-button @click="collapse()">
+          <el-icon :size="25"><expand /></el-icon>
+        </el-button>
+      </div>
+      <div class="headRight">
+        <div class="headTitle">青年租房管理系统</div>
+          <div class="personalHome">
+            <el-dropdown>
+              <el-icon :size="21" class="icon"><User /></el-icon>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="this.$router.push('/personalPage')">个人信息</el-dropdown-item>
+                  <el-dropdown-item @click="this.$router.push('')">注销</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
 
-        <!-- <el-dropdown>
+            <!-- <el-dropdown>
               <div class="userDrop_text">{{userName}}</div>
               <el-icon :size="15" class="userDrop"><caret-bottom /></el-icon>
               <el-avatar :size="30">
