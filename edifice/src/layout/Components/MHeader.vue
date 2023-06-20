@@ -55,10 +55,64 @@ import {
   SwitchButton, User
 } from '@element-plus/icons-vue'
 
+// export default {
+//   data() {
+//     return {
+//       color: "#0066CC",
+//       userName: "",
+//       Plus: Plus,
+//       Check: Check,
+//       CircleCheck: CircleCheck,
+//       Setting: Setting,
+//       UserFilled: UserFilled,
+//       House: House,
+//       Guide: Guide,
+//       SwitchButton: SwitchButton
+//     }
+//   },
+//   mounted() {
+
+//     this.userName = this.$store.state.username
+//     // this.userName = 23
+//   },
+//   methods: {
+
+//     collapse() {
+//       console.log(this.$store.state.isCollapsed);
+//       this.$store.commit('changeCollapsed', !this.$store.state.isCollapsed);
+//       // window.document.getElementById('headl').setAttribute("width","5%");
+//     },
+//     quit() {
+//       console.log("quit");
+//       this.$axios.post('/user/logout/', JSON.stringify()).then(function (request) {
+//         ElMessage({
+//           message: request.data.msg,
+//           type: 'success',
+//         })
+//       });
+//       this.$router.push("/login")
+//     }
+//   },
+//   watch: {
+//     monitor() {
+//       this.userName = this.$store.state.username;
+//     }
+//   },
+//   component: {
+//     Check,
+//     CircleCheck,
+//     Setting,
+//     UserFilled,
+//     Plus,
+//     House,
+//     Guide,
+//     SwitchButton
+//   } from '@element-plus/icons-vue'
+
 export default {
   data() {
     return {
-      color: "#0066CC",
+      color: "#009966",
       userName: "",
       Plus: Plus,
       Check: Check,
@@ -73,7 +127,6 @@ export default {
   mounted() {
 
     this.userName = this.$store.state.username
-    // this.userName = 23
   },
   methods: {
 
@@ -84,12 +137,15 @@ export default {
     },
     quit() {
       console.log("quit");
-      this.$axios.post('/user/logout/', JSON.stringify()).then(function (request) {
-        ElMessage({
-          message: request.data.msg,
-          type: 'success',
-        })
-      });
+      localStorage.setItem('token', 0);
+      var naid = localStorage.getItem("token");
+      console.log(naid);
+      // this.$axios.post('/user/logout/',JSON.stringify()).then(function (request) {
+      //    ElMessage({
+      //       message: request.data.msg,
+      //       type: 'success',
+      //     })
+      // });
       this.$router.push("/login")
     }
   },
@@ -111,6 +167,9 @@ export default {
 
 
 }
+
+
+
 </script>
 <style>
 .icon {
