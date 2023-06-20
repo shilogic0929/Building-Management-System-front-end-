@@ -15,7 +15,7 @@
                 <el-input v-model="form.phone" disabled/>
             </el-form-item>
 
-            <el-form-item label="法人：" prop="leagl">
+            <el-form-item label="法人：" prop="legal">
               <el-input v-model="form.legal" disabled/>
             </el-form-item>
 
@@ -29,7 +29,7 @@
 
             <el-form-item label="个人描述：">
               <el-input disabled v-model="form.desc" type="textarea" maxlength="100" resize="none"
-              show-word-limit  :autosize="{ minRows: 3}"/>
+              show-word-limit  :autosize="{ minRows: 5}"/>
             </el-form-item>
 
             <!-- <el-form-item>

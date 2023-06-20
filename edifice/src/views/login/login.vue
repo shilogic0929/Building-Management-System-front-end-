@@ -42,7 +42,7 @@
         </div>
         <el-form ref="loginForm" :rules="rules" :model="ruleForm">
           <el-form-item prop="username">
-            <el-input placeholder="请输入账号" prefix-icon="el-icon-user" v-model="ruleForm.username"></el-input>
+            <el-input placeholder="请输入账号" :prefix-icon="User" v-model="ruleForm.username"></el-input>
           </el-form-item>
           <!--          <el-form-item prop="telephone" v-if="dialogVisible">-->
           <!--            <el-input placeholder="请输入电话" prefix-icon="el-icon-lock" v-model="ruleForm.telephone"></el-input>-->
@@ -51,12 +51,12 @@
           <!--            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>-->
           <!--          </el-form-item>-->
           <el-form-item prop="password">
-            <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password" show-password></el-input>
+            <el-input placeholder="请输入密码" :prefix-icon="Lock" v-model="ruleForm.password" show-password></el-input>
           </el-form-item>
           <!--          <el-form-item prop="password2" v-if="dialogVisible">-->
           <!--            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2" show-password></el-input>-->
           <!--          </el-form-item>-->
-          <el-row gutter="10">
+          <el-row gutter="10" class="flexItem">
             <el-col :span="12">
 
               <el-button
@@ -91,9 +91,14 @@
   </div>
 </template>
 
+<script setup>
+import { Lock } from '@element-plus/icons-vue'
+import { User } from '@element-plus/icons-vue'
+</script>
+
 <script>
-// import axios from 'axios'
-// import router from "@/router";
+import axios from 'axios'
+import router from "@/router";
 
 export default {
 
@@ -224,7 +229,7 @@ export default {
         console.log(res.data)
         if(res.data.errno === 0){
           localStorage.setItem('token',res.data.data.token)
-          
+          localStorage.setItem('type',res.data.data.type)
           if(res.data.data.type === 0){//普通人员
             this.$router.push('/clientView')
           }
