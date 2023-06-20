@@ -15,8 +15,7 @@
             <i class="fa fa-weibo"></i
           ></a>
           <br />
-          <a href="#/seeHouse" class="btn-a">
-            了解更多</a>
+          
         </div>
       </div>
 
@@ -39,11 +38,7 @@
             ><i class="fa fa-weibo"></i
           ></a>
           <br />
-          <a
-            href="#/appraise"
-            class="btn-a"
-            >了解更多</a
-          >
+          
         </div>
       </div>
     </div>

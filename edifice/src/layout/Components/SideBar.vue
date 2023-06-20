@@ -5,13 +5,13 @@
             <span class="sideBarFontSize">首页</span>
           </el-menu-item>
 
-          <el-sub-menu>
+          <!-- <el-sub-menu>
             <template #title>
               <el-icon><OfficeBuilding /></el-icon>
               <span class="sideBarFontSize">租房系统</span>
             </template>
               <el-menu-item index="/seeHouse">查看房源</el-menu-item>
-          </el-sub-menu>
+          </el-sub-menu> -->
 
           <!-- <el-menu-item index="/checkOrders">
             <el-icon><guide /></el-icon>
@@ -31,7 +31,7 @@
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">用户报修</span>
           </el-menu-item>
-          <el-menu-item index="/repairReport" v-else>
+          <el-menu-item index="/repairService" v-else>
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">维修服务</span>
           </el-menu-item>
@@ -39,6 +39,13 @@
           <el-menu-item index="/myRepair" v-if=" type === '0'">
             <el-icon><Brush /></el-icon>
             <span class="sideBarFontSize">报修记录</span>
+          </el-menu-item>
+
+          <el-menu-item index="/roomStatus" v-if="type==='-1'">
+            <el-icon>
+              <House />
+            </el-icon>
+            <span class="sideBarFontSize">房间状态</span>
           </el-menu-item>
 
 <!--          <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">-->

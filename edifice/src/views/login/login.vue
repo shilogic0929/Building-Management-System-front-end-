@@ -112,7 +112,7 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 15, message: "长度在3到5个字符", trigger: "blur" }
+          { min: 3, max: 30, message: "长度在3到30个字符", trigger: "blur" }
         ],
         telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
         mail: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
