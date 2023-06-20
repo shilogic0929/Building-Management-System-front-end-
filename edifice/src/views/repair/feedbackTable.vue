@@ -413,11 +413,11 @@ export default {
 <style scoped>
 /* 定义一个弹性容器 */
 .container {
-  display: flex;
-  /* 设置容器内的项目沿主轴（水平方向）居中对齐 */
-  justify-content: left;
-  /* 设置容器内的项目沿交叉轴（垂直方向）居中对齐 */
-  align-items: left;
+    display: flex;
+    /* 设置容器内的项目沿主轴（水平方向）居中对齐 */
+    justify-content: left;
+    /* 设置容器内的项目沿交叉轴（垂直方向）居中对齐 */
+    align-items: left;
 }
 .table-area {
     margin-top: 7px;

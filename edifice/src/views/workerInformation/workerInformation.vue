@@ -44,7 +44,7 @@
             <el-button size="mini" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">change</el-button>
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="worker_id" label="" width="0px"></el-table-column> -->
+<!--        <el-table-column prop="worker_id" label="" width="0px"></el-table-column>-->
       </el-table>
 
       <div class = "main_container">
@@ -82,9 +82,8 @@ export default {
         tel: '15456547896',
         name: '管宁',
         job:'高级工人',
-        worker_id: "1",
         category:'水电工',
-            isMaintainer: true
+            isMaintainer: true,
       },
         // {
       //   phone: '16587452687',
@@ -123,20 +122,34 @@ export default {
 
 
       var naid = localStorage.getItem("token");
-      var data={
-        page:this.queryInfo.pagenum,
-        numInOnePage:this.queryInfo.pagesize,
-        token:naid,
-      };
+      // alert(naid)
+      // var data={
+      //   page:this.queryInfo.pagenum,
+      //   numInOnePage:this.queryInfo.pagesize,
+      //   token:naid,
+      // };
 
-
-      this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getWorker',JSON.stringify(data)).then(function(request){
-        console.log(request);
-         if(request.code == 0) {
-            console.log(request.data);
-            this.tableData=JSON.parse(request.data)
+      const formData = new FormData()
+      formData.append('page',this.queryInfo.pagenum)
+      formData.append('numInOnePage',this.queryInfo.pagesize)
+      formData.append('token',naid)
+      this.$axios({
+        method:'POST',
+        url: '/getWorker',
+        data: formData
+      }).then(res => {
+        console.log(res.data)
+        if(res.data.code === 0){
+          this.tableData=JSON.parse(res.data.data)
         }
       })
+      // this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getWorker',JSON.stringify(data)).then(function(request){
+      //   console.log(request);
+      //    if(request.code == 0) {
+      //       console.log(request.data);
+      //       this.tableData=JSON.parse(request.data)
+      //   }
+      // })
 
     },
     // addRow () {
@@ -175,19 +188,22 @@ export default {
       // this.axios.post(,JSON.stringify(data)).then(function (request){
       //   console.log(request.data.name);
       // })
-
-      alert(row.isMaintainer);
+      if(row.isMaintainer === false){
+        alert('不为维修人员！');
+      }
+      else{
+        alert('可以维修！');
+      }
     },
     removeById(row) {
 
-      if (row.isMaintainer == 0){
+      if (row.isMaintainer === false){
 
         alert('不是维修人员！');
       }
       else {
 
         alert('成功派遣！');
-        console.log(row)
         this.$router.push({
           path:'/handleRepair',
           //name: '处理报修界面',

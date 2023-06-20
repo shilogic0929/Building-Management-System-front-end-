@@ -2,7 +2,7 @@
 <div>
   <div class="service"></div>
   <div class="serviceTitle">
-      <span>青年租房管理系统</span>
+      <span>大厦物业管理系统</span>
   </div>
   <div class="serviceCarousel">
   <el-carousel height="500px" :autoplay="false"  type="card">
