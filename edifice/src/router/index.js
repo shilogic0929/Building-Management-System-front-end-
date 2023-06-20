@@ -136,7 +136,7 @@ const routes = [{
           title: "维修服务界面"
         },
         component: () => import('../views/repair/repairService.vue'),
-      } {
+      }, {
         path: 'woIn',
         name: '工人信息',
         meta: {
