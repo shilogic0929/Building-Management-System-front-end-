@@ -18,6 +18,8 @@
                 <el-dropdown-menu>
                   <router-link to="/dashboard">
                     <el-dropdown-item :icon="House">首页</el-dropdown-item>
+
+
                   </router-link>
 
 
@@ -33,6 +35,7 @@
 
 <script>
 import { ElMessage } from 'element-plus'
+
   import {
     Check,
     CircleCheck,
@@ -44,6 +47,7 @@ import { ElMessage } from 'element-plus'
     SwitchButton
   } from '@element-plus/icons-vue'
 
+//4545
   export default {
     data(){
       return{
