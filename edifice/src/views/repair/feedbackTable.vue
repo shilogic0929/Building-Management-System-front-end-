@@ -373,6 +373,11 @@ export default {
                 this.$message("请设置维修时间")
                 return
             }
+            if(this.data4Dlg.form_id === undefined) {
+                this.$message("当前数据无效，请重新选择")
+                this.addDialogVisible = false
+                return
+            }
             let date = new Date(input.maintain_time).toLocaleDateString()
             let time=new Date(input.maintain_time).toLocaleTimeString()
             // let dateTime = date + ' ' + time
@@ -381,10 +386,11 @@ export default {
             const formData = new FormData()
             formData.append('form_id', data4Dlg.form_id)
             formData.append('token', localStorage.getItem('token'))
-            formData.append('maintainer_time',dateTime)
+            formData.append('maintain_time',dateTime)
             formData.append('maintainer_name',input.maintainer_name)
             formData.append('maintainer_id',input.maintainer_id)
             formData.append('maintainer_phone',input.maintainer_phone)
+            
             this.$axios({
                 method:'POST',
                 url: '/setMaintainer',
