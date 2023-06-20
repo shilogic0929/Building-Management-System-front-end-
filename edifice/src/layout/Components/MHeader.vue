@@ -11,8 +11,10 @@
       <div class="headTitle">大厦物业管理系统</div>
       <div class="personalHome">
         <el-dropdown>
-          <div class="userDrop_text">exit</div>
-          <el-icon :size="15" class="userDrop"><caret-bottom /></el-icon>
+          <!-- <div class="userDrop_text">exit</div> -->
+          <el-icon :size="15" class="userDrop">
+            <user />
+          </el-icon>
           <el-avatar :size="30">
             <el-icon :size="25" :color="color">
               <avatar />
