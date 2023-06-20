@@ -103,7 +103,7 @@ import { ElMessage } from 'element-plus'
 .card {
     width: 500px;
     height: 350px;
-    top: 20;
+    top: 20px;
     right: 0;
     margin-left: 10px; /* 可根据需要调整卡片与图像的间距 */
 }
