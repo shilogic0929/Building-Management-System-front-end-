@@ -737,33 +737,6 @@ export default {
         })
       })
     },
-    handleAddClient() {
-      const formData = {
-        new_name: this.add_name,
-        new_phone: this.add_phone,
-        new_company: this.add_company,
-        new_legal:this.add_legal
-      }
-      this.$axios({
-        method: 'POST',
-        url: '/addNewClient',
-        data:JSON.stringify(formData)
-      }).then(res => {
-        if (res.data.status === 1) {
-          ElMessage({
-          type: 'success',
-          message: '添加成功'
-          })
-          this.dialogVisible = false
-        }
-        else {
-          ElMessage({
-          type: 'fail',
-          message: '添加失败'
-          })
-        }
-      })
-    },
     dialogCancel(){
       ElMessageBox.confirm(
           '取消修改?',
