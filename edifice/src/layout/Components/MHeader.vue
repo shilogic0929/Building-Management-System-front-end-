@@ -72,12 +72,15 @@ import { ElMessage } from 'element-plus'
         },
         quit(){
           console.log("quit");
-          this.$axios.post('/user/logout/',JSON.stringify()).then(function (request) {
-             ElMessage({
-                message: request.data.msg,
-                type: 'success',
-              }) 
-          });
+          localStorage.setItem('token',0);
+          var naid = localStorage.getItem("token");
+          console.log(naid);
+          // this.$axios.post('/user/logout/',JSON.stringify()).then(function (request) {
+          //    ElMessage({
+          //       message: request.data.msg,
+          //       type: 'success',
+          //     })
+          // });
           this.$router.push("/login")
         }
     },  

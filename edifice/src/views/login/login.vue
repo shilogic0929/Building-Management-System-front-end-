@@ -93,7 +93,7 @@
 
 <script>
 // import axios from 'axios'
-import { ElMessage } from 'element-plus'
+
 
 export default {
   
@@ -128,7 +128,7 @@ export default {
         telephone:[{required: true, message: "请输入电话", trigger: "blur" }],
         mail:[{required: true, message: "请输入邮箱", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" },
-                  { min: 8, message: "长度至少超过8位", trigger: "blur" },
+                  // { min: 8, message: "长度至少超过8位", trigger: "blur" },
                   { validator: validatePass},  
                   ],
         // password2: [{ required: true, message: "请再次输入密码", trigger: "blur" }]
@@ -221,32 +221,21 @@ export default {
         url:'/login',
         data: formData
       }).then( res =>{
-        console.log(res.data)
+
         if(res.data.errno === 0){
-          localStorage.setItem('token',res.data.token)
-          if(res.data.type === 0){//普通人员
-            this.$router.push({
-              name: '',
-              params: {
-
-              }
-            })
+          localStorage.setItem('token',res.data.data.token)
+          localStorage.setItem('type',res.data.data.type)
+          // var naid = localStorage.getItem("token");
+          // console.log(naid)
+          // console.log(res.data.data)
+          if(res.data.data.type === 0){//普通人员
+            this.$router.push('/myRepair')
           }
-          else if(res.data.type === -1){//管理人
-            this.$router.push({
-              name: '处理报修界面',
-              params: {
-
-              }
-            })
+          else if(res.data.data.type === -1){//管理人
+            this.$router.push('/handleRepair')
           }
           else{//维修人员
-            this.$router.push({
-              name: '',
-              params: {
-
-              }
-            })
+            this.$router.push('/handleRepair')
           }
         }
       })

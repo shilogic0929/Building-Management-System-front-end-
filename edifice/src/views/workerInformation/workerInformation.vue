@@ -78,13 +78,13 @@ export default {
         pagesize: 10
       },
       tableData: [
-      //     {
-      //   tel: '15456547896',
-      //   name: '管宁',
-      //   job:'高级工人',
-      //   category:'水电工',
-      //       isMaintainer: '可用'
-      // },
+          {
+        tel: '15456547896',
+        name: '管宁',
+        job:'高级工人',
+        category:'水电工',
+            isMaintainer: true,
+      },
         // {
       //   phone: '16587452687',
       //   name: '许邵',
@@ -122,20 +122,34 @@ export default {
 
 
       var naid = localStorage.getItem("token");
-      var data={
-        page:this.queryInfo.pagenum,
-        numInOnePage:this.queryInfo.pagesize,
-        token:naid,
-      };
+      // alert(naid)
+      // var data={
+      //   page:this.queryInfo.pagenum,
+      //   numInOnePage:this.queryInfo.pagesize,
+      //   token:naid,
+      // };
 
-
-      this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getWorker',JSON.stringify(data)).then(function(request){
-        console.log(request);
-         if(request.code == 0) {
-            console.log(request.data);
-            this.tableData=JSON.parse(request.data)
+      const formData = new FormData()
+      formData.append('page',this.queryInfo.pagenum)
+      formData.append('numInOnePage',this.queryInfo.pagesize)
+      formData.append('token',naid)
+      this.$axios({
+        method:'POST',
+        url: '/getWorker',
+        data: formData
+      }).then(res => {
+        console.log(res.data)
+        if(res.data.code === 0){
+          this.tableData=JSON.parse(res.data.data)
         }
       })
+      // this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getWorker',JSON.stringify(data)).then(function(request){
+      //   console.log(request);
+      //    if(request.code == 0) {
+      //       console.log(request.data);
+      //       this.tableData=JSON.parse(request.data)
+      //   }
+      // })
 
     },
     // addRow () {
@@ -174,12 +188,16 @@ export default {
       // this.axios.post(,JSON.stringify(data)).then(function (request){
       //   console.log(request.data.name);
       // })
-
-      alert(row.isMaintainer);
+      if(row.isMaintainer === false){
+        alert('不为维修人员！');
+      }
+      else{
+        alert('可以维修！');
+      }
     },
     removeById(row) {
 
-      if (row.isMaintainer == false){
+      if (row.isMaintainer === false){
 
         alert('不是维修人员！');
       }
