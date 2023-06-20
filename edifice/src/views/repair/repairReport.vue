@@ -30,10 +30,6 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="报修时间：" prop="repair_time">
-              <el-input v-model="form.repair_time" />
-          </el-form-item>
-
           <el-form-item label="问题描述：">
             <el-input v-model="form.description" type="textarea" maxlength="100" resize="none"
             show-word-limit  :autosize="{ minRows: 5}" placeholder="请描述问题详情"/>
@@ -63,7 +59,6 @@ export default {
           name:"",
           rid: "", //报修房间号
           phone:"", //报修联系人姓名和联系方式
-          repair_time: "", //报修时间
           description:"", //问题描述
           type: 1
         },
@@ -76,9 +71,6 @@ export default {
           ],
           phone: [
             { required: true, message: '联系方式不能为空', trigger: 'blur' }
-          ],
-          repair_time: [
-            { required: true, message: '请填写维修时间', trigger: 'blur' }
           ],
           type: [
             { required: true, message: '请选择报修类型', trigger: 'blur' }
@@ -93,7 +85,7 @@ export default {
       init() {
         var that=this;
         const formData=new FormData();
-        formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+        formData.append('token',localStorage.getItem('token'))
         this.$axios({
           method: 'POST',
           url: '/get_user_info',
@@ -115,11 +107,11 @@ export default {
 
       },
       submit(){
-          if(this.form.name&&this.form.rid&&this.form.phone&&this.form.repair_time)
+          if(this.form.name&&this.form.rid&&this.form.phone)
           {
             var that=this;
             const formData=new FormData();
-            formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+            formData.append('token',localStorage.getItem('token'))
             formData.append('name',this.form.name)
             formData.append('phone',this.form.phone)
             formData.append('rid',this.form.rid)
@@ -144,6 +136,7 @@ export default {
                         message: request.data.msg,
                         type: 'success',
                       })
+                  that.$router.push('/myRepair')
                 }
             })
           }

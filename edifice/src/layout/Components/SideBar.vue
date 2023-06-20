@@ -8,66 +8,63 @@
       <span class="sideBarFontSize">首页</span>
     </el-menu-item>
 
-    <el-sub-menu>
-      <template #title>
-        <el-icon>
-          <OfficeBuilding />
-        </el-icon>
-        <span class="sideBarFontSize">租房系统</span>
-      </template>
-      <el-menu-item index="/seeHouse">查看房源</el-menu-item>
-    </el-sub-menu>
+    <!-- <el-sub-menu>
+            <template #title>
+              <el-icon><OfficeBuilding /></el-icon>
+              <span class="sideBarFontSize">租房系统</span>
+            </template>
+              <el-menu-item index="/seeHouse">查看房源</el-menu-item>
+          </el-sub-menu> -->
 
     <!-- <el-menu-item index="/checkOrders">
             <el-icon><guide /></el-icon>
             <span class="sideBarFontSize">查看订单</span>
           </el-menu-item> -->
 
-    <el-menu-item index="/clientView">
+    <el-menu-item index="/clientView" v-show="type === '-1'">
       <el-icon>
         <View />
       </el-icon>
       <span class="sideBarFontSize">客户信息</span>
     </el-menu-item>
 
-    <el-menu-item index="/handleRepair" v-if="this.$store.state.isService">
+    <el-menu-item index="/handleRepair" v-if='type === "-1"'>
       <el-icon>
         <Brush />
       </el-icon>
       <span class="sideBarFontSize">处理报修</span>
     </el-menu-item>
-    <el-menu-item index="/repairService" v-else-if="this.$store.state.isWorker">
+    <el-menu-item index="/repairReport" v-else-if="type === '0'">
+      <el-icon>
+        <Brush />
+      </el-icon>
+      <span class="sideBarFontSize">用户报修</span>
+    </el-menu-item>
+    <el-menu-item index="/repairService" v-else>
       <el-icon>
         <Brush />
       </el-icon>
       <span class="sideBarFontSize">维修服务</span>
     </el-menu-item>
-    <el-menu-item index="/repairReport" v-else>
-      <el-icon>
-        <Brush />
-      </el-icon>
-      <span class="sideBarFontSize">报修系统</span>
-    </el-menu-item>
 
-    <el-menu-item index="/myRepair" v-if="!this.$store.state.isService">
+    <el-menu-item index="/myRepair" v-if="type === '0'">
       <el-icon>
         <Brush />
       </el-icon>
       <span class="sideBarFontSize">报修记录</span>
     </el-menu-item>
 
-    <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">
-      <el-icon>
-        <Service />
-      </el-icon>
-      <span class="sideBarFontSize">客服系统</span>
-    </el-menu-item>
-    <el-menu-item index="/roomStatus">
+    <el-menu-item index="/roomStatus" v-if="type === '-1'">
       <el-icon>
         <House />
       </el-icon>
       <span class="sideBarFontSize">房间状态</span>
     </el-menu-item>
+
+    <!--          <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">-->
+    <!--            <el-icon><Service /></el-icon>-->
+    <!--            <span class="sideBarFontSize">客服系统</span>-->
+    <!--          </el-menu-item>-->
   </el-menu>
 </template>
 
@@ -76,6 +73,7 @@ export default {
   data() {
     return {
       isCollapse: false,
+      type: '',
     }
   },
   computed: {
@@ -96,7 +94,10 @@ export default {
       console.log(key, keyPath);
     }
   },
-
+  created() {
+    this.type = localStorage.getItem('type')
+    console.log(this.type)
+  }
 }
 </script>
 <style>.el-submenu.is-active {
