@@ -13,8 +13,6 @@
     "axios": "^0.27.2",
     "better-scroll": "^2.4.2",
     "core-js": "^3.8.3",
-    "echarts": "^5.4.2",
-    "echarts-for-react": "^3.0.2",
     "element-plus": "^2.1.5",
     "jquery": "^3.6.0",
     "parallax-js": "^3.1.0",

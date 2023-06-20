@@ -151,22 +151,23 @@ const routes = [{
           title: "维修服务界面"
         },
         component: () => import('../views/repair/repairService.vue'),
+      },
+      {
+        path: 'roomStatus',
+        name: '房间状态',
+        meta: {
+          title: "房间状态"
+        },
+        component: () => import('../views/roomStatus/roomStatus.vue'),
+
       }
     ]
   },
-
 ]
-
-
-
 const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
-
-
-
-
 // router.beforeEach(async (to, from, next) => {
 //   if (to.path == "/login") {
 //     next({path: "/login"});
@@ -175,5 +176,4 @@ const router = createRouter({
 //     next();
 //   }
 // });
-
 export default router
