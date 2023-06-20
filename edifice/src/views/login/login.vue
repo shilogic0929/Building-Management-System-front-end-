@@ -224,6 +224,7 @@ export default {
           else {//维修人员
             this.$router.push('/repairService')
           }
+          console.log(res.data.data.type);
         }
       })
       // if(this.dialogVisible==true){
