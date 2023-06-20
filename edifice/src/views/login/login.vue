@@ -121,7 +121,7 @@ export default {
         { validator: validatePass },
         ],
         // password2: [{ required: true, message: "请再次输入密码", trigger: "blur" }]
-      // }
+        // }
       }
     }
   },

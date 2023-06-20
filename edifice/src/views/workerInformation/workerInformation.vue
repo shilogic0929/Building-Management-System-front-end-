@@ -1,32 +1,6 @@
 <template>
   <div>
-
-<!--    <el-breadcrumb separator-class="el-icon-arrow-right">-->
-<!--      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>-->
-<!--      <el-breadcrumb-item>商品管理</el-breadcrumb-item>-->
-<!--      <el-breadcrumb-item>商品列表</el-breadcrumb-item>-->
-<!--    </el-breadcrumb>-->
-
     <el-card>
-<!--      <el-row :gutter="20">-->
-<!--        <el-col :span="8">-->
-<!--          <el-input-->
-<!--              placeholder="请输入内容"-->
-<!--              clearable-->
-<!--              v-model="queryInfo.query"-->
-<!--              @clear="getGoodsList"-->
-<!--          >-->
-<!--            <el-button-->
-<!--                slot="append"-->
-<!--                icon="el-icon-search"-->
-<!--                @click="handleCurrentChange(1)"-->
-<!--            ></el-button>-->
-<!--          </el-input>-->
-<!--        </el-col>-->
-<!--&lt;!&ndash;        <el-col :span="4">&ndash;&gt;-->
-<!--&lt;!&ndash;          <el-button type="primary" @click="goAddPage">添加人员信息</el-button>&ndash;&gt;-->
-<!--&lt;!&ndash;        </el-col>&ndash;&gt;-->
-<!--      </el-row>-->
 
       <el-table :data="tableData" stripe border style="width: 100%">
         <el-table-column type="index"> </el-table-column>
@@ -34,32 +8,23 @@
         <el-table-column prop="tel" label="电话" width="250px"></el-table-column>
         <el-table-column prop="job" label="岗位" width="140px"></el-table-column>
         <el-table-column prop="category" label="维修类型" width="180px">
-<!--          <template v-slot="scope">-->
-<!--            {{ scope.row.add_time | dateFormat }}-->
-<!--          </template>-->
+          <template v-slot="scope">{{ scope.row.category == '-1' ? '管理人员' : '维修人员' }}</template>
+
         </el-table-column>
         <el-table-column prop="isMaintainer" label="可用状态" width="300px">
           <template v-slot="scope">
-            <el-button size="mini" type="primary"  icon="el-icon-edit" @click="edit(scope.row)">state</el-button>
+            <el-button size="mini" type="primary" icon="el-icon-edit" @click="edit(scope.row)">state</el-button>
             <el-button size="mini" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">change</el-button>
           </template>
         </el-table-column>
-<!--        <el-table-column prop="worker_id" label="" width="0px"></el-table-column>-->
+        <!--        <el-table-column prop="worker_id" label="" width="0px"></el-table-column>-->
       </el-table>
 
-      <div class = "main_container">
-      <el-pagination
-
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="queryInfo.pagenum"
-          :page-sizes="[10, 20, 50]"
-          :page-size="queryInfo.pagesize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          background
-      >
-      </el-pagination>
+      <div class="main_container">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+          :current-page="queryInfo.pagenum" :page-sizes="[10, 20, 50]" :page-size="queryInfo.pagesize"
+          layout="total, sizes, prev, pager, next, jumper" :total="total" background>
+        </el-pagination>
       </div>
     </el-card>
 
@@ -78,32 +43,32 @@ export default {
         pagesize: 10
       },
       tableData: [
-          {
-        tel: '15456547896',
-        name: '管宁',
-        job:'高级工人',
-        category:'水电工',
-            isMaintainer: true,
-      },
+        {
+          tel: '15456547896',
+          name: '管宁',
+          job: '高级工人',
+          category: '水电工',
+          isMaintainer: true,
+        },
         // {
-      //   phone: '16587452687',
-      //   name: '许邵',
-      //   job:'低级工人',
-      //   type:'木工',
-      //   if_use: '可用'
-      // }, {
-      //   phone: '18659324785',
-      //   name: '杨彪',
-      //   job:'中级工人',
-      //   type:'装修工',
-      //   if_use: '可用'
-      // }, {
-      //   phone: '18596957458',
-      //   name: '刘焉',
-      //   job:'低级工人',
-      //   type:'清洁工',
-      //   if_use: '可用'
-      // }
+        //   phone: '16587452687',
+        //   name: '许邵',
+        //   job:'低级工人',
+        //   type:'木工',
+        //   if_use: '可用'
+        // }, {
+        //   phone: '18659324785',
+        //   name: '杨彪',
+        //   job:'中级工人',
+        //   type:'装修工',
+        //   if_use: '可用'
+        // }, {
+        //   phone: '18596957458',
+        //   name: '刘焉',
+        //   job:'低级工人',
+        //   type:'清洁工',
+        //   if_use: '可用'
+        // }
 
 
       ],
@@ -116,12 +81,14 @@ export default {
 
   mounted() {
     this.init();
+    console.log(this.total)
   },
   methods: {
-    init(){
+    init() {
 
 
       var naid = localStorage.getItem("token");
+      console.log(naid)
       // alert(naid)
       // var data={
       //   page:this.queryInfo.pagenum,
@@ -130,17 +97,21 @@ export default {
       // };
 
       const formData = new FormData()
-      formData.append('page',this.queryInfo.pagenum)
-      formData.append('numInOnePage',this.queryInfo.pagesize)
-      formData.append('token',naid)
+      formData.append('page', this.queryInfo.pagenum)
+      formData.append('numInOnePage', this.queryInfo.pagesize)
+      formData.append('token', naid)
       this.$axios({
-        method:'POST',
+        method: 'POST',
         url: '/getWorker',
         data: formData
       }).then(res => {
         console.log(res.data)
-        if(res.data.code === 0){
-          this.tableData=JSON.parse(res.data.data)
+        console.log(res.data.errno)
+        if (res.data.errno === 0) {
+          // this.tableData=JSON.parse(res.data.data)
+          this.tableData = res.data.data
+
+
         }
       })
       // this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getWorker',JSON.stringify(data)).then(function(request){
@@ -181,23 +152,23 @@ export default {
     //   this.getGoodsList();
     // },
     // eslint-disable-next-line no-unused-vars
-    edit(row){
+    edit(row) {
 
       // var data = {row:this.row};
       // var that = this;
       // this.axios.post(,JSON.stringify(data)).then(function (request){
       //   console.log(request.data.name);
       // })
-      if(row.isMaintainer === false){
+      if (row.isMaintainer === false) {
         alert('不为维修人员！');
       }
-      else{
+      else {
         alert('可以维修！');
       }
     },
     removeById(row) {
 
-      if (row.isMaintainer === false){
+      if (row.isMaintainer === false) {
 
         alert('不是维修人员！');
       }
@@ -205,12 +176,12 @@ export default {
 
         alert('成功派遣！');
         this.$router.push({
-          path:'/handleRepair',
+          path: '/handleRepair',
           //name: '处理报修界面',
-          query : {
+          query: {
             //form_id:this.row.worker_id,
             maintainer_name: row.name,
-            maintainer_id: row.worker_id,
+            maintainer_id: row.user_id,
             maintainer_phone: row.tel,
           }
         })
