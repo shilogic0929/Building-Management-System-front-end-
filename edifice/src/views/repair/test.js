@@ -1,5 +1,5 @@
 export const data4Test = {
-    feedbackList: [{
+    feedbackList: [{ 
         form_id: '1',
         user_id: '10001',
         room_id: '1',
@@ -139,7 +139,7 @@ export const data4Test = {
         status: '未处理',
         reply: '',
         star: null,
-    }, {
+    }, { 
         form_id: '15',
         user_id: '10001',
         room_id: '11',
@@ -230,6 +230,7 @@ export const data4Test = {
         reply: '',
         star: null,
     },],
+
     feedbackInfo: {
         form_id: '6',
         user_id: '10001',

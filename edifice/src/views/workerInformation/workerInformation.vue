@@ -205,14 +205,13 @@ export default {
 
         alert('成功派遣！');
         this.$router.push({
-          // path:'/',
-          name: '处理报修界面',
-          params: {
-            // form_id:this.row.worker_id,
+          path:'/handleRepair',
+          //name: '处理报修界面',
+          query : {
+            //form_id:this.row.worker_id,
             maintainer_name: row.name,
-            // maintainer_id: ,
+            maintainer_id: row.worker_id,
             maintainer_phone: row.tel,
-
           }
         })
       }
