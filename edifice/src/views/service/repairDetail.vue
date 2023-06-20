@@ -160,7 +160,7 @@ export default {
     init(){
       var that=this;
       const formData=new FormData();
-      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+      formData.append('token',localStorage.getItem('token'))
       formData.append('wid',this.wid)
       this.$axios({
         method: 'POST',
@@ -188,9 +188,9 @@ export default {
         console.log(ymd.split("/").join("-")+' '+hms)
         var that=this;
         const formData=new FormData();
-        formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+        formData.append('token',localStorage.getItem('token'))
         formData.append('wid',that.wid)
-        formData.append('solve_time',ymd.split("/").join("-")+' '+hms)
+        formData.append('solve_time',ymd.replaceAll("/","-")+' '+hms)
         formData.append('solution',that.form.solution)
         this.$axios({
           method: 'POST',

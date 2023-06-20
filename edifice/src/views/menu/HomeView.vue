@@ -2,7 +2,6 @@
   <div id="div-main-wrap">
 
 
-
     <!-- 轮播图 -->
     <!-- <slide-show></slide-show> -->
 
@@ -92,20 +91,10 @@ export default {
 
 
   setup() {
-    const audio = ref(null);
-    const musicState = ref(false);
     // const clickA = () => {
     //   audio.value.play();
     // };
-    const musicCtrol = () => {
-      if (!musicState.value) {
-        audio.value.play();
-        musicState.value = true;
-      } else {
-        audio.value.pause();
-        musicState.value = false;
-      }
-    };
+
     // onMounted(() => {
     //   // 监听全局点击事件
     //   window.addEventListener("click", clickA);
@@ -125,13 +114,9 @@ export default {
       }, 1000);
     });
     return {
-      audio,
-      musicState,
       hour,
       minute,
       second,
-
-      musicCtrol,
     };
   },
   components: {
@@ -171,16 +156,6 @@ ul {
   background-color: white;
   /* border-bottom: 1px #777 solid; */
   box-shadow: 0 1px 7px rgb(0 0 0 / 10%);
-}
-.music-control {
-  position: absolute;
-  top: 30px;
-  right: 40px;
-}
-.music-control img {
-  height: 30px;
-  width: 30px;
-  opacity: 0.8;
 }
 .div-title h1 {
   color: #777;
