@@ -1,5 +1,12 @@
 <template>
   <div class="echarts-map-container">
+    <h1>房间状态</h1>
+    <el-select v-model="value" placeholder="请选择">
+      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+      </el-option>
+    </el-select>
+    <!-- <el-button type="primary" size="default" @click="changeLevel">选择楼层</el-button> -->
+
     <div ref="echartsMap" style="width: 100%; height: 500px;"></div>
   </div>
 </template>
@@ -10,7 +17,7 @@ export default {
   data() {
     return {
       myChart: null,
-      Level: '1',
+      Level: '2',
       roomStatus: [
         {
           "roomNo": 101,
@@ -23,12 +30,12 @@ export default {
         },
         {
           "roomNo": 102,
-          "isRented": false,
-          "userID": null,
-          "userName": null,
-          "startTime": null,
-          "endTime": null,
-          "Company": null
+          "isRented": true,
+          "userID": 1,
+          "userName": "faker",
+          "startTime": "2023.06.19",
+          "endTime": "2055.02.25",
+          "Company": "buaa"
         },
         {
           "roomNo": 103,
@@ -462,56 +469,71 @@ export default {
           "endTime": null,
           "Company": null
         }
-      ]
+      ],
+      options: [],
     }
   },
   mounted() {
     this.initChart()
   },
+  created() {
+    this.generateOptions(25);
+  },
   methods: {
+
+
+    generateOptions(maxValue) {
+      for (let i = 1; i <= maxValue; i++) {
+        this.options.push({
+          value: i.toString(),
+          label: i.toString(),
+        });
+      }
+      console.log(this.options);
+    },
     initChart() {
-      //axios以get方式请求数据
-      // var formdata = {
-      //   level: this.Level,
-      // }
-      // this.$axios.post('https://10.251.252.218/test/getRoomStatus', formdata)
-      //   .then(function (response) {
-      //     console.log(response.data.data);
-      //   })
+      var level = this.Level;
+
+      const formData = new FormData()
+      formData.append('level', level)
+      this.$axios({
+        method: 'POST',
+        url: 'http://10.251.252.218/test/getRoomStatus',
+        data: formData
+      }).then(res => {
+        // console.log(res.data.data);
+        this.roomStatus = res.data.data;
+      })
+
       const roomNoArray2 = [];
       this.roomStatus.forEach(element => {
         roomNoArray2.push(new Array(element.roomNo, element.isRented, element.userName, element.startTime, element.endTime, element.Company))
       });
-      console.log(roomNoArray2);
+      // console.log(roomNoArray2);
 
       const roomNoArray = [];
-      const roomIsRented = [];
       for (let i = 0; i < 5; i++) {
         const row_noArray = [];
-        const row_IsRented = [];
         for (let j = 0; j < 10; j++) {
           const thisRoom = [];
           thisRoom.push(this.roomStatus[i * 10 + j].roomNo, this.roomStatus[i * 10 + j].isRented, this.roomStatus[i * 10 + j].userName, this.roomStatus[i * 10 + j].startTime, this.roomStatus[i * 10 + j].endTime, this.roomStatus[i * 10 + j].Company);
           row_noArray.push(thisRoom)
-          row_IsRented.push(this.roomStatus[i * 10 + j].isRented ? 1 : 0)
         }
         roomNoArray.push(row_noArray);
-        roomIsRented.push(row_IsRented);
       }
-      console.log(roomNoArray);
-      console.log(roomIsRented);
       // 初始化 ECharts 实例
       this.myChart = echarts.init(this.$refs.echartsMap)
 
       // 转换数据格式
       var seriesData = [];
-      for (var i = 0; i < roomIsRented.length; i++) {
-        for (var j = 0; j < roomIsRented[i].length; j++) {
-          var item = [j, i, roomNoArray[i][j][0], roomNoArray[i][j][1] ? 1 : 0, roomNoArray[i][j][2], roomNoArray[i][j][3], roomNoArray[i][j][4], roomNoArray[i][j][5]];
+      for (var i = 0; i < roomNoArray.length; i++) {
+        for (var j = 0; j < roomNoArray[i].length; j++) {
+          var item = [j, i, roomNoArray[i][j][1] ? 1 : 0];
           seriesData.push(item);
         }
       }
-      console.log(seriesData);
+      // console.log(seriesData);
+      //roomNoArray2  seriesData
       // 图表配置
       var option = {
         series: [{
@@ -522,7 +544,11 @@ export default {
             color: 'black',
             fontSize: 15,
             formatter: function (params) {
-              return params.value[3] === 1 ? '已占用' : '空闲';
+              return (level < 10 ? ('0' + level.toString()) : level.toString())
+                + ((1 + params.value[0] + params.value[1] * 10) < 10 ?
+                  ('0' + (1 + params.value[0] + params.value[1] * 10).toString()) : (1 + params.value[0] + params.value[1] * 10).toString())
+                + '\n\n'
+                + (params.value[2] === 1 ? '已占用' : '空闲');
             }
           }
         }],
@@ -535,13 +561,16 @@ export default {
           left: 'center',
           bottom: '15%',
           inRange: {
-            color: ['rgba(255,0,0,0.7)', 'rgba(30,144,255,0.7)'],
+            color: ['rgba(144,238,144,0.8)', 'rgba(255,140,0,0.5)',],
           },
 
         },
         tooltip: {
           formatter: function (params) {
-            return params.value[2] === 1 ? '已占用' : '空闲';
+            var i = 10 * params.value[1] + params.value[0];
+            if (params.value[2] == 1)
+              return '租赁人：' + roomNoArray2[i][2] + '<br/>租赁公司：' + roomNoArray2[i][5] + '<br/>租赁周期：' + roomNoArray2[i][3] + '~' + roomNoArray2[i][4];
+            else return '空闲'
           }
         },
         xAxis: {
