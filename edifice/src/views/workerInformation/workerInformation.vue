@@ -34,8 +34,12 @@
         <el-table-column prop="tel" label="电话" width="250px"></el-table-column>
         <el-table-column prop="job" label="岗位" width="140px"></el-table-column>
         <el-table-column prop="category" label="维修类型" width="180px">
-<!--          <template v-slot="scope">-->
-<!--            {{ scope.row.add_time | dateFormat }}-->
+          <template v-slot="scope">{{ scope.row.category == '-1' ? '管理人员' : '维修人员' }}</template>
+<!--          <template slot-scope="scope">-->
+<!--            <span v-if="scope=='-1'">管理人员</span>-->
+<!--            <span v-else>维修人员</span>-->
+<!--&lt;!&ndash;            <span v-if="scope.row.category === '0'>管理人员</span>&ndash;&gt;-->
+<!--&lt;!&ndash;            <span v-else>维修人员</span>&ndash;&gt;-->
 <!--          </template>-->
         </el-table-column>
         <el-table-column prop="isMaintainer" label="可用状态" width="300px">
@@ -116,12 +120,14 @@ export default {
 
   mounted() {
     this.init();
+    console.log(this.total)
   },
   methods: {
     init(){
 
 
       var naid = localStorage.getItem("token");
+      console.log(naid)
       // alert(naid)
       // var data={
       //   page:this.queryInfo.pagenum,
@@ -139,8 +145,12 @@ export default {
         data: formData
       }).then(res => {
         console.log(res.data)
-        if(res.data.code === 0){
-          this.tableData=JSON.parse(res.data.data)
+        console.log(res.data.errno)
+        if(res.data.errno === 0){
+          // this.tableData=JSON.parse(res.data.data)
+          this.tableData=res.data.data
+
+
         }
       })
       // this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getWorker',JSON.stringify(data)).then(function(request){
@@ -210,7 +220,7 @@ export default {
           query : {
             //form_id:this.row.worker_id,
             maintainer_name: row.name,
-            maintainer_id: row.worker_id,
+            maintainer_id: row.user_id,
             maintainer_phone: row.tel,
           }
         })
