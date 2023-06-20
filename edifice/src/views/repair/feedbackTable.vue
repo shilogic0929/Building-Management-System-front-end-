@@ -176,9 +176,9 @@ export default {
             },
             addDialogVisible: false,
             data4Dlg:{
-                form_id: 0,
-                user_id: 0,
-                room_id: 0,
+                form_id: '',
+                user_id: '',
+                room_id: '',
                 description: '',
                 date: '',
                 type: 1,
@@ -233,12 +233,13 @@ export default {
             if(this.params != null && this.params.maintainer_name !== undefined && this.params.maintainer_name !== '' && localStorage.getItem('data4Dlg') !== null) {
                 let tmp = localStorage.getItem('data4Dlg');
                 console.log(tmp);
-                this.data4Dlg.form_id = tmp.form_id;
-                this.data4Dlg.user_id = tmp.user_id;
-                this.data4Dlg.description = tmp.description;
-                this.data4Dlg.date = tmp.date;
-                this.data4Dlg.status = tmp.status;
-                this.data4Dlg.room_id = tmp.room_id;
+                // this.data4Dlg.form_id = tmp.form_id;
+                // this.data4Dlg.user_id = tmp.user_id;
+                // this.data4Dlg.description = tmp.description;
+                // this.data4Dlg.date = tmp.date;
+                // this.data4Dlg.status = tmp.status;
+                // this.data4Dlg.room_id = tmp.room_id;
+                this.data4Dlg = tmp;
                 this.input1.maintainer_id = this.params.maintainer_id;
                 this.input1.maintainer_name = this.params.maintainer_name;
                 this.input1.maintainer_phone = this.params.maintainer_phone;
@@ -365,6 +366,9 @@ export default {
             })
         },
         submitInput(data4Dlg, input) {
+            console.log(data4Dlg);
+            this.data4Dlg = JSON.parse(data4Dlg);
+            console.log(this.data4Dlg.form_id);
             if(input.maintainer_id === '') {
                 this.$message("请输入内容")
                 return
@@ -373,7 +377,7 @@ export default {
                 this.$message("请设置维修时间")
                 return
             }
-            if(this.data4Dlg.form_id === undefined) {
+            if(this.data4Dlg.form_id == undefined || this.data4Dlg.form_id == '') {
                 this.$message("当前数据无效，请重新选择")
                 this.addDialogVisible = false
                 return
@@ -384,7 +388,7 @@ export default {
             let dateTime = date.split("/").join("-")+' '+ time
             console.log(dateTime);
             const formData = new FormData()
-            formData.append('form_id', data4Dlg.form_id)
+            formData.append('form_id', this.data4Dlg.form_id)
             formData.append('token', localStorage.getItem('token'))
             formData.append('maintain_time',dateTime)
             formData.append('maintainer_name',input.maintainer_name)
@@ -403,6 +407,7 @@ export default {
                 this.$message.success('成功')
                 //更新表单
                 this.getFeedbackList(); 
+                this.addDialogVisible = false;
             }})
         },
         closeDlg() {
