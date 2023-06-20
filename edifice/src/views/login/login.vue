@@ -93,7 +93,7 @@
 
 <script>
 // import axios from 'axios'
-import router from "@/router";
+// import router from "@/router";
 
 export default {
 
@@ -120,19 +120,19 @@ export default {
         password2:"",
       },
 
-      rules: {
-        username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 15, message: "长度在3到5个字符", trigger: "blur" }
-        ],
-        telephone:[{required: true, message: "请输入电话", trigger: "blur" }],
-        mail:[{required: true, message: "请输入邮箱", trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" },
-          { min: 8, message: "长度至少超过8位", trigger: "blur" },
-          { validator: validatePass},
-        ],
+      // rules: {
+      //   username: [
+      //     { required: true, message: "请输入用户名", trigger: "blur" },
+      //     { min: 3, max: 15, message: "长度在3到5个字符", trigger: "blur" }
+      //   ],
+      //   telephone:[{required: true, message: "请输入电话", trigger: "blur" }],
+      //   mail:[{required: true, message: "请输入邮箱", trigger: "blur" }],
+      //   password: [{ required: true, message: "请输入密码", trigger: "blur" },
+      //     { min: 8, message: "长度至少超过8位", trigger: "blur" },
+      //     { validator: validatePass},
+      //   ],
         // password2: [{ required: true, message: "请再次输入密码", trigger: "blur" }]
-      }
+      // }
     };
   },
   mounted() {
@@ -223,19 +223,13 @@ export default {
       }).then( res =>{
         console.log(res.data)
         if(res.data.errno === 0){
-          alert(res.data.data.token)
           localStorage.setItem('token',res.data.data.token)
+          
           if(res.data.data.type === 0){//普通人员
             this.$router.push('/clientView')
-            alert(1)
           }
-          else if(res.data.type === -1){//管理人
-            this.$router.push({
-              name: '处理报修界面',
-              params: {
-
-              }
-            })
+          else if(res.data.data.type === -1){//管理人
+            this.$router.push('/personalPage')
           }
           else{//维修人员
             this.$router.push({
