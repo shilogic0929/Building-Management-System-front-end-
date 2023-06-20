@@ -112,7 +112,13 @@ const routes = [
         name:"维修服务界面",
         meta: { title: "维修服务界面" },
         component:  () => import('../views/repair/repairService.vue'),
-      }
+      },
+      {
+        path: 'woIn',
+        name: '工人信息',
+        meta: { title: "工人信息" },
+        component:  () => import('../views/workerInformation/workerInformation.vue'),
+      },
     ]
   },
 
