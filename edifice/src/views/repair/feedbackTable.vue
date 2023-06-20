@@ -209,7 +209,7 @@ export default {
         getFeedbackList() {
             this.tableData = data4Test.feedbackList;
             this.getOption();
-            axios.post("/repairList", {params: {token : '1'}}).then((res)=>{
+            axios.post("/repairList", {params: {token : localStorage.getItem('token')}}).then((res)=>{
                 if(res.status == 200) {
                     this.tableData = res.data.feedbackList;
                     console.log(res);
@@ -218,8 +218,9 @@ export default {
                 }
             })
             this.addDialogVisible = false;
-            //this.setPaginations()
-            if(this.params.name !== '' && localStorage.getItem('data4Dlg') !== null) {
+            this.setPaginations()
+            console.log(this.params)
+            if(this.params != null && this.params.maintainer_name !== undefined && this.params.maintainer_name !== '' && localStorage.getItem('data4Dlg') !== null) {
                 let tmp = localStorage.getItem('data4Dlg');
                 console.log(tmp);
                 this.data4Dlg.form_id = tmp.form_id;
@@ -228,7 +229,6 @@ export default {
                 this.data4Dlg.date = tmp.date;
                 this.data4Dlg.status = tmp.status;
                 this.data4Dlg.room_id = tmp.room_id;
-                console.log(this.params)
                 this.input1.maintainer_id = this.params.maintainer_id;
                 this.input1.maintainer_name = this.params.maintainer_name;
                 this.input1.maintainer_phone = this.params.maintainer_phone;
@@ -307,7 +307,7 @@ export default {
             // 总页数
             this.paginations.total = this.all_table_data.length;
             this.paginations.page_index = 1;
-            this.paginations.page_size = 10;
+            this.paginations.page_size = this.all_table_data.length;
             // 设置默认分页数据
             this.tableData = this.all_table_data.filter((item, index) => {
                 return index < this.paginations.page_size;
