@@ -1,24 +1,9 @@
 <template>
   <div class="login">
 
-    <vue-particles
-        color="#fff"
-        :particleOpacity="0.7"
-        :particlesNumber="100"
-        shapeType="circle"
-        :particleSize="8"
-        linesColor="#fff"
-        :linesWidth="1"
-        :lineLinked="false"
-        :lineOpacity="0.4"
-        :linesDistance="150"
-        :moveSpeed="2"
-        :hoverEffect="true"
-        hoverMode="grab"
-        :clickEffect="true"
-        clickMode="push"
-        class="lizi"
-    >
+    <vue-particles color="#fff" :particleOpacity="0.7" :particlesNumber="100" shapeType="circle" :particleSize="8"
+      linesColor="#fff" :linesWidth="1" :lineLinked="false" :lineOpacity="0.4" :linesDistance="150" :moveSpeed="2"
+      :hoverEffect="true" hoverMode="grab" :clickEffect="true" clickMode="push" class="lizi">
     </vue-particles>
 
     <!-- <div class="slideShadow" v-show="showSlide">
@@ -26,7 +11,7 @@
         <div class="slideSty animated bounce">
           <slide-verify @success="onSuccess" @fail="onFail"></slide-verify>
           <div class="iconBtn">
-            <i class="el-icon-circle-close" @click="showSlide = false"></i>        
+            <i class="el-icon-circle-close" @click="showSlide = false"></i>
             <i class="el-icon-refresh" @click="refresh"></i>
           </div>
         </div>
@@ -59,8 +44,7 @@
           <el-row gutter="10">
             <el-col :span="12">
 
-              <el-button
-                  color="#2b4a85"  class="loginBtn" @click="login()">登录</el-button>
+              <el-button color="#2b4a85" class="loginBtn" @click="login()">登录</el-button>
 
             </el-col>
             <!--            <el-col :span="12">-->
@@ -98,7 +82,7 @@ import router from "@/router";
 export default {
 
   data() {
-    let num =  /^[0-9a-zA-Z_]{1,}$/;
+    let num = /^[0-9a-zA-Z_]{1,}$/;
     let validatePass = (rule, value, callback) => {
       if (!num.test(value)) {
         return callback(new Error('密码只能是字母数字下划线'))
@@ -111,28 +95,28 @@ export default {
       notifyObj: null,
       text: "向右滑动",
       showSlide: false,
-      dialogVisible:false,
+      dialogVisible: false,
       ruleForm: {
         username: "",
         telephone: "",
-        mail:"",
+        mail: "",
         password: "",
-        password2:"",
+        password2: "",
       },
 
-      rules: {
-        username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 15, message: "长度在3到5个字符", trigger: "blur" }
-        ],
-        telephone:[{required: true, message: "请输入电话", trigger: "blur" }],
-        mail:[{required: true, message: "请输入邮箱", trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" },
-          { min: 8, message: "长度至少超过8位", trigger: "blur" },
-          { validator: validatePass},
-        ],
+      // rules: {
+      //   username: [
+      //     { required: true, message: "请输入用户名", trigger: "blur" },
+      //     { min: 3, max: 15, message: "长度在3到5个字符", trigger: "blur" }
+      //   ],
+      //   telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
+      //   mail: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
+      //   password: [{ required: true, message: "请输入密码", trigger: "blur" },
+      //   { min: 8, message: "长度至少超过8位", trigger: "blur" },
+      //   { validator: validatePass },
+      //   ],
         // password2: [{ required: true, message: "请再次输入密码", trigger: "blur" }]
-      }
+      // }
     };
   },
   mounted() {
@@ -183,7 +167,7 @@ export default {
     // send(ms) {
     //   this.socket.send(ms);
     // },
-    getInput(){
+    getInput() {
 
     },
     // socket连接失败
@@ -214,32 +198,28 @@ export default {
     // },
     login() {
       const formData = new FormData()
-      formData.append('email',this.ruleForm.username)
-      formData.append('password',this.ruleForm.password)
+      formData.append('email', this.ruleForm.username)
+      formData.append('password', this.ruleForm.password)
       this.$axios({
         method: 'POST',
-        url:'/login',
+        url: '/login',
         data: formData
-      }).then( res =>{
-        console.log(res.data)
-        if(res.data.errno === 0){
-          console.log(res.data)
-          localStorage.setItem('token',res.data.data.token)
-          localStorage.setItem('type',res.data.data.type)
-          // localStorage.setItem('type',)
-          if(res.data.data.type === 0){//普通人员
-            this.$router.push('/repairReport')
-          }
-          else if(res.data.data.type === -1){//管理人
-            this.$router.push('/repairReport')
-          }
-          else{//维修人员
-            this.$router.push({
-              name: '',
-              params: {
+      }).then(res => {
 
-              }
-            })
+        if (res.data.errno === 0) {
+          localStorage.setItem('token', res.data.data.token)
+          localStorage.setItem('type', res.data.data.type)
+          // var naid = localStorage.getItem("token");
+          // console.log(naid)
+          // console.log(res.data.data)
+          if (res.data.data.type === 0) {//普通人员
+            this.$router.push('/dashBoard')
+          }
+          else if (res.data.data.type === -1) {//管理人
+            this.$router.push('/clientView')
+          }
+          else {//维修人员
+            this.$router.push('/handleRepair')
           }
         }
       })
@@ -307,6 +287,8 @@ export default {
       //     // }
       //     this.notifyObj = null;
       //
+
+
 
 
     },
