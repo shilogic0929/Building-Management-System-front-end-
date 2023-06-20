@@ -613,6 +613,7 @@ export default {
             type: 'success',
             message: '添加成功'
           })
+          this.getClientsInfo()
           this.dialogVisible = false
         }
         else {
