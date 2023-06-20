@@ -1,156 +1,145 @@
 <template>
-  <div class="divpadding">
-    <div class="flow">
-      <el-carousel class="repairCarousel" :interval="5000"  style="margin-bottom: 50px" indicator-position="none">
-        <el-carousel-item class="repairImage">
-          <img src="@/assets/image/bx2.jpg" alt="img30">
-        </el-carousel-item>
-        <el-carousel-item class="repairImage">
-          <img src="@/assets/image/bx3.jpg" alt="img30">
-        </el-carousel-item>
-        <el-carousel-item class="repairImage">
-          <img src="@/assets/image/bx1.jpg" alt="img30">
-        </el-carousel-item>
-      </el-carousel>
-      <div class="repairTitle">报修界面</div>
+  <div >
+    <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
+      <div class="zz">
+        <h2>维修任务</h2>
+      </div>
     </div>
-
-
-    <el-card style="margin-bottom:30px;">
+    <div class="serviceGrid">
+      <el-card>
         <template #header>
-            <div class = "card-header" style="margin-bottom:0px;">
-                <span class="image-font">报修</span>
-                <div>
-                  <el-button type="text" @click="see">查看个人报修</el-button>
-                  <el-button type="text" @click="submit">提交</el-button>
-                </div>
+          <div class = "card-header" style = "margin:0px;">
+            <span class="image-font">报修申请列表</span>
+            <div v-if="!isfinished" >
+              <el-button class="button" type="text" @click="this.isfinished=true">查看已完成报修</el-button>
             </div>
+            <div v-else>
+              <el-button class="button" type="text" @click="this.isfinished=false">返回</el-button>
+            </div>
+          </div>
         </template>
+        
+        <el-table v-if="!isfinished" :data="table1" style="width: 100%">
+          <el-table-column
+            label="序号"
+            width="250">
+            <template #default="scope">
+              <!-- <span class="red"></span> -->
+              <a @click="lookInfo(scope.row)" style="cursor: pointer;">
+                  {{scope.row.wid}}
+              </a>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="repair_time"
+            label="申请时间"
+            sortable
+            column-key="repair_time">
+          </el-table-column>
+          <el-table-column
+            prop="status"
+            label="报修状态"
+            width="150">
+            <template #default="scope">
+              <el-tag
+                :type="buttonTypes[scope.row.status]"
+                disable-transitions>{{process[scope.row.status]}}</el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
 
-    <div class="formStyle margin-top">
-        <el-form :model="form" label-width="120px">
-            <el-form-item label="姓名">
-                <el-input v-model="form.name" />
-            </el-form-item>
-            <el-form-item label="电话">
-                <el-input v-model="form.telephone" />
-            </el-form-item>
+        <el-table v-else :data="table2" style="width: 100%">
+          <el-table-column
+            label="序号"
+            width="250">
+            <template #default="scope">
+              <a @click="lookInfo(scope.row)" style="cursor: pointer;">
+                  {{scope.row.wid}}
+              </a>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="repair_time"
+            label="申请时间"
+            sortable
+            column-key="repair_time">
+          </el-table-column>
+          <el-table-column
+            prop="status"
+            label="报修状态"
+            width="150">
+            <el-tag
+              type="success"
+              disable-transitions>已完成</el-tag>
+          </el-table-column>
+        </el-table>
 
-            <el-form-item label="问题房源">
-                <el-select v-model="value" placeholder="">
-                    <el-option v-for="(item,index) in house" :key="index" :label="item.name" :value="item.rid" />
-                </el-select>
-            </el-form-item>
-
-          <el-form-item label="报修类型">
-            <el-select v-model="value2" placeholder="">
-              <el-option :label="form.info2[0]" value="1" />
-              <el-option :label="form.info2[1]" value="2" />
-              <el-option :label="form.info2[2]" value="3" />
-              <el-option :label="form.info2[3]" value="4" />
-            </el-select>
-          </el-form-item>
-           
-
-
-          <el-form-item label="备注">
-                <el-input v-model="form.desc" type="textarea" />
-          </el-form-item>
-
-<!--          <el-steps :space="100" :active="statue" finish-status="success">-->
-<!--            <el-step title="Done" />-->
-<!--            <el-step title="Processing" />-->
-<!--            <el-step title="Step 3" />-->
-<!--            <el-step title="Step 3" />-->
-<!--          </el-steps>-->
-
-
-          <el-form-item>
-                <el-button type="primary" @click="submit">提交</el-button>
-                <el-button>取消</el-button>
-            </el-form-item>
-        </el-form>
-
+      </el-card>
     </div>
-    </el-card>
-
   </div>
-
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
+
 export default {
   data(){
-      return {
-        value:"",
-        value2:"",
-        house:[],
-          form:{
-            name:"",
-            telephone:"",
-            date1:"",
-            date2:"",
-            desc:"",
-            info:["房屋1","房屋2","",""],
-            info2:["墙壁损坏","房屋漏水","家电维修","其他"],
-          },
-         
-      }  
-    },
-    mounted() {
-        this.init()
-    },
-    methods:{
-      init() {
-        var data={username: this.$store.state.username} 
-        var that=this;
-        let uid;
-        this.$axios.post('/user/lookup_user/',JSON.stringify(data)).then(function (request) {
-            console.log(request.data.content);
-            uid = request.data.content.uid;
-          })
-        
-        data="search_room";
-        setTimeout(() =>{
-          this.$axios.post('/room/search_rooms/',JSON.stringify(data)).then(function (request) {
-            var content=request.data.content;
-            for (var i=0; i< content.length; i++) {
-              if(content[i].uid==uid) {
-                that.house.push(content[i]);
-              }
+    return{
+        img:require("@/assets/image/inner-banner3.jpg"),
+        isfinished: false,
+        rid:"",
+        type:"",
+        info:"",
+        uid: "",
+        process:["未处理","进行中"],
+        buttonTypes:["info","warning"],
+        table1: [],
+        table2: [],
+        repair:[
+            {
+                wid: "1",
+                repair_time: "2023-6-16",
+                status: 0,
             }
-        },1000)
-        
+        ]
+    }
+  },
+  mounted() {
+      this.init();
+  },
+  methods:{
+    init(){
+      var that=this;
+      const formData=new FormData();
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6IjE1MDcyOTcxNzBAcXEuY29tIiwiZXhwIjo3Nzg3MTc0MDk4LCJlbWFpbCI6IjE1MDcyOTcxNzBAcXEuY29tIn0.xYJiDpLvDatlHAQw8T595wp46qwl6Bw3Gq_qUPKSC2s')
+      
+      this.$axios({
+        method: 'POST',
+        url: '/repairService',
+        data: formData})
+        .then(function (request) {
+          that.repair=request.data.data
+          for(let i=0;i<that.repair.length;i++)
+          {
+            if(that.repair[i].status==2)
+              that.table2.push(that.repair[i])
+            else
+              that.table1.push(that.repair[i])
+          }
       })
-        
-        },
-      submit(){
-          console.log(this.value);
-          var data={
-            rid:this.value,
-            info:this.form.desc,
-            type:this.value2
-          };
-          console.log(data);
-          this.$axios.post('/workorder/create_workorder/',JSON.stringify(data)).then(function (request) {
-              if(request.data.errno==0){
-                  ElMessage({
-                        message: request.data.msg,
-                        type: 'success',
-                      }) 
-              }
-              else{
-                  ElMessage.error(request.data.msg)
-              } 
-          })
-      },
-      see(){
-          this.$router.push("/myRepair")
-      }
-          
-    },
-}
 
+
+    },
+    lookInfo(index){
+      this.$router.push({
+        name: '报修内容界面',
+        params: {
+            wid:index.wid,
+        }
+      })
+    }
+  }
+  
+
+}
 </script>
 

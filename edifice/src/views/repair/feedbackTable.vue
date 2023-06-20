@@ -2,7 +2,7 @@
 <div>
     <main>
         <div class="container">
-            <el-card class="card">
+            <el-card class="card" style="width: 1500px;">
                 <myCharts id="chart" :options="option" :width="width"></myCharts>
             </el-card>
         </div>
@@ -76,27 +76,10 @@
     <el-dialog title="查看明细" v-model="addDialogVisible"
     width="80%">
     <el-tabs type="border-card">
-        <el-tab-pane label="用户描述">
-            <el-card class="myCommit">
-                <div>描述: {{data4Dlg.description}}</div>
-            </el-card>
-            <!-- <el-card style="margin-top: 15px">
-            <div>回复用户 </div>
-                <el-input class="input2"
-                type="textarea"
-                :rows="6"
-                placeholder="请输入内容..."
-                v-model="input2">
-                </el-input>
-                <el-button 
-                    class="submit" size="small"
-                    @click="submitInput(data4Dlg.type, input2, data4Dlg.form_id)">
-                    提 交
-                    <el-icon><Upload /></el-icon>
-                </el-button>
-            </el-card> -->
-        </el-tab-pane>
         <el-tab-pane label="处理反馈">
+            <el-card class="myCommit" style="margin-bottom: 10px">
+                <div>用户描述: {{data4Dlg.description}}</div>
+            </el-card>
             <el-card style="margin-bottom: 10px">
                 <span class="demonstration">联系维修人员处理: </span>
                 <el-button size="small" round
@@ -218,8 +201,6 @@ export default {
     },
     created() { 
         this.getFeedbackList(); 
-        this.addDialogVisible = false;
-        localStorage.removeItem('data4Dlg');
     },
     updated() { 
         this.workName;
@@ -236,16 +217,11 @@ export default {
                         this.tableData = data4Test.feedbackList
                 }
             })
-            this.count = this.tableData.length;
-            //初始化分页表信息
-            this.paginations.total = this.tableData.length;
-            //this.paginations.page_size = this.tableData.length;
-            this.paginations.page_size = 10;
-            this.handleSizeChange(this.paginations.page_size)
-            console.log(this.params)
-            console.log(localStorage.getItem('data4Dlg'));
+            this.addDialogVisible = false;
+            //this.setPaginations()
             if(this.params.name !== '' && localStorage.getItem('data4Dlg') !== null) {
                 let tmp = localStorage.getItem('data4Dlg');
+                console.log(tmp);
                 this.data4Dlg.form_id = tmp.form_id;
                 this.data4Dlg.user_id = tmp.user_id;
                 this.data4Dlg.description = tmp.description;
@@ -323,7 +299,7 @@ export default {
             this.tableData = this.all_table_data.filter((item, index) => {
                 return index < page_size;
             });
-            },
+        },
         setPaginations() {
             if(this.all_table_data.length === 0) {
                 this.all_table_data = this.tableData;
@@ -331,7 +307,7 @@ export default {
             // 总页数
             this.paginations.total = this.all_table_data.length;
             this.paginations.page_index = 1;
-            this.paginations.page_size = 5;
+            this.paginations.page_size = 10;
             // 设置默认分页数据
             this.tableData = this.all_table_data.filter((item, index) => {
                 return index < this.paginations.page_size;
@@ -416,6 +392,7 @@ export default {
                 return;
             } else {
                 this.$message.success('成功')
+                this.addDialogVisible = false;
                 //更新表单
                 this.getFeedbackList(); 
                 this.input1 = '';
@@ -438,9 +415,9 @@ export default {
 .container {
   display: flex;
   /* 设置容器内的项目沿主轴（水平方向）居中对齐 */
-  justify-content: center;
+  justify-content: left;
   /* 设置容器内的项目沿交叉轴（垂直方向）居中对齐 */
-  align-items: center;
+  align-items: left;
 }
 .table-area {
     margin-top: 7px;

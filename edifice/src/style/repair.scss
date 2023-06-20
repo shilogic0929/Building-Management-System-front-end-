@@ -28,3 +28,15 @@
   font-size:40px;
   color: white;
 }
+
+.red::before
+{
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: red;
+    top: 16px;
+}
