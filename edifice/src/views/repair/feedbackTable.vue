@@ -80,7 +80,7 @@
             <el-card class="myCommit">
                 <div>描述: {{data4Dlg.description}}</div>
             </el-card>
-            <el-card style="margin-top: 15px">
+            <!-- <el-card style="margin-top: 15px">
             <div>回复用户 </div>
                 <el-input class="input2"
                 type="textarea"
@@ -94,7 +94,7 @@
                     提 交
                     <el-icon><Upload /></el-icon>
                 </el-button>
-            </el-card>
+            </el-card> -->
         </el-tab-pane>
         <el-tab-pane label="处理反馈">
             <el-card style="margin-bottom: 10px">
@@ -137,7 +137,7 @@
                 </el-form>
                 <el-button 
                     class="submit" size="small" 
-                    @click="submitInput(data4Dlg.type, input1, data4Dlg.form_id)">
+                    @click="submitInput(data4Dlg, input1)">
                     生成初步反馈意见
                     <el-icon><Promotion /></el-icon>
                 </el-button>
@@ -218,32 +218,20 @@ export default {
     },
     created() { 
         this.getFeedbackList(); 
+        this.addDialogVisible = false;
+        localStorage.removeItem('data4Dlg');
     },
     updated() { 
         this.workName;
     },
     methods: {
         getFeedbackList() {
-            //console.log(this.params);
-            // try {
-            //     const res = await axios.post('feedback/feedbackListByAdmin/', {type: this.params.type});
-            //     if(res.status !== 200) {
-            //         this.$message.error('获取用户反馈失败：'+ res.statusText);
-            //         return;
-            //     }
-            //     this.tableData = res.data.feedback;
-            //     for(let i = 0; i < this.tableData.length; i++) 
-            //         this.tableData[i].status = '未处理'
-            // } catch(err) {
-            //     //this.$message.error('发生未知错误，请重试');
-            //     //console.log(err);
-            // }
             this.tableData = data4Test.feedbackList;
             this.getOption();
-            axios.post("/repairList", {params: {"token" : '1'}}).then((res)=>{
+            axios.post("/repairList", {params: {token : '1'}}).then((res)=>{
                 if(res.status == 200) {
                     this.tableData = res.data.feedbackList;
-                    //console.log(this.tableData);
+                    console.log(res);
                     if(this.tableData==null) 
                         this.tableData = data4Test.feedbackList
                 }
@@ -404,19 +392,34 @@ export default {
                 } 
             })
         },
-        async submitInput(type, input, form_id) {
-            if(input === '') {
-                this.$message("请输入内容");
+        submitInput(data4Dlg, input) {
+            if(input.maintainer_id === '') {
+                this.$message("请输入内容")
+                return
             }
-            const res = await axios.post('feedback/reply/', {form_id: form_id, reply: input});
-            if(res.status !== 200) {
-                this.$message.error('建立工单失败：'+ res.statusText);
+            if(input.maintain_time === '') {
+                this.$message("请设置维修时间")
+                return
+            }
+            const formData = new FormData()
+            formData.append('maintainer_id',input.maintainer_id)
+            formData.append('maintainer_name',input.maintainer_name)
+            formData.append('maintainer_phone',input.maintainer_phone)
+            formData.append('maintainer_time',input.maintainer_time)
+            this.$axios({
+                method:'POST',
+                url: '/setMaintainer',
+                data: formData
+            }).then(res => {
+                if(res.status !== 200) {
+                this.$message.error('提交反馈失败：'+ res.statusText);
                 return;
-            } 
-            //更新表单
-            this.getFeedbackList(); 
-            this.input1 = '';
-            this.input2 = '';
+            } else {
+                this.$message.success('成功')
+                //更新表单
+                this.getFeedbackList(); 
+                this.input1 = '';
+            }})
         },
         closeDlg() {
             this.input1.maintainer_id = '';
