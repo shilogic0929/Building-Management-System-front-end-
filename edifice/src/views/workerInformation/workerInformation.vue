@@ -220,7 +220,7 @@ export default {
           query : {
             //form_id:this.row.worker_id,
             maintainer_name: row.name,
-            maintainer_id: row.worker_id,
+            maintainer_id: row.user_id,
             maintainer_phone: row.tel,
           }
         })
