@@ -24,6 +24,7 @@
   </div>
 </template>
 
+
 <script>
 import { ref, onMounted } from "vue";
 // import SlideShow from "@/components/SlideShow.vue";
