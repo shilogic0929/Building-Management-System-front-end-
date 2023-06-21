@@ -7,9 +7,9 @@
       <el-breadcrumb-item>报修列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-tabs>
-      <el-tab-pane style="padding-top: 10px;">
-        <FeedbackTable :params="worker_info"></FeedbackTable>
-      </el-tab-pane>
+        <el-tab-pane style="padding-top: 10px;">
+            <FeedbackTable :params="worker_info"></FeedbackTable>
+        </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -17,25 +17,25 @@
 <script>
 import FeedbackTable from './feedbackTable'
 export default {
-  name: "admin-feedbacks.vue",
-  components: {
-    FeedbackTable,
-  },
-  data() {
-    return {
-      worker_info: {
-        maintainer_id: '',
-        maintainer_name: '',
-        maintainer_phone: '',
-      }
-    }
-  },
-  created() {
-    this.worker_info.maintainer_id=this.$route.query.maintainer_id;
-    this.worker_info.maintainer_name=this.$route.query.maintainer_name;
-    this.worker_info.maintainer_phone=this.$route.query.maintainer_phone;
-    console.log(this.worker_info)
-  },
+    name: "admin-feedbacks.vue",
+    components: {
+        FeedbackTable,
+    },
+    data() {
+        return {
+            worker_info: {
+              maintainer_id: '',
+              maintainer_name: '',
+              maintainer_phone: '',
+            }
+        }
+    },
+    created() {
+      this.worker_info.maintainer_id=this.$route.query.maintainer_id;
+      this.worker_info.maintainer_name=this.$route.query.maintainer_name;
+      this.worker_info.maintainer_phone=this.$route.query.maintainer_phone;
+      console.log(this.worker_info)
+    },
 }
 </script>
 

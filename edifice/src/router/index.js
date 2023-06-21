@@ -89,14 +89,6 @@ const routes = [{
         component: () => import('../views/workerInformation/workerInformation.vue'),
       },
       {
-        path: 'addHouseDetail',
-        name: '添加房源细节',
-        meta: {
-          title: "添加房源细节"
-        },
-        component: () => import('../views/service/addHouseDetail.vue'),
-      },
-      {
         path: 'verifyRepair',
         name: '报修处理',
         meta: {
@@ -136,6 +128,7 @@ const routes = [{
         },
         component: () => import('../views/repair/handleRepair.vue'),
       },
+
       {
         path: 'repairService',
         name: "维修服务界面",
@@ -143,22 +136,31 @@ const routes = [{
           title: "维修服务界面"
         },
         component: () => import('../views/repair/repairService.vue'),
+      } ,
+      {
+        path: 'woIn',
+        name: '工人信息',
+        meta: {
+          title: "工人信息"
+        },
+        component: () => import('../views/workerInformation/workerInformation.vue'),
+      },
+      {
+        path: 'roomStatus',
+        name: '房间状态',
+        meta: {
+          title: "房间状态"
+        },
+        component: () => import('../views/roomStatus/roomStatus.vue'),
+
       }
     ]
   },
-
 ]
-
-
-
 const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
-
-
-
-
 // router.beforeEach(async (to, from, next) => {
 //   if (to.path == "/login") {
 //     next({path: "/login"});
@@ -167,5 +169,4 @@ const router = createRouter({
 //     next();
 //   }
 // });
-
 export default router
