@@ -111,11 +111,13 @@
                     <el-input v-model="input1.maintainer_phone" />
                     </el-form-item>
                     <el-form-item label="维修时间">
-                        <el-time-picker
-                        v-model="input1.maintain_time"
-                        placeholder="选择时间"
-                        style="width: 100%"
+                        <div class="block">
+                        <el-date-picker
+                            v-model="input1.maintain_time"
+                            type="datetime"
+                            placeholder="选择日期和时间"
                         />
+                        </div>
                     </el-form-item>
                 </el-form>
                 <el-button 
@@ -174,9 +176,9 @@ export default {
             },
             addDialogVisible: false,
             data4Dlg:{
-                form_id: 0,
-                user_id: 0,
-                room_id: 0,
+                form_id: '',
+                user_id: '',
+                room_id: '',
                 description: '',
                 date: '',
                 type: 1,
@@ -209,7 +211,13 @@ export default {
         getFeedbackList() {
             this.tableData = data4Test.feedbackList;
             this.getOption();
-            axios.post("/repairList", {params: {token : localStorage.getItem('token')}}).then((res)=>{
+            const formData = new FormData()
+            formData.append('token', localStorage.getItem('token'))
+            this.$axios({
+                method:'POST',
+                url: '/repairList',
+                data: formData
+            }).then((res)=>{
                 if(res.status == 200) {
                     this.tableData = res.data.feedbackList;
                     console.log(res);
@@ -218,17 +226,20 @@ export default {
                 }
             })
             this.addDialogVisible = false;
+            this.paginations.page_size = 10;
             this.setPaginations()
+            this.handleSizeChange(this.paginations.page_size)
             console.log(this.params)
             if(this.params != null && this.params.maintainer_name !== undefined && this.params.maintainer_name !== '' && localStorage.getItem('data4Dlg') !== null) {
                 let tmp = localStorage.getItem('data4Dlg');
                 console.log(tmp);
-                this.data4Dlg.form_id = tmp.form_id;
-                this.data4Dlg.user_id = tmp.user_id;
-                this.data4Dlg.description = tmp.description;
-                this.data4Dlg.date = tmp.date;
-                this.data4Dlg.status = tmp.status;
-                this.data4Dlg.room_id = tmp.room_id;
+                // this.data4Dlg.form_id = tmp.form_id;
+                // this.data4Dlg.user_id = tmp.user_id;
+                // this.data4Dlg.description = tmp.description;
+                // this.data4Dlg.date = tmp.date;
+                // this.data4Dlg.status = tmp.status;
+                // this.data4Dlg.room_id = tmp.room_id;
+                this.data4Dlg = tmp;
                 this.input1.maintainer_id = this.params.maintainer_id;
                 this.input1.maintainer_name = this.params.maintainer_name;
                 this.input1.maintainer_phone = this.params.maintainer_phone;
@@ -334,8 +345,7 @@ export default {
             this.paginations.total = this.tableData.length;
             this.paginations.page_size = 10;
         },
-        async checkOperator(row) {
-            let form_id = row.form_id
+        checkOperator(row) {
             this.data4Dlg.form_id = row.form_id;
             this.data4Dlg.user_id = row.user_id;
             this.data4Dlg.description = row.description;
@@ -344,19 +354,6 @@ export default {
             this.data4Dlg.date = row.date;
             console.log(row);
             this.addDialogVisible = true
-            try {
-                this.addDialogVisible = true
-                const res = await axios.post('feedback/feedbackInfo/', {form_id: form_id});
-                console.log(res);
-                if(res.status !== 200) {
-                    this.$message.error('获取信息失败：'+ res.statusText);
-                    return;
-                } 
-                this.data4Dlg = res.data;
-            } catch(err) {
-                this.$message.error('发生未知错误,请重试!' + err);
-                console.log(err);
-            }
         },
         callWorkers(form_id) {
             console.log(form_id); 
@@ -369,6 +366,9 @@ export default {
             })
         },
         submitInput(data4Dlg, input) {
+            console.log(data4Dlg);
+            this.data4Dlg = JSON.parse(data4Dlg);
+            console.log(this.data4Dlg.form_id);
             if(input.maintainer_id === '') {
                 this.$message("请输入内容")
                 return
@@ -377,11 +377,24 @@ export default {
                 this.$message("请设置维修时间")
                 return
             }
+            if(this.data4Dlg.form_id == undefined || this.data4Dlg.form_id == '') {
+                this.$message("当前数据无效，请重新选择")
+                this.addDialogVisible = false
+                return
+            }
+            let date = new Date(input.maintain_time).toLocaleDateString()
+            let time=new Date(input.maintain_time).toLocaleTimeString()
+            // let dateTime = date + ' ' + time
+            let dateTime = date.split("/").join("-")+' '+ time
+            console.log(dateTime);
             const formData = new FormData()
-            formData.append('maintainer_id',input.maintainer_id)
+            formData.append('form_id', this.data4Dlg.form_id)
+            formData.append('token', localStorage.getItem('token'))
+            formData.append('maintain_time',dateTime)
             formData.append('maintainer_name',input.maintainer_name)
+            formData.append('maintainer_id',input.maintainer_id)
             formData.append('maintainer_phone',input.maintainer_phone)
-            formData.append('maintainer_time',input.maintainer_time)
+            
             this.$axios({
                 method:'POST',
                 url: '/setMaintainer',
@@ -392,10 +405,9 @@ export default {
                 return;
             } else {
                 this.$message.success('成功')
-                this.addDialogVisible = false;
                 //更新表单
                 this.getFeedbackList(); 
-                this.input1 = '';
+                this.addDialogVisible = false;
             }})
         },
         closeDlg() {

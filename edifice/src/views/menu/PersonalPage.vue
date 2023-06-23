@@ -1,40 +1,69 @@
 <template>
-  <div class="home" style="margin-top:20px;">
-    <h1 style="font-size: 30px;">个人基本信息</h1>
-    <div class="rrrr">
-        <img style="height: 350px;" src="@/assets/img/2.jpg"  />
-        <el-card class="card">
-            <div class="patton">
-            <p class="text"><el-text class="text">法人名称:{{ legal }}</el-text></p>
-            <p class="text"><el-text class="text">公司名称:{{ company }}</el-text></p>
-            <p class="text"><el-text class="text">姓名:{{ name }}</el-text></p>
-            <p class="text"><el-text class="text">电话:{{ phone }}</el-text></p>
-            </div>
-        </el-card>
+  <div class="serviceGrid">
+      <el-card>
+        <template #header>
+          <div class = "card-header" style = "margin:0px;">
+            <span class="image-font">查看个人信息</span>
+          </div>
+        </template>
+        <div class="flexItem" style="padding: 20px 0;">
+          <el-form :model="form" label-width="150px">
+            <el-form-item label="姓名：" prop="name">
+              <el-input v-model="form.name" disabled/>
+            </el-form-item>
+            <el-form-item label="联系方式：" prop="phone">
+                <el-input v-model="form.phone" disabled/>
+            </el-form-item>
+
+            <el-form-item label="法人：" prop="legal">
+              <el-input v-model="form.legal" disabled/>
+            </el-form-item>
+
+            <el-form-item label="公司：" prop="company">
+              <el-input v-model="form.company" disabled/>
+            </el-form-item>
+
+            <el-form-item label="维修类型：" prop="type" v-if="form.type>0">
+              <el-input v-model="types[form.type-1]" disabled/>
+            </el-form-item>
+
+            <el-form-item label="邮箱：" prop="email">
+                <el-input v-model="form.email" disabled/>
+            </el-form-item>
+
+            <el-form-item label="个人描述：">
+              <el-input disabled v-model="form.desc" type="textarea" maxlength="100" resize="none"
+              show-word-limit  :autosize="{ minRows: 5}"/>
+            </el-form-item>
+
+            <!-- <el-form-item>
+              <el-button type="primary" @click="submit">提交</el-button>
+              <el-button @click="clear">清空</el-button>
+            </el-form-item> -->
+          </el-form>
+
+        </div>
+      </el-card>
     </div>
-  </div>
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
+//import { ElMessage } from 'element-plus'
 
     export default{
         data(){
             return{
-                form:{
-                    name: "",
-                    username:"",
-                    sex:"",
-                    desc: '',
-                    phoneNumber: '',
-                    IdNumber:'',
-                    email: '',
-                },
-                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+              types:['水','电','机械','其他'],
+              form:{
                 name: '小王',
                 phone: '123',
                 legal: '徐惠彬',
                 company:'北京航空航天大学',
+                email: "",
+                desc: "",
+                type: "",
+                is_available: 0
+              }
             }
         },
         mounted() {
@@ -45,75 +74,57 @@ import { ElMessage } from 'element-plus'
                 var that=this;
                 const data = new FormData()
                 data.append('token', localStorage.getItem('token'))
+                this.form.type=parseInt(localStorage.getItem('type'))
                 this.$axios({
                     method:'POST',
-                    url: '/test/get_user_info',
+                    url: '/get_user_info',
                     data: data
                 }).then(res => {
                     if (res.data.errno === 0) {
-                        this.name = res.data.username,
-                        this.phone = res.data.phone,
-                        this.legal = res.data.legal_person,
-                        this.company = res.data.company
-                    }
-                    else {
-
+                        var re=res.data.data
+                        that.form.name = re.name,
+                        that.form.phone = re.phone,
+                        that.form.legal = re.legal_person,
+                        that.form.company = re.company,
+                        that.form.email = re.email,
+                        that.form.desc = re.description
+                        that.form.type = re.type
+                        that.form.is_available = re.is_available
                     }
                 })
             },
-            onSubmit(){
-                var data={
-                    username:this.form.username,
-                    realname:this.form.name,
-                    sex:this.form.sex,
-                    desc:this.form.desc,
-                    mobile:this.form.phoneNumber,
-                    id_number:this.form.IdNumber,
-                    email:this.form.email,
+            // onSubmit(){
+            //     var data={
+            //         username:this.form.username,
+            //         realname:this.form.name,
+            //         desc:this.form.desc,
+            //         mobile:this.form.phoneNumber,
+            //         id_number:this.form.IdNumber,
+            //         email:this.form.email,
 
-                };
-                this.$axios.post('/user/modify_user/',JSON.stringify(data)).then(function (request) {
-                    console.log(request.data)
-                    if(request.data.errno==0){
-                        ElMessage({
-                            message: request.data.msg,
-                            type: 'success',
-                        })
-                    }
-                })
-            }
+            //     };
+            //     this.$axios.post('/user/modify_user/',JSON.stringify(data)).then(function (request) {
+            //         console.log(request.data)
+            //         if(request.data.errno==0){
+            //             ElMessage({
+            //                 message: request.data.msg,
+            //                 type: 'success',
+            //             })
+            //         }
+            //     })
+            // }
         }
     }
 
 
 </script>
-<style>
-.text {
-    font-size: 25px;
-    line-height: 2;
-    flex-grow: 1;
-}
-.patton {
-    height: 350px;
-    text-align: left;
-    margin-left: 30px;
-    display: flex;
-    flex-direction: column;
-}
-.card {
-    width: 500px;
-    height: 350px;
-    top: 20px;
-    right: 0;
-    margin-left: 10px; /* 可根据需要调整卡片与图像的间距 */
-}
-.rrrr {
-display: flex;
-align-items: center; /* 垂直居中对齐 */
-margin-top: 20px;
-margin-left: 10px;
-}
+<style scoped>
+.el-input {
+    width: 350px;
+  }
 
-
+.el-textarea{
+  width: 350px;
+}
 </style>
 

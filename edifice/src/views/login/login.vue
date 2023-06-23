@@ -27,7 +27,7 @@
         </div>
         <el-form ref="loginForm" :rules="rules" :model="ruleForm">
           <el-form-item prop="username">
-            <el-input placeholder="请输入账号" prefix-icon="el-icon-user" v-model="ruleForm.username"></el-input>
+            <el-input placeholder="请输入账号" :prefix-icon="User" v-model="ruleForm.username"></el-input>
           </el-form-item>
           <!--          <el-form-item prop="telephone" v-if="dialogVisible">-->
           <!--            <el-input placeholder="请输入电话" prefix-icon="el-icon-lock" v-model="ruleForm.telephone"></el-input>-->
@@ -36,12 +36,12 @@
           <!--            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>-->
           <!--          </el-form-item>-->
           <el-form-item prop="password">
-            <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password" show-password></el-input>
+            <el-input placeholder="请输入密码" :prefix-icon="Lock" v-model="ruleForm.password" show-password></el-input>
           </el-form-item>
           <!--          <el-form-item prop="password2" v-if="dialogVisible">-->
           <!--            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2" show-password></el-input>-->
           <!--          </el-form-item>-->
-          <el-row gutter="10">
+          <el-row gutter="10" class="flexItem">
             <el-col :span="12">
 
               <el-button color="#2b4a85" class="loginBtn" @click="login()">登录</el-button>
@@ -75,8 +75,13 @@
   </div>
 </template>
 
+<script setup>
+import { Lock } from '@element-plus/icons-vue'
+import { User } from '@element-plus/icons-vue'
+</script>
+
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import router from "@/router";
 
 export default {
@@ -107,7 +112,7 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 15, message: "长度在3到5个字符", trigger: "blur" }
+          { min: 3, max: 30, message: "长度在3到30个字符", trigger: "blur" }
         ],
         telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
         mail: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
@@ -116,8 +121,9 @@ export default {
         { validator: validatePass },
         ],
         // password2: [{ required: true, message: "请再次输入密码", trigger: "blur" }]
+        // }
       }
-    };
+    }
   },
   mounted() {
     this.init();
@@ -209,9 +215,6 @@ export default {
         if (res.data.errno === 0) {
           localStorage.setItem('token', res.data.data.token)
           localStorage.setItem('type', res.data.data.type)
-          // var naid = localStorage.getItem("token");
-          // console.log(naid)
-          // console.log(res.data.data)
           if (res.data.data.type === 0) {//普通人员
             this.$router.push('/myRepair')
           }
@@ -219,8 +222,9 @@ export default {
             this.$router.push('/handleRepair')
           }
           else {//维修人员
-            this.$router.push('/handleRepair')
+            this.$router.push('/repairService')
           }
+          console.log(res.data.data.type);
         }
       })
       // if(this.dialogVisible==true){
