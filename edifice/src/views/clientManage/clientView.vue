@@ -75,16 +75,26 @@
                     <span>{{scope.row.sign_time}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="" prop="payment" align="center">
+                <el-table-column label="物业费信息" prop="payment" align="center">
                   <template #default="scope">
                     <el-popover placement="right" :width="400" trigger="click">
                       <template #reference>
-                        <el-button>点击查看物业费信息</el-button>
+                        <el-button>查看</el-button>
                       </template>
                       <el-table :data="scope.row.payment">
-                        <el-table-column width="120" prop="year" label="年份" />
-                        <el-table-column width="120" prop="ispaid" label="缴纳状态" />
-                        <el-table-column width="120" prop="paytime" label="缴纳时间" />
+                        <el-table-column width="80" prop="year" label="年份" />
+                        <el-table-column width="80" prop="ispaid" label="缴纳状态">
+                          <template #default="zone">
+                            <span>{{zone.row.ispaid == true ? '已缴纳' : '未缴纳'}}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column width="100" prop="pay_time" label="缴纳时间" />
+                        <el-table-column >
+                          <template #header>
+                            <el-button type="primary" @click="dialogVisible = true" align="content-center">新增</el-button>
+                          </template>
+                          <el-button @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        </el-table-column>
                       </el-table>
                     </el-popover>
                   </template>
@@ -214,6 +224,10 @@
 import {computed,ref} from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import {
+  Delete,
+  Edit,
+} from '@element-plus/icons-vue'
 
 const _ResizeObserver = window.ResizeObserver;
 window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
