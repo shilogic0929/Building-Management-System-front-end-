@@ -21,35 +21,45 @@
         </el-form>
     </el-card>
     <el-card class="table-area">
-        <el-table :data="tableData" stripe style="width: 100%">
+        <el-table 
+        :data="tableData" 
+        stripe style="width: 100%"
+        :header-cell-style="{background:'#87CEFA'}"
+        >
         <el-table-column 
         type="index"
-        label="#">
+        label="#"
+        align="center">
         </el-table-column>
         <el-table-column
             prop="form_id"
             label="反馈号"
-            width="150">
+            width="150"
+            align="center">
         </el-table-column>
         <el-table-column
             prop="user_id"
             label="用户号"
-            width="150">
+            width="150"
+            align="center">
         </el-table-column>
         <el-table-column
             prop="room_id"
             label="房间号"
-            width="150">
+            width="150"
+            align="center">
         </el-table-column>
         <el-table-column
             prop="status"
             label="状态"
-            width="150">
+            width="150"
+            align="center">
         </el-table-column>
         <el-table-column
-            prop="date"
+            prop="repair_time"
             label="发起时间"
-            width="200">
+            width="200"
+            align="center">
         </el-table-column>
         <el-table-column label="操作">
             <template v-slot="scope">
@@ -209,8 +219,7 @@ export default {
     },
     methods: {
         getFeedbackList() {
-            this.tableData = data4Test.feedbackList;
-            this.getOption();
+            //this.tableData = data4Test.feedbackList;
             const formData = new FormData()
             formData.append('token', localStorage.getItem('token'))
             this.$axios({
@@ -219,16 +228,16 @@ export default {
                 data: formData
             }).then((res)=>{
                 if(res.status == 200) {
-                    this.tableData = res.data.feedbackList;
-                    console.log(res);
+                    this.tableData = res.data.data;
                     if(this.tableData==null) 
                         this.tableData = data4Test.feedbackList
+                    this.getOption();
+                    this.addDialogVisible = false;
+                    this.paginations.page_size = 10;
+                    this.setPaginations()
+                    this.handleSizeChange(this.paginations.page_size)
                 }
             })
-            this.addDialogVisible = false;
-            this.paginations.page_size = 10;
-            this.setPaginations()
-            this.handleSizeChange(this.paginations.page_size)
             console.log(this.params)
             if(this.params != null && this.params.maintainer_name !== undefined && this.params.maintainer_name !== '' && localStorage.getItem('data4Dlg') !== null) {
                 let tmp = localStorage.getItem('data4Dlg');
@@ -250,15 +259,16 @@ export default {
             let mp1 = new Map(), sorted1;
             let mp2 = new Map(), sorted2;
             for(let i = 0; i < this.tableData.length; i++) {
-                let str = this.tableData[i].date;
+                let str = this.tableData[i].repair_time;
                 // 使用slice()方法截取前10个字符，即年月日部分
                 let date = str.slice(0, 10);
+                console.log(date)
                 // 判断mp对象是否已经有该日期作为键，如果没有，就初始化为0
                 if(!mp1.has(date)) 
                     mp1.set(date, 0);
                 if(!mp2.has(date)) 
                     mp2.set(date, 0);
-                if(this.tableData[i].status == '已处理') {
+                if(this.tableData[i].status == 0 || this.tableData[i].status == 1) {
                     // 将mp对象中该日期对应的值加一
                     mp1.set(date, mp1.get(date) + 1);
                 }
@@ -312,9 +322,9 @@ export default {
             });
         },
         setPaginations() {
-            if(this.all_table_data.length === 0) {
+            // if(this.all_table_data.length === 0) {
                 this.all_table_data = this.tableData;
-            }
+            //}
             // 总页数
             this.paginations.total = this.all_table_data.length;
             this.paginations.page_index = 1;
@@ -336,14 +346,16 @@ export default {
                 user_id: this.search_data.search_user_id             
             }
             for(let item of this.all_table_data) {
-                if((pojo.room_id === '' || item.room_id === pojo.room_id) &&
-                (pojo.user_id === '' || item.user_id === pojo.user_id)) {
+                console.log(item)
+                if((pojo.room_id === '' || item.room_id == pojo.room_id) &&
+                (pojo.user_id === '' || item.user_id == pojo.user_id)) {
                     this.selected_table_data.push(item);
                 }
             }
+            console.log(this.selected_table_data)
             this.tableData = this.selected_table_data;
             this.paginations.total = this.tableData.length;
-            this.paginations.page_size = 10;
+            this.paginations.page_size = 10;    
         },
         checkOperator(row) {
             this.data4Dlg.form_id = row.form_id;
@@ -417,7 +429,22 @@ export default {
             this.input1.maintain_time = '';
             this.addDialogVisible = false;
             localStorage.removeItem('data4Dlg');
-        }
+        },
+        tableHeaderCellStyle({row,column,rowIndex, columnIndex}) {
+            let cellStyle1= "color: #fff;background:#027db4"
+            let cellStyle2= "color: #fff;background:#70b603"
+            let cellStyle3= "color: #fff;background:#00bfbf"
+            if(columnIndex >= 0 && columnIndex < 9 && rowIndex===1){
+            return cellStyle1;
+            }
+            if(columnIndex > 8 && columnIndex < 18 && rowIndex===1){
+                return cellStyle2;
+            }
+            if(columnIndex === 18 && rowIndex===1){
+            return cellStyle3;
+            }
+        },
+
     }
 }
 </script>
