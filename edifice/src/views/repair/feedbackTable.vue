@@ -34,19 +34,19 @@
         <el-table-column
             prop="form_id"
             label="反馈号"
-            width="150"
+            width="100"
             align="center">
         </el-table-column>
         <el-table-column
             prop="user_id"
             label="用户号"
-            width="150"
+            width="100"
             align="center">
         </el-table-column>
         <el-table-column
             prop="room_id"
             label="房间号"
-            width="150"
+            width="100"
             align="center">
         </el-table-column>
         <el-table-column
@@ -58,6 +58,12 @@
         <el-table-column
             prop="repair_time"
             label="发起时间"
+            width="200"
+            align="center">
+        </el-table-column>
+        <el-table-column
+            prop="expect_time"
+            label="期望时间"
             width="200"
             align="center">
         </el-table-column>
@@ -84,26 +90,20 @@
     </el-card>
     <!--添加对话框,查看明细-->
     <el-dialog title="查看明细" v-model="addDialogVisible"
-    width="80%">
+    width="1000">
     <el-tabs type="border-card">
         <el-tab-pane label="处理反馈">
             <el-card class="myCommit" style="margin-bottom: 10px">
                 <div>用户描述: {{data4Dlg.description}}</div>
             </el-card>
-            <el-card style="margin-bottom: 10px">
+            <el-card class="input-card">
                 <span class="demonstration">联系维修人员处理: </span>
                 <el-button size="small" round
                 @click="callWorkers(data4Dlg.form_id)">
-                <el-icon><PhoneFilled /></el-icon>分派维修人员</el-button>
-            </el-card>
-            <el-card class="input-card">
-                <div>回复用户: </div>
-                <!-- <el-input class="input1"
-                type="textarea"
-                :rows="4"
-                placeholder="请输入内容: 必须包括维修师傅姓名、联系方式以及维修时间"
-                v-model="input1">
-                </el-input> -->
+                <el-icon><PhoneFilled /></el-icon>手动分派维修人员</el-button>
+                <el-button size="small" round
+                @click="callWorkers(data4Dlg.form_id)">
+                <el-icon><Guide /></el-icon>智能分派维修人员</el-button>
                 <div style="margin: 20px" />
                 <el-form
                     :label-position="top"
@@ -130,18 +130,39 @@
                         </div>
                     </el-form-item>
                 </el-form>
-                <el-button 
-                    class="submit" size="small" 
-                    @click="submitInput(data4Dlg, input1)">
-                    生成初步反馈意见
-                    <el-icon><Promotion /></el-icon>
-                </el-button>
+                <el-divider content-position="center">工单处理流程</el-divider>
+                <el-row>
+                <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
+                <el-col :span="8">
+                    <div class="block">
+                        <el-timeline>
+                            <el-timeline-item
+                                max-width="300px"
+                                v-for="(activity, index) in activities"
+                                :key="index"
+                                :icon="activity.icon"
+                                :type="activity.type"
+                                :color="activity.color"
+                                :hollow="activity.hollow"
+                                :timestamp="activity.timestamp"
+                                >
+                            {{ activity.content }}
+                            </el-timeline-item>
+                        </el-timeline>
+                    </div>
+                </el-col>
+                <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
+                </el-row>
             </el-card>
         </el-tab-pane>
     </el-tabs>
     <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="closeDlg()">取消</el-button>
-        <el-button size="small" type="primary" @click="closeDlg()">确定</el-button>       
+        <el-button 
+            class="submit" size="middle" 
+            @click="submitInput(data4Dlg, input1)">
+            生成初步反馈意见
+            <el-icon><Promotion /></el-icon>
+        </el-button>
     </span>
     </el-dialog>
 </div>
@@ -152,6 +173,7 @@ import axios from 'axios'
 import { data4Test } from './test.js';
 import myCharts from "./myCharts.vue";
 import { option } from './options.js'
+import { MoreFilled } from '@element-plus/icons-vue'
 export default {
     name: "FeedbackTable",
     components: {
@@ -186,13 +208,14 @@ export default {
             },
             addDialogVisible: false,
             data4Dlg:{
-                form_id: '',
-                user_id: '',
-                room_id: '',
+                form_id: 0,
+                user_id: 0,
+                room_id: 0,
                 description: '',
-                date: '',
+                repair_time: '',
+                expect_time: '',
                 type: 1,
-                status: '',
+                status: 0,
                 reply: {
                     // maintainer_id: '',
                     // maintainer_name: '',
@@ -209,6 +232,28 @@ export default {
                 maintain_time: '',
             },
             input2: '',
+            activities: [{
+                content: '用户发起报修',
+                timestamp: '',
+                type: 'primary',
+                icon: MoreFilled,
+                color: '#0bbd87',
+                hollow: true,
+            },{
+                content: '用户预期维修时间',
+                timestamp: '',
+                hollow: true,
+            }, {
+                content: '分派维修人员',
+                timestamp: '',
+                color: '#0bbd87',
+                hollow: true,
+            }, {
+                content: '已维修',
+                timestamp: '',
+                type: 'primary',
+                hollow: true,
+            },],
         }
     },
     created() { 
@@ -220,6 +265,7 @@ export default {
     methods: {
         getFeedbackList() {
             //this.tableData = data4Test.feedbackList;
+            console.log(this.params)
             const formData = new FormData()
             formData.append('token', localStorage.getItem('token'))
             this.$axios({
@@ -227,12 +273,12 @@ export default {
                 url: '/repairList',
                 data: formData
             }).then((res)=>{
+                console.log(res)
                 if(res.status == 200) {
                     this.tableData = res.data.data;
-                    if(this.tableData==null) 
+                    if(this.tableData.length == 0) 
                         this.tableData = data4Test.feedbackList
                     this.getOption();
-                    this.addDialogVisible = false;
                     this.paginations.page_size = 10;
                     this.setPaginations()
                     this.handleSizeChange(this.paginations.page_size)
@@ -248,10 +294,12 @@ export default {
                 // this.data4Dlg.date = tmp.date;
                 // this.data4Dlg.status = tmp.status;
                 // this.data4Dlg.room_id = tmp.room_id;
-                this.data4Dlg = tmp;
+                this.data4Dlg = JSON.parse(tmp);
                 this.input1.maintainer_id = this.params.maintainer_id;
                 this.input1.maintainer_name = this.params.maintainer_name;
                 this.input1.maintainer_phone = this.params.maintainer_phone;
+                this.activities[0].timestamp = this.data4Dlg.repair_time;
+                this.activities[1].timestamp = this.data4Dlg.expect_time;
                 this.addDialogVisible = true;
             }
         },
@@ -363,7 +411,10 @@ export default {
             this.data4Dlg.description = row.description;
             this.data4Dlg.room_id = row.room_id;
             this.data4Dlg.status = row.status;
-            this.data4Dlg.date = row.date;
+            this.data4Dlg.repair_time = row.repair_time;
+            this.data4Dlg.expect_time = row.expect_time;
+            this.activities[0].timestamp = row.repair_time;
+            this.activities[1].timestamp = row.expect_time;
             console.log(row);
             this.addDialogVisible = true
         },
@@ -372,14 +423,12 @@ export default {
             localStorage.setItem('data4Dlg', JSON.stringify(this.data4Dlg));
             this.$router.push({
                 name: '工人信息', 
-                params: {
-                    form_id: form_id
-                } 
+                // params: {
+                //     form_id: form_id
+                // } 
             })
         },
         submitInput(data4Dlg, input) {
-            console.log(data4Dlg);
-            this.data4Dlg = JSON.parse(data4Dlg);
             console.log(this.data4Dlg.form_id);
             if(input.maintainer_id === '') {
                 this.$message("请输入内容")
@@ -389,7 +438,7 @@ export default {
                 this.$message("请设置维修时间")
                 return
             }
-            if(this.data4Dlg.form_id == undefined || this.data4Dlg.form_id == '') {
+            if(this.data4Dlg.form_id == undefined) {
                 this.$message("当前数据无效，请重新选择")
                 this.addDialogVisible = false
                 return
@@ -398,6 +447,7 @@ export default {
             let time=new Date(input.maintain_time).toLocaleTimeString()
             // let dateTime = date + ' ' + time
             let dateTime = date.split("/").join("-")+' '+ time
+            this.activities[2].timestamp = dateTime
             console.log(dateTime);
             const formData = new FormData()
             formData.append('form_id', this.data4Dlg.form_id)
@@ -474,5 +524,8 @@ export default {
 }
 .submit {
     margin-top: 15px !important;
+}
+.block {
+  margin-top: 20px;
 }
 </style>

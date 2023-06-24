@@ -52,7 +52,7 @@
           <el-form-item label="联系电话" prop="phone">
             <el-input v-model="input.phone_num" />
           </el-form-item>
-          <el-form-item label="访问时间">
+          <el-form-item label="访问时间" style="margin-top: 20px;">
             <div class="block">
             <el-date-picker
                 v-model="input.visit_time"
@@ -76,7 +76,7 @@
           </el-button>
         </span>
       </el-card>
-      <el-card style="margin-top: 20px;" 
+      <el-card style="margin-top: 20px;!important" 
       v-model="showActivities">
         <span>申请处理进度</span>
         <div class="block">
