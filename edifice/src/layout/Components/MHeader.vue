@@ -62,9 +62,7 @@
             </div>
           </el-form-item>
         </el-form>
-      </el-card>
-      <template #footer>
-        <span class="dialog-footer">
+        <span class="dialog-footer" style="padding-left: 100px">
           <el-button 
           @click="dialogVisible = false">
             取消
@@ -77,6 +75,28 @@
           <el-icon><Promotion /></el-icon>
           </el-button>
         </span>
+      </el-card>
+      <el-card style="margin-top: 20px;" 
+      v-model="showActivities">
+        <span>申请处理进度</span>
+        <div class="block">
+          <el-timeline>
+            <el-timeline-item
+              v-for="(activity, index) in activities"
+              :key="index"
+              :timestamp="activity.timestamp"
+              :color="activity.color"
+              :hollow="activity.hollow">
+              {{activity.content}}
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-card>
+      <template #footer>
+        <el-button 
+          @click="dialogVisible = false">
+            <el-icon><CircleClose /></el-icon>
+          </el-button>
       </template>
     </el-dialog>
   </div>
@@ -129,14 +149,31 @@ export default {
          { required: true},
           { pattern:/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/, message: "请输入合法身份证号", trigger: "blur"}
         ],
-      }
+      },
+      activities: [{
+        content: '申请时间',
+        timestamp: '2023-06-23 14:26:00',
+        color: '#0bbd87',
+      }, {
+        content: '通过审核',
+        timestamp: '2023-06-24 14:26:00',
+        color: '#0bbd87',
+      }, {
+        content: '访问时间',
+        timestamp: '2023-06-25 14:26:00',
+        hollow: true
+      }],
+      showActivities: false,
     }
   },
   created() {
     this.user_type = localStorage.getItem('type') == 0 ? true : false;
+    //getActivityList();
+    if(this.activities.length > 0) {
+      this.showActivities = true
+    }
   },
   mounted() {
-
     this.userName = this.$store.state.username
   },
   methods: {
@@ -229,5 +266,8 @@ export default {
 .icon {
   top: 5px;
   cursor: pointer;
+}
+.block {
+  margin-top: 20px;
 }
 </style>
