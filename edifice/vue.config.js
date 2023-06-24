@@ -31,9 +31,5 @@ module.exports = {
         }
       }
     }
-<<<<<<< HEAD
-   }
-=======
   }
->>>>>>> master
 }

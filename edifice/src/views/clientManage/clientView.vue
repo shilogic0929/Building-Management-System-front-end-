@@ -75,6 +75,20 @@
                     <span>{{scope.row.sign_time}}</span>
                   </template>
                 </el-table-column>
+                <el-table-column label="" prop="payment" align="center">
+                  <template #default="scope">
+                    <el-popover placement="right" :width="400" trigger="click">
+                      <template #reference>
+                        <el-button>点击查看物业费信息</el-button>
+                      </template>
+                      <el-table :data="scope.row.payment">
+                        <el-table-column width="120" prop="year" label="年份" />
+                        <el-table-column width="120" prop="ispaid" label="缴纳状态" />
+                        <el-table-column width="120" prop="paytime" label="缴纳时间" />
+                      </el-table>
+                    </el-popover>
+                  </template>
+                </el-table-column>
               </el-table>
             </template>
           </el-table-column>
@@ -229,37 +243,7 @@ export default {
       add_legal: '',
       add_company: '',
       add_email:'',
-      clients: [
-        {
-          id:1,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
+      clients: [ 
         {
           id:2,
           name: 'Tom',
@@ -273,291 +257,12 @@ export default {
               end_time: '2005-09-10',
               sign_time: '2001-06-20',
               is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:3,
-          name: 'Tom',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:4,
-          name: 'Tom',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:5,
-          name: 'Tom',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:6,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:7,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:8,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:9,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:10,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:11,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
+              payment: {
+                year: '2002',
+                ispaid: true,
+                paytime:'2002-09-18'
+              }
+            }
           ],
         },
       ],
