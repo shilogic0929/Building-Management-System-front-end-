@@ -52,7 +52,7 @@
             filter-placement="bottom-end"
             >
             <template #default="scope">
-              <el-tag
+              <el-tag @click="lookProcess(scope.row)" style="cursor: pointer;"
                 :type="buttonTypes[scope.row.status]"
                 disable-transitions>{{process[scope.row.status]}}</el-tag>
             </template>
@@ -87,7 +87,7 @@
               报修类型
             </div>
           </template>
-          {{type}}
+          {{types[type]}}
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
@@ -100,17 +100,6 @@
           </template>
           {{info}}
         </el-descriptions-item>
-        <!-- <el-descriptions-item align="left">
-          <template #label>
-            <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              初步反馈意见
-            </div>
-          </template>
-          <span>{{advice}}</span>
-        </el-descriptions-item> -->
 
         <el-descriptions-item v-if="status!=0">
           <template #label>
@@ -149,7 +138,6 @@
         </el-descriptions-item>
 
       </el-descriptions>
-
       <template #footer>
           <span class="dialog-footer">
               <el-button type="primary" @click="visible = false">确认</el-button>
@@ -158,6 +146,9 @@
 
     </el-dialog>
     
+    <el-dialog v-model="visible2" title="报修进度">
+      <img :src="flow" style="width: 550px;height: 550px;">
+    </el-dialog>
   </div>
 </template>
 
@@ -168,7 +159,10 @@ export default {
   data(){
     return{
         img:require("@/assets/image/inner-banner3.jpg"),
+
+        flow: "",
         visible:false,
+        visible2:false,
         rid:"",
         type:"",
         info:"",
@@ -219,14 +213,23 @@ export default {
       return row.status === value;
     },
     lookInfo(index){
-        this.visible=true;
-        this.rid=index.rid;
-        this.info=index.description;
-        this.type=index.type;
-        this.time=index.maintain_time;
-        this.name=index.maintainer_name;
-        this.phone=index.maintainer_phone;
-        this.status=index.status
+      this.visible=true;
+      this.rid=index.rid;
+      this.info=index.description;
+      this.type=index.type;
+      this.time=index.maintain_time;
+      this.name=index.maintainer_name;
+      this.phone=index.maintainer_phone;
+      this.status=index.status
+    },
+    lookProcess(index){
+      this.visible2=true;
+      if(index.status==2)
+        this.flow=require("@/assets/flowCharts/finish.jpg")
+      else if(index.status==1)
+        this.flow=require('@/assets/flowCharts/repairing.jpg')
+      else
+        this.flow=require('@/assets/flowCharts/apply.jpg')
     }
 
   }

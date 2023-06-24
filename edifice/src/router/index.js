@@ -52,11 +52,6 @@ const routes = [{
         component: seeHouse
       },
       {
-        path: 'houseDetail',
-        name: '房源信息',
-        component: houseDetail,
-      },
-      {
         path: 'clientView',
         name: '查看合同',
         meta: {
@@ -71,22 +66,6 @@ const routes = [{
           title: "报修界面"
         },
         component: () => import('../views/repair/repairReport.vue'),
-      },
-      {
-        path: 'serviceHome',
-        name: '客服主页',
-        meta: {
-          title: "客服主页"
-        },
-        component: () => import('../views/service/serviceHome.vue'),
-      },
-      {
-        path: 'addHouseDetail',
-        name: '添加房源细节',
-        meta: {
-          title: "添加房源细节"
-        },
-        component: () => import('../views/service/addHouseDetail.vue'),
       },
       {
         path: 'verifyRepair',

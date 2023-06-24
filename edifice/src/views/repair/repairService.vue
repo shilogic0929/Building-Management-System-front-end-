@@ -1,11 +1,31 @@
 <template>
   <div >
-    <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
+    <!-- <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
       <div class="zz">
         <h2>维修任务</h2>
       </div>
-    </div>
+    </div> -->
+    
+
     <div class="serviceGrid">
+      <el-row>
+        <el-col :span="6" class="flexItem datahead">
+          <el-icon><Histogram /></el-icon>
+          <span>历史订单量</span>
+        </el-col>
+        <el-col :span="6" class="flexItem datahead">
+          <el-icon><Grid /></el-icon>
+          <span>今日接单</span>
+        </el-col>
+        <el-col :span="6" class="flexItem datahead">
+          <el-icon><Check /></el-icon>
+          <span>今日完成</span>
+        </el-col>
+        <el-col :span="6" class="flexItem datahead">
+          <el-icon><Odometer /></el-icon>
+          <span>今日未完成</span>
+        </el-col>
+      </el-row>
       <el-card>
         <template #header>
           <div class = "card-header" style = "margin:0px;">
@@ -98,6 +118,7 @@ export default {
             {
                 wid: "1",
                 repair_time: "2023-6-16",
+                maintain_time: "2023-6-20",
                 status: 0,
             }
         ]
@@ -143,3 +164,17 @@ export default {
 }
 </script>
 
+<style scoped>
+.el-row{
+  margin-bottom: 20px;
+}
+.datahead{
+  font-size: 15px;
+  height: 40px;
+}
+
+.el-icon{
+  font-size: 20px;
+  margin-right: 10px;
+}
+</style>
