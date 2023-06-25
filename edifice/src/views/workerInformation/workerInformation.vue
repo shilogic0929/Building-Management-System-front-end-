@@ -12,20 +12,26 @@
 
         </el-table-column>
         <el-table-column prop="isMaintainer" label="可用状态" width="300px">
+
+
           <template v-slot="scope">
-            <el-button size="mini" type="primary" icon="el-icon-edit" @click="edit(scope.row)">state</el-button>
-            <el-button size="mini" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">change</el-button>
+
+            <!--            <el-button size="mini" type="primary"  icon="el-icon-edit" @click="edit(scope.row)">state</el-button>-->
+            <el-button size="mini" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">
+              {{ scope.row.category == '-1' ? '不可维修' : scope.row.isMaintainer == true ? '空闲当中' : '正接单中' }}
+
+            </el-button>
           </template>
         </el-table-column>
         <!--        <el-table-column prop="worker_id" label="" width="0px"></el-table-column>-->
       </el-table>
 
-      <div class="main_container">
+      <!-- <div class="main_container">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
           :current-page="queryInfo.pagenum" :page-sizes="[10, 20, 50]" :page-size="queryInfo.pagesize"
           layout="total, sizes, prev, pager, next, jumper" :total="total" background>
         </el-pagination>
-      </div>
+      </div> -->
     </el-card>
 
   </div>
@@ -89,12 +95,6 @@ export default {
 
       var naid = localStorage.getItem("token");
       console.log(naid)
-      // alert(naid)
-      // var data={
-      //   page:this.queryInfo.pagenum,
-      //   numInOnePage:this.queryInfo.pagesize,
-      //   token:naid,
-      // };
 
       const formData = new FormData()
       formData.append('page', this.queryInfo.pagenum)
@@ -114,51 +114,12 @@ export default {
 
         }
       })
-      // this.$axios.post('https://mock.apifox.cn/m1/2881677-0-default/test/getWorker',JSON.stringify(data)).then(function(request){
-      //   console.log(request);
-      //    if(request.code == 0) {
-      //       console.log(request.data);
-      //       this.tableData=JSON.parse(request.data)
-      //   }
-      // })
+
 
     },
-    // addRow () {
-    //   var list = {
-    //     rowNum: '',
-    //     name: this.name,
-    //     phone: this.phone,
-    //     job: this.job,
-    //     type: this.type,
-    //     if_use: this.if_use}
-    //   this.tableData.unshift(list)
-    // },
-    // async getGoodsList() {
-    //   const { data } = await this.$http.get("goods", {
-    //     params: this.queryInfo
-    //   });
-    //   if (data.meta.status !== 200) {
-    //     return this.$message.error(data.meta.msg);
-    //   }
-    //   this.goodslist = data.data.goods;
-    //   this.total = data.data.total;
-    // },
-    // handleSizeChange(newSize) {
-    //   this.queryInfo.pagesize = newSize;
-    //   this.getGoodsList();
-    // },
-    // handleCurrentChange(newPage) {
-    //   this.queryInfo.pagenum = newPage;
-    //   this.getGoodsList();
-    // },
-    // eslint-disable-next-line no-unused-vars
+
     edit(row) {
 
-      // var data = {row:this.row};
-      // var that = this;
-      // this.axios.post(,JSON.stringify(data)).then(function (request){
-      //   console.log(request.data.name);
-      // })
       if (row.isMaintainer === false) {
         alert('不为维修人员！');
       }
@@ -188,9 +149,7 @@ export default {
       }
     },
 
-    // goAddPage() {
-    //   this.$router.push("goods/add");
-    // }
+
   }
 };
 
