@@ -9,21 +9,24 @@
 
     <div class="serviceGrid">
       <el-row>
-        <el-col :span="6" class="flexItem datahead">
+        <el-col :span="5" class="flexItem datahead">
           <el-icon><Histogram /></el-icon>
-          <span>历史订单量</span>
+          <span>历史订单量{{ sumTask }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
           <el-icon><Grid /></el-icon>
-          <span>今日接单</span>
+          <span>今日接单{{ todayTask }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
           <el-icon><Check /></el-icon>
-          <span>今日完成</span>
+          <span>今日完成{{ todayFinish }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
           <el-icon><Odometer /></el-icon>
-          <span>今日未完成</span>
+          <span>今日未完成{{ todayTask-todayFinish }}</span>
+        </el-col>
+        <el-col :span="1" class="flexItem datahead" style="cursor: pointer;">
+          <el-icon @click="refresh()"><Refresh /></el-icon>
         </el-col>
       </el-row>
       <el-card>
@@ -100,12 +103,16 @@
 </template>
 
 <script>
+import { ElMessage } from 'element-plus'
 
 export default {
   data(){
     return{
         img:require("@/assets/image/inner-banner3.jpg"),
         isfinished: false,
+        sumTask: 1,
+        todayTask: 4,
+        todayFinish: 3,
         rid:"",
         type:"",
         info:"",
@@ -139,13 +146,15 @@ export default {
         data: formData})
         .then(function (request) {
           that.repair=request.data.data
-          for(let i=0;i<that.repair.length;i++)
-          {
-            if(that.repair[i].status==2)
-              that.table2.push(that.repair[i])
-            else
-              that.table1.push(that.repair[i])
-          }
+          console.log(that.repair)
+          
+          // for(let i=0;i<that.repair.length;i++)
+          // {
+          //   if(that.repair[i].status==2)
+          //     that.table2.push(that.repair[i])
+          //   else
+          //     that.table1.push(that.repair[i])
+          // }
       })
 
 
@@ -157,6 +166,13 @@ export default {
             wid:index.wid,
         }
       })
+    },
+    refresh() {
+      this.init();
+      ElMessage({
+                  message: "更新成功",
+                  type: 'success',
+                })
     }
   }
   
@@ -166,11 +182,13 @@ export default {
 
 <style scoped>
 .el-row{
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  background-color: rgb(254, 254, 254);
+  height: 60px;
+  box-shadow: 2px 2px 2px 2px rgba(0,0,0,.08);
 }
 .datahead{
   font-size: 15px;
-  height: 40px;
 }
 
 .el-icon{
