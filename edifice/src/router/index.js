@@ -152,6 +152,15 @@ const routes = [{
         },
         component: () => import('../views/roomStatus/roomStatus.vue'),
 
+      },
+      {
+        path: 'KnowledgeBase',
+        name: '维修知识库',
+        meta: {
+          title: "维修知识库"
+        },
+        component: () => import('../views/knowledgeBase/knowledgeBase.vue'),
+
       }
     ]
   },
