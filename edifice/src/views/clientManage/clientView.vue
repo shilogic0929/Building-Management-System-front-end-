@@ -77,7 +77,7 @@
                 </el-table-column>
                 <el-table-column label="物业费信息" prop="payment" align="center">
                   <template #default="scope">
-                    <el-popover placement="right" :width="400" trigger="click">
+                    <el-popover placement="right" :width="400" trigger="click" v-model="popovershow">
                       <template #reference>
                         <el-button>查看</el-button>
                       </template>
@@ -91,7 +91,40 @@
                         <el-table-column width="100" prop="pay_time" label="缴纳时间" />
                         <el-table-column >
                           <template #header>
-                            <el-button type="primary" @click="dialogVisible = true" align="content-center">新增</el-button>
+                            <el-dialog v-model="dialogVisibleforpayment" title="编辑信息">
+                              <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">姓名</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_name" /></el-col>
+                              </el-row>
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电话</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_phone" /></el-col>
+                              </el-row>
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">公司名称</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_company" /></el-col>
+                              </el-row>
+
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">法人名称</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_legal" /></el-col>
+                              </el-row>
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="1"></el-col>
+                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电子邮箱</span></el-col>
+                                <el-col :span="14"><el-input v-model="add_email" /></el-col>
+                              </el-row>
+                              <el-row :gutter="20" class="dialog_row">
+                                <el-col :span="8"></el-col>
+                                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="dialogVisible = false">取消</el-button></el-col>
+                                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="handleAddClient()">确认</el-button></el-col>
+                              </el-row>
+                            </el-dialog>
+                            <el-button type="primary" @click="handleAddPayment(scope.$index, scope.row)" align="content-center">新增</el-button>
                           </template>
                           <el-button @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         </el-table-column>
@@ -224,10 +257,6 @@
 import {computed,ref} from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import {
-  Delete,
-  Edit,
-} from '@element-plus/icons-vue'
 
 const _ResizeObserver = window.ResizeObserver;
 window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
@@ -256,7 +285,9 @@ export default {
       add_phone: '',
       add_legal: '',
       add_company: '',
-      add_email:'',
+      add_email: '',
+      dialogVisibleforpayment: false,
+      popovershow:false,
       clients: [ 
         {
           id:2,
@@ -315,6 +346,15 @@ export default {
   mounted() {
   },
   methods: {
+    handleAddPayment(index,client){
+      this.dialog_person = client
+      this.dialog_name = client.name
+      this.dialog_phone = client.phone
+      this.dialog_company = client.company
+      this.dialog_legal = client.legal_person
+      this.dialogVisibleforpayment = true
+      this.show_dialog = true
+    },
     handleAddClient() {
       const formData = new FormData()
       formData.append('new_name', this.add_name)
