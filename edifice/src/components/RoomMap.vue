@@ -1,17 +1,15 @@
 <template>
   <div class="echarts-map-container">
-    <h1 style="text-align: left;margin-top:45px;margin-left: 45px;font-size: 30px;">房间状态</h1>
+    <!-- <h1 style="text-align: left;margin-top:45px;margin-left: 45px;font-size: 30px;">房间状态</h1> -->
 
 
-    <div style="text-align:left;margin-top:40px;margin-left:45px">
+    <!-- <div style="text-align:left;margin-top:40px;margin-left:45px">
       <span style="font-size: 20px;margin-top: 5px;">请选择楼层：</span>
       <el-select v-model="selectedLevel" placeholder="请选择楼层" style="margin-top: -3px;">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
-    </div>
-
-
+    </div> -->
 
     <div ref="echartsMap" style="width: 100%; height: 500px;"></div>
   </div>
@@ -20,11 +18,14 @@
 <script>
 import * as echarts from 'echarts';
 export default {
+  props: [
+    'thislevel'
+  ],
   data() {
     return {
-      selectedLevel: '1',
+      // selectedLevel: '1',
       myChart: null,
-      Level: '2',
+      // Level: '2',
       roomStatus: [
         {
           "roomNo": 101,
@@ -481,19 +482,19 @@ export default {
     }
   },
 
-  watch: {
-    selectedLevel(newVal) {
-      // 在这里执行相应的操作
-      console.log('selectedLevel 的值已改变为:', newVal);
-      this.initChart(newVal)
-    },
-  },
+  // watch: {
+  //   selectedLevel(newVal) {
+  //     // 在这里执行相应的操作
+  //     console.log('selectedLevel 的值已改变为:', newVal);
+  //     this.initChart(newVal)
+  //   },
+  // },
 
   mounted() {
-    this.initChart('1')
+    this.initChart(this.thislevel)
   },
   created() {
-    this.generateOptions(25);
+    // this.generateOptions(25);
   },
   methods: {
     generateOptions(maxValue) {
