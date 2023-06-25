@@ -1,9 +1,9 @@
 <template>
   <el-menu :collapse="isCollapse" default-active="$route.path" router active-text-color="#0066CC"
     background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose">
-    <el-menu-item index="/dashboard">
-      <el-icon>
-        <house />
+    <el-menu-item index="/homeview">
+      <el-icon title="首页">
+        <HomeFilled />
       </el-icon>
       <span class="sideBarFontSize">首页</span>
     </el-menu-item>
@@ -22,49 +22,45 @@
           </el-menu-item> -->
 
     <el-menu-item index="/clientView" v-show="type === '-1'">
-      <el-icon>
+      <el-icon title="客户信息">
         <View />
       </el-icon>
       <span class="sideBarFontSize">客户信息</span>
     </el-menu-item>
 
     <el-menu-item index="/handleRepair" v-if='type === "-1"'>
-      <el-icon>
-        <Brush />
+      <el-icon title="处理报修">
+        <Stamp />
       </el-icon>
       <span class="sideBarFontSize">处理报修</span>
     </el-menu-item>
     <el-menu-item index="/repairReport" v-else-if="type === '0'">
-      <el-icon>
-        <Brush />
+      <el-icon title="用户报修">
+        <Tools />
       </el-icon>
       <span class="sideBarFontSize">用户报修</span>
     </el-menu-item>
     <el-menu-item index="/repairService" v-else>
-      <el-icon>
+      <el-icon title="维修服务">
         <Brush />
       </el-icon>
       <span class="sideBarFontSize">维修服务</span>
     </el-menu-item>
 
     <el-menu-item index="/myRepair" v-if="type === '0'">
-      <el-icon>
-        <Brush />
+      <el-icon title="报修记录">
+        <Document />
       </el-icon>
       <span class="sideBarFontSize">报修记录</span>
     </el-menu-item>
 
     <el-menu-item index="/roomStatus" v-if="type === '-1'">
-      <el-icon>
+      <el-icon title="房间状态">
         <House />
       </el-icon>
       <span class="sideBarFontSize">房间状态</span>
     </el-menu-item>
 
-    <!--          <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">-->
-    <!--            <el-icon><Service /></el-icon>-->
-    <!--            <span class="sideBarFontSize">客服系统</span>-->
-    <!--          </el-menu-item>-->
   </el-menu>
 </template>
 
@@ -100,6 +96,9 @@ export default {
   }
 }
 </script>
-<style>.el-submenu.is-active {
-  width: 150px;
-}</style>
+<style>
+.el-menu:not(.el-menu--collapse) {
+  width: 200px;
+  /* min-width: 200px */
+}
+</style>

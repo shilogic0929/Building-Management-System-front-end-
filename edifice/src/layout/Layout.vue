@@ -1,15 +1,15 @@
 <template>
-    <div style="height:100%;overflow:hidden;margin:0px">
-      <el-header>
-          <m-Header></m-Header>
-      </el-header>
-      <el-container>
-        <side-Bar></side-Bar>
-        <el-main>
-            <main-page></main-page>
-        </el-main>
-      </el-container>
-    </div>  
+  <div style="height:100%;overflow:hidden;margin:0px">
+    <el-header>
+      <m-Header></m-Header>
+    </el-header>
+    <el-container>
+      <side-Bar></side-Bar>
+      <el-main>
+        <main-page></main-page>
+      </el-main>
+    </el-container>
+  </div>
 </template>
 
 <script>
@@ -28,5 +28,10 @@ export default {
   }
 </script>
 
+<style scoped>
+.el-main{
+  flex-basis: 3px;
+}
+</style>
 
 

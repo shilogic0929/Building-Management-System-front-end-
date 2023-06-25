@@ -11,19 +11,19 @@
       <el-row>
         <el-col :span="5" class="flexItem datahead">
           <el-icon><Histogram /></el-icon>
-          <span>历史订单量{{ sumTask }}</span>
+          <span>历史订单量&nbsp;{{ sumTask }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
           <el-icon><Grid /></el-icon>
-          <span>今日接单{{ todayTask }}</span>
+          <span>今日接单&nbsp;{{ todayTask }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
           <el-icon><Check /></el-icon>
-          <span>今日完成{{ todayFinish }}</span>
+          <span>今日完成&nbsp;{{ todayFinish }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
           <el-icon><Odometer /></el-icon>
-          <span>今日未完成{{ todayTask-todayFinish }}</span>
+          <span>今日未完成&nbsp;{{ todayTask-todayFinish }}</span>
         </el-col>
         <el-col :span="1" class="flexItem datahead" style="cursor: pointer;">
           <el-icon @click="refresh()"><Refresh /></el-icon>

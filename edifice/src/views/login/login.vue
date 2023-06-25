@@ -21,7 +21,7 @@
       <div class="loginCon">
 
         <div class="titleDiv">
-          <h2 class="loginH2" style="position: relative;top:50px"><strong>大厦</strong>物业管理系统</h2>
+          <h2 class="loginH2" style="position: relative;top:45px"><strong>大厦</strong>物业管理系统</h2>
           
         </div>
         <el-form ref="loginForm" :rules="rules" :model="ruleForm">

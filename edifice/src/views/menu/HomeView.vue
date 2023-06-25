@@ -1,26 +1,9 @@
 <template>
-  <div id="div-main-wrap">
 
-
-    <!-- 轮播图 -->
-    <!-- <slide-show></slide-show> -->
-
-
-
-    <!-- 主体 -->
     <div class="main-area">
-      <!-- 简介 -->
+
       <profile></profile>
 
-
-      <!-- 长引用 -->
-
-      <!-- 照片墙 -->
-
-      <!-- 计时器 -->
-
-
-  </div>
   </div>
 </template>
 
@@ -32,61 +15,9 @@ import Profile from "@/components/Profile.vue";
 
 // import { getAction,record } from "@/test.js"
 
-
-
-
-
-
 export default {
-
-
   methods: {
-    docs() {
-      // this.$confirm("是否确认该操作","提示",{
-      //   iconClass: "el-icon-question",//自定义图标样式
-      //   confirmButtonText: "确认",//确认按钮文字更换
-      //   cancelButtonText: "取消",//取消按钮文字更换
-      //   showClose: true,//是否显示右上角关闭按钮
-      //   type: "warning",//提示类型  success/info/warning/error
-      // }).then(function(){
-      //   //确认操作
-      // }).then(() => {
-      //   //取消操作
-      // })
 
-      // var that = this
-      // that.$confirm({
-      //   title: '您确定要注销吗?',
-      //   content: '当前只能报名一种选修课，报名后，不可取消，不可修改',
-      //   closable: true, //是否显示右上角的x
-      //   maskClosable: true,//触发阴影层的点击关闭
-      //   onOk: function () {
-      //     var id = record.id
-      //     let httpurl = that.url.addSelectionPeople
-      //     getAction(httpurl + '?id=' + id).then((res) => {
-      //       if (res.success) {
-      //         that.$message.success(res.result);
-      //         that.loadData();//刷新列表
-      //       }else {
-      //         that.$message.warning(res.message);
-      //       }
-      //     })
-      //   },
-      //   onCancel() {
-      //     console.log("on取消")
-      //   },
-      // });
-
-
-      this.$router.push({
-        name: 'Login',
-        params: {
-
-        }
-      })
-
-
-    },
   },
 
 
@@ -128,7 +59,7 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
 /* 去掉了scoped 其样式可以被其子组件使用 */
 .newh2 {
   font-weight: 600;
@@ -146,9 +77,6 @@ ul {
   padding: 0;
   /*去除项目符号 (小点)*/
   list-style: none;
-}
-#div-main-wrap {
-  width: 100%;
 }
 .h-title {
   position: sticky;

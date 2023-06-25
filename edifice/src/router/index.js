@@ -7,7 +7,6 @@ import Layout from '@/layout/Layout.vue'
 import PersonalPage from '@/views/menu/PersonalPage.vue'
 import Login from '@/views/login/login.vue'
 import seeHouse from '@/views/Rent/seeHouse.vue'
-import houseDetail from '@/views/Rent/houseDetail.vue'
 
 const routes = [{
     path: "/login",
@@ -33,7 +32,7 @@ const routes = [{
     component: Layout,
     redirect: "/login",
     children: [{
-        path: 'dashboard',
+        path: 'homeView',
         name: '首页',
         component: HomeView,
         meta: {

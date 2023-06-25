@@ -3,7 +3,8 @@
     <div class="headLeft" id="headl">
       <el-button @click="collapse()">
         <el-icon :size="25">
-          <expand />
+          <Expand v-if="this.$store.state.isCollapsed"/>
+          <Fold v-else/>
         </el-icon>
       </el-button>
     </div>
@@ -35,7 +36,7 @@
     <el-dialog v-model="dialogVisible" title="访客申请" width="60%" draggable>
       <el-card class="input-card">
         <div>申请表单: </div>
-        <div style="margin: 20px" />
+        <div style="margin: 20px"></div>
         <el-form :label-position="top" label-width="100px" :rules="rules" ref="input" style="max-width: 800px">
           <el-form-item label="姓名">
             <el-input v-model="input.user_name" />
