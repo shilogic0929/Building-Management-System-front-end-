@@ -3,7 +3,7 @@
     <!--面包屑导航区域-->
     <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-top: 10px;padding-left: 10px;">
       <el-breadcrumb-item :to="{ path: '/dashboard' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>处理保修</el-breadcrumb-item>
+      <el-breadcrumb-item>处理报修</el-breadcrumb-item>
       <el-breadcrumb-item>报修列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-tabs>
