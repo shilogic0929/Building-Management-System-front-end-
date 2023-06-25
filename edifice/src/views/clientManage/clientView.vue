@@ -5,7 +5,7 @@
         <div class = "card-header" style="margin-bottom:0px;">
           <span class="image-font" style="font-size:20px; margin: 0 auto">客户信息</span>
           <div>
-            <el-button type="success" @click="dialogVisible = true">新增用户</el-button>
+            <el-button type="success" @click="">新增用户</el-button>
             <el-dialog v-model="dialogVisible" title="编辑信息">
               <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
                 <el-col :span="1"></el-col>
@@ -255,7 +255,7 @@
 
 <script>
 import {computed,ref} from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox,ElDrawer } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 const _ResizeObserver = window.ResizeObserver;
