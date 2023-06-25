@@ -39,6 +39,46 @@
         </el-row>
       </div>
     </el-dialog>
+    <el-dialog v-model="dialog_for_change" title="修改信息">
+      <div style="margin-left: 120px;">
+        <el-row :gutter="20" class="dialog_row" style="padding-top: 0px" >
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">年份</span></el-col>
+          <el-date-picker
+            v-model="year_p"
+            type="year"
+            placeholder="请选择年份"
+            value-format="YYYY"
+            disabled
+          />
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳状态</span></el-col>
+          <el-radio-group v-model="radio1" class="ml-4">
+            <el-radio label="1" size="large">已缴纳</el-radio>
+            <el-radio label="2" size="large">未缴纳</el-radio>
+          </el-radio-group>
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳时间</span></el-col>
+          <el-date-picker
+          v-model="day_picked"
+          type="date"
+          placeholder="请选择日期"
+          :size="default"
+          :disabled="radio1 == 2 ? true : false"
+          value-format="YYYY-MM-DD"
+        />
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="4"></el-col>
+          <el-col :span="4" style="display: flex"><el-button type="primary" size="large" @click="dialogVisible = false">取消</el-button></el-col>
+          <el-col :span="8" style="display: flex"><el-button type="primary" size="large" @click="handleAddPayment()">确认</el-button></el-col>
+        </el-row>
+      </div>
+    </el-dialog>
     <el-drawer v-model="drawer">
       <span style="font-size: large;">{{ drawer_roomid }}房间物业费缴纳信息</span>
       <el-table :data="drawer_data"  :default-sort="{ prop: 'year', order: 'ascending' }">
@@ -52,6 +92,9 @@
         <el-table-column >
           <template #header>
             <el-button type="default" @click="dialogVisibleforpayment = true" align="content-center">新增</el-button>
+          </template>
+          <template #default="zone">
+            <el-button type="default" @click="handleLookup_lease(zone.row)" align="content-center">修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -137,61 +180,6 @@
                       查看
                     </el-button>
                   </template>
-                  <!-- <template #default="scope"> -->
-                    <!-- <el-popover placement="right" :width="400" trigger="click" v-model="popovershow">
-                      <template #reference>
-                        <el-button>查看</el-button>
-                      </template>
-                      <el-table :data="scope.row.payment">
-                        <el-table-column width="80" prop="year" label="年份" />
-                        <el-table-column width="80" prop="ispaid" label="缴纳状态">
-                          <template #default="zone">
-                            <span>{{zone.row.ispaid == true ? '已缴纳' : '未缴纳'}}</span>
-                          </template>
-                        </el-table-column>
-                        <el-table-column width="100" prop="pay_time" label="缴纳时间" /> -->
-                        <!-- <el-table-column >
-                          <template #header>
-                            <el-dialog v-model="dialogVisibleforpayment" title="编辑信息">
-                              <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
-                                <el-col :span="1"></el-col>
-                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">姓名</span></el-col>
-                                <el-col :span="14"><el-input v-model="add_name" /></el-col>
-                              </el-row>
-                              <el-row :gutter="20" class="dialog_row">
-                                <el-col :span="1"></el-col>
-                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电话</span></el-col>
-                                <el-col :span="14"><el-input v-model="add_phone" /></el-col>
-                              </el-row>
-                              <el-row :gutter="20" class="dialog_row">
-                                <el-col :span="1"></el-col>
-                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">公司名称</span></el-col>
-                                <el-col :span="14"><el-input v-model="add_company" /></el-col>
-                              </el-row>
-
-                              <el-row :gutter="20" class="dialog_row">
-                                <el-col :span="1"></el-col>
-                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">法人名称</span></el-col>
-                                <el-col :span="14"><el-input v-model="add_legal" /></el-col>
-                              </el-row>
-                              <el-row :gutter="20" class="dialog_row">
-                                <el-col :span="1"></el-col>
-                                <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电子邮箱</span></el-col>
-                                <el-col :span="14"><el-input v-model="add_email" /></el-col>
-                              </el-row>
-                              <el-row :gutter="20" class="dialog_row">
-                                <el-col :span="8"></el-col>
-                                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="dialogVisible = false">取消</el-button></el-col>
-                                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large" @click="handleAddClient()">确认</el-button></el-col>
-                              </el-row>
-                            </el-dialog>
-                            <el-button type="primary" @click="handleAddPayment(scope.$index, scope.row)" align="content-center">新增</el-button>
-                          </template>
-                          <el-button @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        </el-table-column> -->
-                      <!-- </el-table>
-                    </el-popover>
-                  </template> -->
                 </el-table-column>
               </el-table>
             </template>
@@ -342,14 +330,17 @@ export default {
   data(){
     return {
       dialogVisible: false,
+      dialog_for_change: false,
       drawer: false,
       drawer_roomid: 0,
       drawer_room:{},
       drawer_data: [],
       drawer_person: {},
+      drawer_lease_id: 0,
       year_picked: '',
       day_picked: '',
       radio1: '', 
+      year_p: '',
       add_name: '',
       add_phone: '',
       add_legal: '',
@@ -415,6 +406,10 @@ export default {
   mounted() {
   },
   methods: {
+    handleLookup_lease(payment){
+      this.dialog_for_change = true
+      this.year_p = payment.year
+    },
     handleAddPayment() {
       const formData = new FormData()
       formData.append('token', localStorage.getItem('token'))
@@ -503,6 +498,7 @@ export default {
       this.drawer_room = room
       this.drawer_roomid = room.id
       this.drawer_data = room.payment
+      this.drawer_lease_id = room.lease_id
       this.drawer = true
     },
     handleEdit(index,client){
