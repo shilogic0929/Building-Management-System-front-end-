@@ -37,7 +37,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit()" :disabled="disabled">提交</el-button>
+              <el-button type="primary" @click="onSubmit" :disabled="disabled">提交</el-button>
             </el-form-item>
           </el-form>
 
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-//import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
 
     export default{
         data(){
@@ -108,7 +108,7 @@
                 url: '/changeUserInfo',
                 data:formData
               }).then(res => {
-                if (res.errno === 0) {
+                if (res.data.errno == 0) {
                   ElMessage({
                     type: 'success',
                     message: '修改成功'
