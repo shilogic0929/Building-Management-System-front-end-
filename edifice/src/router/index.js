@@ -6,7 +6,6 @@ import HomeView from '@/views/menu/HomeView.vue'
 import Layout from '@/layout/Layout.vue'
 import PersonalPage from '@/views/menu/PersonalPage.vue'
 import Login from '@/views/login/login.vue'
-import seeHouse from '@/views/Rent/seeHouse.vue'
 
 const routes = [{
     path: "/login",
@@ -44,11 +43,6 @@ const routes = [{
         path: 'personalPage',
         name: '个人资料',
         component: PersonalPage,
-      },
-      {
-        path: 'seeHouse',
-        name: '查看房源',
-        component: seeHouse
       },
       {
         path: 'clientView',
@@ -129,6 +123,15 @@ const routes = [{
           title: "房间状态"
         },
         component: () => import('../views/roomStatus/roomStatus.vue'),
+
+      },
+      {
+        path: 'KnowledgeBase',
+        name: '维修知识库',
+        meta: {
+          title: "维修知识库"
+        },
+        component: () => import('../views/knowledgeBase/knowledgeBase.vue'),
 
       }
     ]

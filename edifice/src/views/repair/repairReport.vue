@@ -3,30 +3,30 @@
 
     <el-card style="margin-bottom:30px;">
       <template #header>
-        <div class = "card-header" style="margin-bottom:0px;">
+        <div class="card-header" style="margin-bottom:0px;">
           <span class="image-font">工单报修</span>
         </div>
       </template>
 
       <div class="flexItem" style="padding:40px 0;">
-        <img src="../../assets/repair.png" style="height: 320px;width: 320px;margin:0 20px 40px -20px"/>
+        <img src="../../assets/repair.png" style="height: 320px;width: 320px;margin:0 20px 40px -20px" />
         <el-form :model="form" label-width="150px" :rules="rules">
           <el-form-item label="联系人姓名：" prop="name">
             <el-input v-model="form.name" />
           </el-form-item>
           <el-form-item label="联系方式：" prop="phone">
-              <el-input v-model="form.phone" />
+            <el-input v-model="form.phone" />
           </el-form-item>
 
           <el-form-item label="报修房间号：" prop="rid">
             <el-select v-model="form.rid" placeholder="">
-              <el-option v-for="(item,index) in house" :key="index" :label="item" :value="item" />
+              <el-option v-for="(item, index) in house" :key="index" :label="item" :value="item" />
             </el-select>
           </el-form-item>
 
           <el-form-item label="报修类型：" prop="type">
             <el-select v-model="form.type" placeholder="">
-              <el-option v-for="(i,ind) in problem" :key="ind" :label="i" :value="ind" />
+              <el-option v-for="(i, ind) in problem" :key="ind" :label="i" :value="ind" />
             </el-select>
           </el-form-item>
 
@@ -55,12 +55,12 @@
     </el-card>
 
   </div>
-
 </template>
 
 <script>
 import { ElMessage } from 'element-plus'
 export default {
+
   data(){
       return {
         house:[],
@@ -117,16 +117,16 @@ export default {
             that.form.name=request.data.data.name
             that.form.phone=request.data.data.phone
         })
-        this.$axios({
-          method: 'POST',
-          url: '/getLeaseRoom',
-          data: formData})
-          .then(function (request) {
-            //console.log(request.data.data);
-            for(var i=0;i<request.data.data.length;i++)
-              that.house.push(request.data.data[i].room_id)
+      this.$axios({
+        method: 'POST',
+        url: '/getLeaseRoom',
+        data: formData
+        .then(function (request) {
+          //console.log(request.data.data);
+          for (var i = 0; i < request.data.data.length; i++)
+            that.house.push(request.data.data[i].room_id)
+          })
         })
-
       },
       submit(){
           if(this.form.name&&this.form.rid&&this.form.phone&&this.form.description&&
@@ -188,8 +188,7 @@ export default {
         this.form.date="",
         this.form.period=""
       },
-    },
-}
 
+    }
+  }
 </script>
-
