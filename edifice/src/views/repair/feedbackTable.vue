@@ -122,11 +122,24 @@
                     </el-form-item>
                     <el-form-item label="维修时间">
                         <div class="block">
+                        <span class="demonstration_time">选择维修日期和时间段：</span>
                         <el-date-picker
-                            v-model="input1.maintain_time"
-                            type="datetime"
-                            placeholder="选择日期和时间"
+                            v-model="input1.maintain_date"
+                            type="date"
+                            placeholder="选择日期"
+                            :shortcuts="input1.shortcuts"
+                            :size="size"
                         />
+                        </div>
+                        <div class="block">
+                            <el-radio-group 
+                                v-model="input1.maintain_period"
+                                placeholder="选择日期">
+                                <el-radio :label="'1'">08:00-10:00</el-radio>
+                                <el-radio :label="'2'">10:00-12:00</el-radio>
+                                <el-radio :label="'3'">14:00-16:00</el-radio>
+                                <el-radio :label="'4'">16:00-18:00</el-radio>
+                            </el-radio-group>
                         </div>
                     </el-form-item>
                 </el-form>
@@ -229,7 +242,30 @@ export default {
                 maintainer_id: '',
                 maintainer_name: '',
                 maintainer_phone: '',
-                maintain_time: '',
+                maintain_period: '',
+                maintain_date: '',
+                shortcuts: [{
+                        text: '今天',
+                        value: new Date(),
+                    }, {
+                        text: '昨天',
+                        value: () => {
+                            const date = new Date()
+                            date.setTime(date.getTime() - 3600 * 1000 * 24)
+                            return date
+                        },
+                    }, {
+                        text: '一周前',
+                        value: () => {
+                            const date = new Date()
+                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+                            return date
+                        },
+                    },
+                ],
+                // disabledDate:  (time: Date) => {
+                //     return time.getTime() > Date.now()
+                // },
             },
             input2: '',
             activities: [{
@@ -400,7 +436,7 @@ export default {
                     this.selected_table_data.push(item);
                 }
             }
-            console.log(this.selected_table_data)
+            //console.log(this.selected_table_data)
             this.tableData = this.selected_table_data;
             this.paginations.total = this.tableData.length;
             this.paginations.page_size = 10;    
@@ -443,16 +479,22 @@ export default {
                 this.addDialogVisible = false
                 return
             }
-            let date = new Date(input.maintain_time).toLocaleDateString()
-            let time=new Date(input.maintain_time).toLocaleTimeString()
+            let date = new Date(input.maintain_date).toLocaleDateString()
+            //let time=new Date(input.maintain_time).toLocaleTimeString()
             // let dateTime = date + ' ' + time
-            let dateTime = date.split("/").join("-")+' '+ time
-            this.activities[2].timestamp = dateTime
-            console.log(dateTime);
+            //let dateTime = date.split("/").join("-")+' '+ time
+            let mp = new Map();
+            mp.set('1', '08:00-10:00')
+            mp.set('2', '10:00-12:00')
+            mp.set('3', '14:00-16:00')
+            mp.set('4', '16:00-18:00')
+            this.activities[2].timestamp = date + mp[input.maintain_period]
+            //console.log(dateTime);
             const formData = new FormData()
             formData.append('form_id', this.data4Dlg.form_id)
             formData.append('token', localStorage.getItem('token'))
-            formData.append('maintain_time',dateTime)
+            formData.append('maintain_date',input.date)
+            formData.append('maintain_period', input.maintain_period)
             formData.append('maintainer_name',input.maintainer_name)
             formData.append('maintainer_id',input.maintainer_id)
             formData.append('maintainer_phone',input.maintainer_phone)
