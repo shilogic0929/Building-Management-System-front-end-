@@ -76,7 +76,11 @@ import { ElMessage } from 'element-plus'
         },
         quit(){
           console.log("quit");
-          localStorage.setItem('token',0);
+          localStorage.removeItem('token');
+          localStorage.removeItem('type');
+
+          // localStorage.clear();
+
           var naid = localStorage.getItem("token");
           console.log(naid);
           // this.$axios.post('/user/logout/',JSON.stringify()).then(function (request) {

@@ -1,4 +1,4 @@
-<template>
+。<template>
   <div class="divpadding">
     <div class="flow">
       <el-carousel class="repairCarousel" :interval="5000"  style="margin-bottom: 50px" indicator-position="none">
