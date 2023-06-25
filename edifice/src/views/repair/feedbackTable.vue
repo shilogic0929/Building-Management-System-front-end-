@@ -477,7 +477,7 @@ export default {
             let period = 0;
             let time = new Date(this.data4Dlg.expect_time)
             let hour = time.getHours()
-            period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 14 ? '3' : '4'))
+            period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
             const formData = new FormData();
             formData.append('token', localStorage.getItem('token'))
             formData.append('type', 1)
@@ -498,7 +498,7 @@ export default {
                     this.input1.maintainer_phone = res.data.data.maintainer_phone
                     this.input1.maintain_date = new Date(res.data.data).toLocaleDateString
                     hour = new Date(res.data.data).getHours();
-                    this.input1.maintain_period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 14 ? '3' : '4'))
+                    this.input1.maintain_period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
                     const date = new Date()
                     let day = date.toLocaleDateString()
                     let time = date.toLocaleTimeString()
