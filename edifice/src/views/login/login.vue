@@ -41,12 +41,12 @@
           <el-form-item prop="username">
             <el-input placeholder="请输入账号" :prefix-icon="User" v-model="ruleForm.username"></el-input>
           </el-form-item>
-          <el-form-item prop="telephone" v-if="dialogVisible">
-            <el-input placeholder="请输入电话" prefix-icon="el-icon-lock" v-model="ruleForm.telephone"></el-input>
-          </el-form-item>
-          <el-form-item prop="mail" v-if="dialogVisible">
-            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>
-          </el-form-item>
+<!--          <el-form-item prop="telephone" v-if="dialogVisible">-->
+<!--            <el-input placeholder="请输入电话" prefix-icon="el-icon-lock" v-model="ruleForm.telephone"></el-input>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item prop="mail" v-if="dialogVisible">-->
+<!--            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>-->
+<!--          </el-form-item>-->
           <el-form-item prop="password">
             <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password" show-password
               @keyup.enter.native="login()"></el-input>
@@ -54,19 +54,19 @@
           </el-form-item>
 
 
-          <el-form-item prop="password2" v-if="dialogVisible">
-            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2"
-              show-password></el-input>
-          </el-form-item>
+<!--          <el-form-item prop="password2" v-if="dialogVisible">-->
+<!--            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2"-->
+<!--              show-password></el-input>-->
+<!--          </el-form-item>-->
           <el-row gutter="10">
             <el-col :span="12">
 
               <el-button color="#2b4a85" class="loginBtn" @click="login()">登录</el-button>
 
             </el-col>
-            <el-col :span="12">
-              <el-button color="#2b4a85" class="loginBtn" @click="register()">注册</el-button>
-            </el-col>
+<!--            <el-col :span="12">-->
+<!--              <el-button color="#2b4a85" class="loginBtn" @click="register()">注册</el-button>-->
+<!--            </el-col>-->
           </el-row>
         </el-form>
       </div>
@@ -239,44 +239,44 @@ export default {
       })
     },
 
-    register() {
-      if (this.dialogVisible == false) {
-        this.dialogVisible = true;
-      }
-      else {
-        let data = {
-          username: this.ruleForm.username,
-          email: this.ruleForm.mail,
-          password_1: this.ruleForm.password,
-          password_2: this.ruleForm.password2,
-          mobile: this.ruleForm.telephone,
-        }
-
-        // console.log(data);
-
-        this.$refs["loginForm"].validate((valid) => {
-          if (valid) {
-            this.$axios.post('/user/register/', JSON.stringify(data)).then(function (request) {
-              console.log(request.data);
-              if (request.data.errno == 0) {
-                ElMessage({
-                  message: request.data.msg,
-                  type: 'success',
-                })
-              }
-              else {
-                ElMessage.error(request.data.msg)
-              }
-            }).catch(function () {
-
-            });
-          }
-          else {
-            ElMessage.error("请填完表单")
-          }
-        });
-      }
-    },
+    // register() {
+    //   if (this.dialogVisible == false) {
+    //     this.dialogVisible = true;
+    //   }
+    //   else {
+    //     let data = {
+    //       username: this.ruleForm.username,
+    //       email: this.ruleForm.mail,
+    //       password_1: this.ruleForm.password,
+    //       password_2: this.ruleForm.password2,
+    //       mobile: this.ruleForm.telephone,
+    //     }
+    //
+    //     // console.log(data);
+    //
+    //     this.$refs["loginForm"].validate((valid) => {
+    //       if (valid) {
+    //         this.$axios.post('/user/register/', JSON.stringify(data)).then(function (request) {
+    //           console.log(request.data);
+    //           if (request.data.errno == 0) {
+    //             ElMessage({
+    //               message: request.data.msg,
+    //               type: 'success',
+    //             })
+    //           }
+    //           else {
+    //             ElMessage.error(request.data.msg)
+    //           }
+    //         }).catch(function () {
+    //
+    //         });
+    //       }
+    //       else {
+    //         ElMessage.error("请填完表单")
+    //       }
+    //     });
+    //   }
+    // },
 
   },
 

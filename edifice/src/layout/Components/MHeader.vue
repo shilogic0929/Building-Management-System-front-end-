@@ -36,7 +36,13 @@
       <el-card class="input-card">
         <div>申请表单: </div>
         <div style="margin: 20px" />
-        <el-form :label-position="top" label-width="100px" :rules="rules" ref="input" style="max-width: 800px">
+        <el-form
+          :label-position="top"
+          label-width="100px"
+          :rules="rules"
+          ref="input"
+          style="max-width: 800px"
+        >
           <el-form-item label="姓名">
             <el-input v-model="input.user_name" />
           </el-form-item>
@@ -46,28 +52,51 @@
           <el-form-item label="联系电话" prop="phone">
             <el-input v-model="input.phone_num" />
           </el-form-item>
-          <el-form-item label="访问时间">
+          <el-form-item label="访问时间" style="margin-top: 20px;">
             <div class="block">
-              <el-date-picker v-model="input.visit_time" type="datetime" placeholder="选择日期和时间" />
+            <el-date-picker
+                v-model="input.visit_time"
+                type="datetime"
+                placeholder="选择日期和时间"
+            />
             </div>
           </el-form-item>
         </el-form>
-      </el-card>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogVisible = false">
+        <span class="dialog-footer" style="padding-left: 100px">
+          <el-button 
+          @click="dialogVisible = false">
             取消
-            <el-icon>
-              <CircleClose />
-            </el-icon>
+            <el-icon><CircleClose /></el-icon>
           </el-button>
-          <el-button class="submit" size="middle" @click="submitInput(input)">
+          <el-button 
+            class="submit" size="middle" 
+            @click="submitInput(input)">
             提交
-            <el-icon>
-              <Promotion />
-            </el-icon>
+          <el-icon><Promotion /></el-icon>
           </el-button>
         </span>
+      </el-card>
+      <el-card style="margin-top: 20px;!important" 
+      v-model="showActivities">
+        <span>申请处理进度</span>
+        <div class="block">
+          <el-timeline>
+            <el-timeline-item
+              v-for="(activity, index) in activities"
+              :key="index"
+              :timestamp="activity.timestamp"
+              :color="activity.color"
+              :hollow="activity.hollow">
+              {{activity.content}}
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-card>
+      <template #footer>
+        <el-button 
+          @click="dialogVisible = false">
+            <el-icon><CircleClose /></el-icon>
+          </el-button>
       </template>
     </el-dialog>
   </div>
@@ -111,23 +140,40 @@ export default {
       },
       rules: {
         phone: [
-          { required: true },
+          { required: true},
           // 这个只能验证手机号
           // { pattern:/^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/, message: "请输入合法手机号", trigger: "blur" }
-          { pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: "请输入合法手机号/电话号", trigger: "blur" }
+          { pattern:/^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: "请输入合法手机号/电话号", trigger: "blur" }
         ],
         idNumber: [
-          { required: true },
-          { pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/, message: "请输入合法身份证号", trigger: "blur" }
+         { required: true},
+          { pattern:/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/, message: "请输入合法身份证号", trigger: "blur"}
         ],
-      }
+      },
+      activities: [{
+        content: '申请时间',
+        timestamp: '2023-06-23 14:26:00',
+        color: '#0bbd87',
+      }, {
+        content: '通过审核',
+        timestamp: '2023-06-24 14:26:00',
+        color: '#0bbd87',
+      }, {
+        content: '访问时间',
+        timestamp: '2023-06-25 14:26:00',
+        hollow: true
+      }],
+      showActivities: false,
     }
   },
   created() {
     this.user_type = localStorage.getItem('type') == 0 ? true : false;
+    //getActivityList();
+    if(this.activities.length > 0) {
+      this.showActivities = true
+    }
   },
   mounted() {
-
     this.userName = this.$store.state.username
   },
   methods: {
@@ -153,30 +199,30 @@ export default {
       this.dialogVisible = true;
     },
     submitInput(input) {
-      if (input.user_name === '') {
+      if(input.user_name === '') {
         this.$message("请输入您的姓名")
         return
       }
-      if (input.user_id === '') {
+      if(input.user_id === '') {
         this.$message("请输入您的身份证号码")
         return
       }
-      if (input.phone_num === '') {
+      if(input.phone_num === '') {
         this.$message("请输入您的联系电话")
         return
       }
-      if (input.user_id === '') {
+      if(input.user_id === '') {
         this.$message("请输入您的身份证号码")
         return
       }
-      if (input.visit_time === '') {
+      if(input.visit_time === '') {
         this.$message("请设置访问时间")
         return
       }
       let date = new Date(input.visit_time).toLocaleDateString()
       let time = new Date(input.visit_time).toLocaleTimeString()
       // let dateTime = date + ' ' + time
-      let dateTime = date.split("/").join("-") + ' ' + time
+      let dateTime = date.split("/").join("-")+' '+ time
       console.log(dateTime)
       const formData = new FormData()
       formData.append('token', localStorage.getItem('token'))
@@ -185,12 +231,12 @@ export default {
       formData.append('phone_num', input.phone_num)
       formData.append('visit_time', dateTime)
       this.$axios({
-        method: 'POST',
+        method: 'POST', 
         url: '/userApply',
         data: formData
       }).then(res => {
-        if (res.status !== 200 && res.data.success == false) {
-          this.$message.error('提交失败：' + res.statusText);
+        if(res.status !== 200 && res.data.success == false) {
+          this.$message.error('提交失败：'+ res.statusText);
           return;
         } else {
           this.$message.success('提交成功')
@@ -220,5 +266,8 @@ export default {
 .icon {
   top: 5px;
   cursor: pointer;
+}
+.block {
+  margin-top: 20px;
 }
 </style>
