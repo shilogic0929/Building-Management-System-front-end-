@@ -34,7 +34,7 @@
             label="报修类型"
             width="200">
             <template #default="scope">
-              {{types[scope.row.type]}}
+              {{types[scope.row.type-1]}}
             </template>
           </el-table-column>
           <el-table-column
@@ -87,7 +87,7 @@
               报修类型
             </div>
           </template>
-          {{types[type]}}
+          {{types[type-1]}}
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
@@ -95,7 +95,7 @@
               <el-icon>
                 <user />
               </el-icon>
-              信息
+              问题描述
             </div>
           </template>
           {{info}}
@@ -164,7 +164,7 @@ export default {
         visible:false,
         visible2:false,
         rid:"",
-        type:"",
+        type:1,
         info:"",
         advice: "",
         time: "",
@@ -178,7 +178,7 @@ export default {
             {
                 wid: "1",
                 rid:0,
-                type: "机械",
+                type: 1,
                 repair_time: "2023-6-16",
                 status: 0,
                 description: "隔墙有眼",

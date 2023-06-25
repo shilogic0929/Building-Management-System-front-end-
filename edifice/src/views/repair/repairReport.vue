@@ -138,10 +138,10 @@ export default {
             formData.append('name',this.form.name)
             formData.append('phone',this.form.phone)
             formData.append('rid',this.form.rid)
-            formData.append('type',this.form.type)
+            formData.append('type',this.form.type+1)
             formData.append('description',this.form.description)
-            formData.append('period',this.form.period)
-            var date=new Date(this.form.maintain_time).toLocaleDateString()
+            formData.append('period',this.form.period+1)
+            var date=new Date(this.form.maintain_day).toLocaleDateString()
             formData.append('maintain_day',date.replaceAll("/","-"))
 
             this.$axios({
