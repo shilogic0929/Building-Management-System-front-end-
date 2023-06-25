@@ -61,6 +61,13 @@
       <span class="sideBarFontSize">房间状态</span>
     </el-menu-item>
 
+    <el-menu-item index="/knowledgeBase" v-if="type != '0'">
+      <el-icon title="维修知识库">
+        <Notebook />
+      </el-icon>
+      <span class="sideBarFontSize">维修知识库</span>
+    </el-menu-item>
+
   </el-menu>
 </template>
 

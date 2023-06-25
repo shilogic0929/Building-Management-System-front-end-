@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <!-- <div class="inner-banner" :style="{backgroundImage: 'url(' + img + ')', backgroundSize:'cover', backgroundRepeat: 'no-repeat',backgroundPosition:'center center'}">
       <div class="zz">
         <h2>维修任务</h2>
@@ -88,6 +88,7 @@ export default {
     return{
         img:require("@/assets/image/inner-banner3.jpg"),
         isfinished: false,
+        tool: [10,12,16,18],
         sumTask: 1,
         todayTask: 4,
         todayFinish: 3,
@@ -124,16 +125,27 @@ export default {
         data: formData
       })
         .then(function (request) {
-          that.repair=request.data.data
-          console.log(that.repair)
+          that.repair=request.data.data.repair
+          var temp=request.data.data.taskCount
+          console.log(request.data.data)
+          that.sumTask=temp.sum
+          that.todayTask=eval(temp.today.join("+"));
+          that.todayFinish=0;
+          var hour=new Date().getHours();
+          for(var i=0;i<4;i++)
+          {
+            if(hour>=that.tool[i])
+              that.todayFinish+=temp.today[i]
+          }
           
-          // for(let i=0;i<that.repair.length;i++)
-          // {
-          //   if(that.repair[i].status==2)
-          //     that.table2.push(that.repair[i])
-          //   else
-          //     that.table1.push(that.repair[i])
-          // }
+
+          for(let i=0;i<that.repair.length;i++)
+          {
+            if(that.repair[i].status==2)
+              that.table2.push(that.repair[i])
+            else
+              that.table1.push(that.repair[i])
+          }
       })
 
     },

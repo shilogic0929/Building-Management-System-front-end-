@@ -126,7 +126,7 @@ const routes = [{
 
       },
       {
-        path: 'KnowledgeBase',
+        path: 'knowledgeBase',
         name: '维修知识库',
         meta: {
           title: "维修知识库"
