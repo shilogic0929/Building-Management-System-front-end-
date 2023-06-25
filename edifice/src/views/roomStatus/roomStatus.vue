@@ -1,10 +1,19 @@
 <template>
-  <div class="container">
-    <div class="left">
-      <RoomMap :thislevel="'1'"></RoomMap>
-      <RoomMap :thislevel="'2'"></RoomMap>
+  <div>
+    <div class="right">
+      <a href="2f">123</a>
+      <n-anchor affix :show-rail="true" :show-background="false" ignore-gap>
+        <n-anchor-link v-for="n in 25" :key="n" :title="n.toString() + '层'" :href="'#' + n + 'f'" />
+        <!--
+        <n-anchor-link title="1层" href="#id" />
+        <n-anchor-link title="2层" href="#id" /> -->
+      </n-anchor>
+    </div>
+    <div>
+      <RoomMap ref="f1" :thislevel="'1'" id="1f"></RoomMap>
+      <RoomMap :thislevel="'2'" id="2f"></RoomMap>
       <RoomMap :thislevel="'3'"></RoomMap>
-      <RoomMap :thislevel="'4'"></RoomMap>
+      <!--  <RoomMap :thislevel="'4'"></RoomMap>
       <RoomMap :thislevel="'5'"></RoomMap>
       <RoomMap :thislevel="'6'"></RoomMap>
       <RoomMap :thislevel="'7'"></RoomMap>
@@ -25,40 +34,43 @@
       <RoomMap :thislevel="'22'"></RoomMap>
       <RoomMap :thislevel="'23'"></RoomMap>
       <RoomMap :thislevel="'24'"></RoomMap>
-      <RoomMap :thislevel="'25'"></RoomMap>
+      <RoomMap :thislevel="'25'"></RoomMap> -->
     </div>
-    <div class="right">
-      <el-tabs tab-position="right" style="height: 1000px;">
-        <el-tab-pane v-for="n in 25" :key="n" :label="n.toString()"></el-tab-pane>
-      </el-tabs>
-    </div>
+
   </div>
 </template>
 
 <script>
+import { NAnchor, NAnchorLink } from "naive-ui";
 import RoomMap from '@/components/RoomMap.vue'
 export default {
+  data() {
+    return {
+      anchorRef: null,
+    };
+  },
   components: {
-    RoomMap
+    RoomMap,
+    NAnchor,
+    NAnchorLink
+  },
+
+  methods: {
+    scrollTo(href) {
+      this.anchorRef.scrollTo(href);
+    }
   }
 }
 </script>
-
-
 <style>
-.container {
-  /* display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between; */
-}
+/* .el-tabs__item {
+  height: 30px;
+} */
 
-.left {
-  /* flex: 0.7; */
-}
-
-.right {
-
-  /* flex: 0.3; */
-}
+/* .right {
+  position: absolute;
+  top: 50%;
+  right: 50px;
+  transform: translate(0, -50%);
+} */
 </style>
