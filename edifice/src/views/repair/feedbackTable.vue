@@ -480,27 +480,20 @@ export default {
             })
         },
         autoAllocate() {
-            console.log(this.data4Dlg);
+            //console.log(this.data4Dlg);
             let period = '1';
             let hour = parseInt(this.data4Dlg.expect_time.slice(11, 13));
             console.log(hour)
             period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
             const formData = new FormData();
             formData.append('token', localStorage.getItem('token'))
-            //console.log(localStorage.getItem('token'));
-            //formData.append('type', this.data4Dlg.type.toString());
-            formData.append('type', '1');
-            //formData.append('period', period)
-            formData.append('period', '1')
-            //formData.append('maintain_time', this.data4Dlg.repair_time.slice(0, 10))
-            formData.append('maintain_time', '2023-06-24')
-            console.log(this.data4Dlg.type.toString())
-            console.log(period);
-            console.log(this.data4Dlg.repair_time.slice(0, 10));
+            formData.append('type', this.data4Dlg.type.toString());
+            formData.append('period', period)
+            formData.append('maintain_time', this.data4Dlg.repair_time.slice(0, 10))
             this.$axios({
                 method: 'POST',
                 url: '/autoDeliver',
-                date: formData
+                data: formData
             }).then(res => {
                 console.log(res)
                 if(res.status !== 200 || res.data.errno == 1004 || res.data.errno == 1002) {
@@ -512,7 +505,7 @@ export default {
                     this.input1.maintainer_name = res.data.data.maintainer_name
                     this.input1.maintainer_id = res.data.data.maintainer_id
                     this.input1.maintainer_phone = res.data.data.maintainer_phone
-                    this.input1.maintain_date = new Date(res.data.data).toLocaleDateString
+                    this.input1.maintain_date = new Date(res.data.data).toLocaleDateString()
                     hour = new Date(res.data.data).getHours();
                     this.input1.maintain_period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
                     const date = new Date()
@@ -521,9 +514,10 @@ export default {
                     let dateTime = day.split("/").join("-")+' '+ time
                     this.activities[2].timestamp = dateTime;
                     this.activities[2].hollow = false;
-
-                    this.activities[3].timestamp = new Date(res.data.data).toLocaleDateString.split("/").join("-") + ' ' + 
-                     new Date(res.data.data).toLocaleTimeString;
+                    let str = new Date(res.data.data.maintain_time).toLocaleDateString();
+                    this.input1.maintain_date = str
+                    this.activities[3].timestamp = str.split("/").join("-") + ' ' + 
+                     new Date(res.data.data.maintain_time).toLocaleTimeString();
                     this.activities[3].hollow = false;
                 }
             })
