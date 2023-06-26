@@ -56,6 +56,12 @@
             align="center">
         </el-table-column>
         <el-table-column
+            prop="type"
+            label="报修类型"
+            width="100"
+            align="center">
+        </el-table-column>
+        <el-table-column
             prop="repair_time"
             label="发起时间"
             width="200"
@@ -102,7 +108,7 @@
                 @click="callWorkers(data4Dlg.form_id)">
                 <el-icon><PhoneFilled /></el-icon>手动分派维修人员</el-button>
                 <el-button size="small" round
-                @click="callWorkers(data4Dlg.form_id)">
+                @click="autoAllocate()">
                 <el-icon><Guide /></el-icon>智能分派维修人员</el-button>
                 <div style="margin: 20px" />
                 <el-form
@@ -226,7 +232,7 @@ export default {
                 room_id: 0,
                 description: '',
                 repair_time: '',
-                expect_time: '',
+                expect_time: '2023-06-31 10:00:00',
                 type: 1,
                 status: 0,
                 reply: {
@@ -248,17 +254,17 @@ export default {
                         text: '今天',
                         value: new Date(),
                     }, {
-                        text: '昨天',
+                        text: '明天',
                         value: () => {
                             const date = new Date()
-                            date.setTime(date.getTime() - 3600 * 1000 * 24)
+                            date.setTime(date.getTime() + 3600 * 1000 * 24)
                             return date
                         },
                     }, {
-                        text: '一周前',
+                        text: '一周后',
                         value: () => {
                             const date = new Date()
-                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7)
                             return date
                         },
                     },
@@ -274,18 +280,20 @@ export default {
                 type: 'primary',
                 icon: MoreFilled,
                 color: '#0bbd87',
-                hollow: true,
+                hollow: false,
             },{
                 content: '用户预期维修时间',
-                timestamp: '',
-                hollow: true,
+                timestamp: '#0bbd87',
+                type: 'primary',
+                hollow: false,
             }, {
                 content: '分派维修人员',
                 timestamp: '',
-                color: '#0bbd87',
+                color: '',
+                type: 'primary',
                 hollow: true,
             }, {
-                content: '已维修',
+                content: '上门维修时间',
                 timestamp: '',
                 type: 'primary',
                 hollow: true,
@@ -315,7 +323,6 @@ export default {
                     if(this.tableData.length == 0) 
                         this.tableData = data4Test.feedbackList
                     this.getOption();
-                    this.paginations.page_size = 10;
                     this.setPaginations()
                     this.handleSizeChange(this.paginations.page_size)
                 }
@@ -331,11 +338,18 @@ export default {
                 // this.data4Dlg.status = tmp.status;
                 // this.data4Dlg.room_id = tmp.room_id;
                 this.data4Dlg = JSON.parse(tmp);
+                console.log(this.data4Dlg);
                 this.input1.maintainer_id = this.params.maintainer_id;
                 this.input1.maintainer_name = this.params.maintainer_name;
                 this.input1.maintainer_phone = this.params.maintainer_phone;
                 this.activities[0].timestamp = this.data4Dlg.repair_time;
                 this.activities[1].timestamp = this.data4Dlg.expect_time;
+                const date = new Date()
+                let day = date.toLocaleDateString()
+                let time = date.toLocaleTimeString()
+                let dateTime = day.split("/").join("-")+' '+ time
+                this.activities[2].timestamp = dateTime;
+                this.activities[2].hollow = false;
                 this.addDialogVisible = true;
             }
         },
@@ -412,7 +426,7 @@ export default {
             // 总页数
             this.paginations.total = this.all_table_data.length;
             this.paginations.page_index = 1;
-            this.paginations.page_size = this.all_table_data.length;
+            this.paginations.page_size = Math.min(10, this.all_table_data.length);
             // 设置默认分页数据
             this.tableData = this.all_table_data.filter((item, index) => {
                 return index < this.paginations.page_size;
@@ -449,6 +463,7 @@ export default {
             this.data4Dlg.status = row.status;
             this.data4Dlg.repair_time = row.repair_time;
             this.data4Dlg.expect_time = row.expect_time;
+            this.data4Dlg.type = row.type;
             this.activities[0].timestamp = row.repair_time;
             this.activities[1].timestamp = row.expect_time;
             console.log(row);
@@ -464,13 +479,56 @@ export default {
                 // } 
             })
         },
+        autoAllocate() {
+            //console.log(this.data4Dlg);
+            let period = '1';
+            let hour = parseInt(this.data4Dlg.expect_time.slice(11, 13));
+            console.log(hour)
+            period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
+            const formData = new FormData();
+            formData.append('token', localStorage.getItem('token'))
+            formData.append('type', this.data4Dlg.type.toString());
+            formData.append('period', period)
+            formData.append('maintain_time', this.data4Dlg.repair_time.slice(0, 10))
+            this.$axios({
+                method: 'POST',
+                url: '/autoDeliver',
+                data: formData
+            }).then(res => {
+                console.log(res)
+                if(res.status !== 200 || res.data.errno == 1004 || res.data.errno == 1002) {
+                    this.$message.error("该时段无空闲维修工，请手动分配")
+                }
+                else {
+                    console.log(res)
+                    this.$message.success("成功!")
+                    this.input1.maintainer_name = res.data.data.maintainer_name
+                    this.input1.maintainer_id = res.data.data.maintainer_id
+                    this.input1.maintainer_phone = res.data.data.maintainer_phone
+                    this.input1.maintain_date = new Date(res.data.data).toLocaleDateString()
+                    hour = new Date(res.data.data).getHours();
+                    this.input1.maintain_period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
+                    const date = new Date()
+                    let day = date.toLocaleDateString()
+                    let time = date.toLocaleTimeString()
+                    let dateTime = day.split("/").join("-")+' '+ time
+                    this.activities[2].timestamp = dateTime;
+                    this.activities[2].hollow = false;
+                    let str = new Date(res.data.data.maintain_time).toLocaleDateString();
+                    this.input1.maintain_date = str
+                    this.activities[3].timestamp = str.split("/").join("-") + ' ' + 
+                     new Date(res.data.data.maintain_time).toLocaleTimeString();
+                    this.activities[3].hollow = false;
+                }
+            })
+        },
         submitInput(data4Dlg, input) {
             console.log(this.data4Dlg.form_id);
-            if(input.maintainer_id === '') {
+            if(this.input1.maintainer_id === '') {
                 this.$message("请输入内容")
                 return
             }
-            if(input.maintain_time === '') {
+            if(this.input1.maintain_date === '' || this.input1.maintain_period === '') {
                 this.$message("请设置维修时间")
                 return
             }
@@ -479,7 +537,7 @@ export default {
                 this.addDialogVisible = false
                 return
             }
-            let date = new Date(input.maintain_date).toLocaleDateString()
+            let date = new Date(this.input1.maintain_date).toLocaleDateString()
             //let time=new Date(input.maintain_time).toLocaleTimeString()
             // let dateTime = date + ' ' + time
             //let dateTime = date.split("/").join("-")+' '+ time
@@ -488,17 +546,20 @@ export default {
             mp.set('2', '10:00-12:00')
             mp.set('3', '14:00-16:00')
             mp.set('4', '16:00-18:00')
-            this.activities[2].timestamp = date + mp[input.maintain_period]
+            date = date.split("/").join("-")
+            console.log(date)
+            console.log(this.data4Dlg)
+            //this.activities[2].timestamp = date + ' ' + mp[this.input1.maintain_period]
             //console.log(dateTime);
             const formData = new FormData()
             formData.append('form_id', this.data4Dlg.form_id)
             formData.append('token', localStorage.getItem('token'))
-            formData.append('maintain_date',input.date)
-            formData.append('maintain_period', input.maintain_period)
-            formData.append('maintainer_name',input.maintainer_name)
-            formData.append('maintainer_id',input.maintainer_id)
-            formData.append('maintainer_phone',input.maintainer_phone)
-            
+            formData.append('maintain_date',date)
+            formData.append('maintain_period', this.input1.maintain_period)
+            formData.append('maintainer_name',this.input1.maintainer_name)
+            formData.append('maintainer_id',this.input1.maintainer_id)
+            formData.append('maintainer_phone',this.input1.maintainer_phone)
+            //console.log(this.input1.maintain_period)
             this.$axios({
                 method:'POST',
                 url: '/setMaintainer',
@@ -512,13 +573,22 @@ export default {
                 //更新表单
                 this.getFeedbackList(); 
                 this.addDialogVisible = false;
+                //localStorage.removeItem('data4Dlg');
+                this.input1.maintainer_id = ''
+                this.input1.maintainer_name = ''
+                this.input1.maintainer_phone = ''
+                this.input1.maintain_period = ''
+                this.input1.maintain_date = ''
+                this.activities[2].hollow = true;
+                this.activities[2].timestamp = ''
             }})
         },
         closeDlg() {
             this.input1.maintainer_id = '';
             this.input1.maintainer_name = '';
             this.input1.maintainer_phone = '';
-            this.input1.maintain_time = '';
+            this.input1.maintain_date = '';
+            this.input1.maintain_period = ''
             this.addDialogVisible = false;
             localStorage.removeItem('data4Dlg');
         },
