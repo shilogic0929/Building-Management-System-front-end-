@@ -26,6 +26,9 @@
               <router-link to="/dashboard">
                 <el-dropdown-item :icon="House">首页</el-dropdown-item>
               </router-link>
+              <router-link to="/personalPage">
+                <el-dropdown-item :icon="UserFilled">个人信息</el-dropdown-item>
+              </router-link>
               <el-dropdown-item :icon="SwitchButton" @click="quit">注销</el-dropdown-item>
               <el-dropdown-item :icon="Message" v-model="user_type" @click="showDlg">访客申请</el-dropdown-item>
             </el-dropdown-menu>
