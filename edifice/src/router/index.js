@@ -31,14 +31,14 @@ const routes = [{
         component: Layout,
         redirect: "/login",
         children: [{
-            path: 'homeView',
-            name: '首页',
-            component: HomeView,
-            meta: {
-                title: "首页",
-                show: false,
+                path: 'homeView',
+                name: '首页',
+                component: HomeView,
+                meta: {
+                    title: "首页",
+                    show: false,
+                },
             },
-        },
             {
                 path: 'personalPage',
                 name: '个人资料',
@@ -59,14 +59,6 @@ const routes = [{
                     title: "报修界面"
                 },
                 component: () => import('../views/repair/repairReport.vue'),
-            },
-            {
-                path: 'verifyRepair',
-                name: '报修处理',
-                meta: {
-                    title: "报修处理"
-                },
-                component: () => import('../views/service/verifyRepair.vue'),
             },
             {
                 path: 'repairDetail/:wid',

@@ -13,7 +13,7 @@
       <div class="personalHome">
         <el-dropdown>
           <!-- <div class="userDrop_text">exit</div> -->
-          <el-icon :size="15" class="userDrop">
+          <el-icon :size="22" class="userDrop">
             <user />
           </el-icon>
           <el-avatar :size="30">
@@ -23,7 +23,7 @@
           </el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
-              <router-link to="/dashboard">
+              <router-link to="/homeView">
                 <el-dropdown-item :icon="House">首页</el-dropdown-item>
               </router-link>
               <router-link to="/personalPage">

@@ -9,7 +9,7 @@
       </template>
 
       <div class="flexItem" style="padding:40px 0;">
-        <img src="../../assets/repair.png" style="height: 320px;width: 320px;margin:0 20px 40px -20px" />
+        <img src="../../assets/repair2.png" style="height: 320px;width: 320px;margin:0 60px 40px -20px" />
         <el-form :model="form" label-width="150px" :rules="rules">
           <el-form-item label="联系人姓名：" prop="name">
             <el-input v-model="form.name" />
@@ -125,8 +125,8 @@ export default {
           //console.log(request.data.data);
           for (var i = 0; i < request.data.data.length; i++)
             that.house.push(request.data.data[i].room_id)
-          })
-        
+          
+        })
       },
       submit(){
           if(this.form.name&&this.form.rid&&this.form.phone&&this.form.description&&
@@ -185,8 +185,7 @@ export default {
         this.value2="",
         this.form.time="",
         this.form.desc="",
-        this.form.date="",
-        this.form.period=""
+        this.form.date=""
       },
 
     }

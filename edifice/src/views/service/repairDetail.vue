@@ -17,10 +17,8 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon>
-                  <user />
-                </el-icon>
-                房间id
+                <el-icon><Discount /></el-icon>
+                &nbsp;房间id
               </div>
             </template>
             {{rid}}
@@ -29,10 +27,8 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon>
-                  <office-building />
-                </el-icon>
-                报修类型
+                <el-icon><Setting /></el-icon>
+                &nbsp;报修类型
               </div>
             </template>
             <div>{{ types[type] }}</div>
@@ -41,10 +37,8 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon>
-                  <iphone />
-                </el-icon>
-                维修时间
+                <el-icon><Timer /></el-icon>
+                &nbsp;维修时间
               </div>
             </template>
             {{repair_time}}
@@ -75,8 +69,9 @@
         </template>
         <div>
           <div style="margin-top:-15px;">
-            <p>姓名：{{name}}</p>
-            <p>电话：{{phone}}</p>
+            <p class="flexItem"> <el-icon><User /></el-icon>&nbsp;姓名：{{name}}</p>
+            <p class="flexItem"> <el-icon><Iphone /></el-icon>&nbsp;电话：{{phone}}</p>
+            <p class="flexItem" v-if="company"> <el-icon><PriceTag /></el-icon>&nbsp;报修公司:{{company}}</p>
           </div>
         </div>
       </el-card>
@@ -107,7 +102,8 @@
           </el-col>
         </el-form-item>
         <el-form-item label="解决办法：">
-          <el-input type="textarea" v-model="form.solution"></el-input>
+          <el-input type="textarea" v-model="form.solution" maxlength="100" resize="none"
+            show-word-limit  :autosize="{ minRows: 5}"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -138,7 +134,7 @@ export default {
         phone:18904672108,
         desc:"",
         value:"",
-  
+        company: "",
         status: 0,
 
         form: {
@@ -166,17 +162,17 @@ export default {
         url: '/get_user_info',
         data: formData})
         .then(function (request) {
-          console.log(request.data.data);
           that.form.solver=request.data.data.name
       })
-      formData=new FormData();
-      formData.append('token',localStorage.getItem('token'))
-      formData.append('wid',this.wid)
+      const formData2=new FormData();
+      formData2.append('token',localStorage.getItem('token'))
+      formData2.append('wid',this.wid)
       this.$axios({
         method: 'POST',
         url: '/repairDetail',
-        data: formData})
+        data: formData2})
         .then(function (request) {
+          console.log(request.data.data);
           var res=request.data.data;
           that.rid=res.rid;
           that.type=res.type;
@@ -185,6 +181,7 @@ export default {
           that.desc=res.description;
           that.name=res.contact_name;
           that.phone=res.contact_phone;
+          that.company=res.company_name;
       })
       
     },
@@ -212,7 +209,7 @@ export default {
                     message: request.data.msg,
                     type: 'success',
                   })
-            this.visible = false
+            that.visible = false
         })
         this.init()
       }

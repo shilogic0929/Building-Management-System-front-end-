@@ -13,7 +13,7 @@
           </div>
         </template>
 
-        <el-table :data="repair" style="width: 100%">
+        <el-table :data="repair.slice((currentPage-1)*10,currentPage*10)" style="width: 100%">
           <el-table-column
             label="序号"
             width="180">
@@ -59,6 +59,14 @@
           </el-table-column>
         </el-table>
 
+        <div class="flexItem" style="margin-top:20px;">
+          <el-pagination :align='center' 
+            @current-change="handleCurrentChange"
+            :current-page="currentPage" 
+            :page-size="[10]"
+            layout="total, prev, pager, next, jumper" 
+            :total="repair.length"/>
+        </div>
       </el-card>
     </div>
 
@@ -70,10 +78,8 @@
         <el-descriptions-item width="100px">
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              报修房间编号
+              <el-icon><Discount /></el-icon>
+              &nbsp;报修房间号
             </div>
           </template>
           {{rid}}
@@ -81,10 +87,8 @@
         <el-descriptions-item>
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              报修类型
+              <el-icon><Setting /></el-icon>
+              &nbsp;报修类型
             </div>
           </template>
           {{types[type-1]}}
@@ -92,10 +96,8 @@
         <el-descriptions-item>
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              问题描述
+              <el-icon><Tickets /></el-icon>
+              &nbsp;问题描述
             </div>
           </template>
           {{info}}
@@ -116,10 +118,8 @@
         <el-descriptions-item v-if="status!=0">
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              维修人联系电话
+              <el-icon><Iphone /></el-icon>
+              &nbsp;维修人联系电话
             </div>
           </template>
           {{phone}}
@@ -128,10 +128,8 @@
         <el-descriptions-item v-if="status!=0">
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              维修时间
+              <el-icon><Timer /></el-icon>
+              &nbsp;维修时间
             </div>
           </template>
           {{time}}
@@ -159,7 +157,7 @@ export default {
   data(){
     return{
         img:require("@/assets/image/inner-banner3.jpg"),
-
+        currentPage: 1,
         flow: "",
         visible:false,
         visible2:false,
@@ -208,7 +206,9 @@ export default {
           that.repair=request.data.data
       })
     },
-  
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
     filterTag(value, row) {
       return row.status === value;
     },
