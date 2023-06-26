@@ -21,8 +21,8 @@
           <el-col :span="1"></el-col>
           <el-col :span="5" style="display: flex"><span
               style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳时间</span></el-col>
-          <el-date-picker v-model="day_picked" type="date" placeholder="请选择日期"
-            :disabled=" radio1 == 2 ? true : false " value-format="YYYY-MM-DD" />
+          <el-date-picker v-model="day_picked" type="date" placeholder="请选择日期" :disabled="radio1 == 2 ? true : false"
+            value-format="YYYY-MM-DD" />
         </el-row>
         <el-row :gutter=" 20 " class="dialog_row">
           <el-col :span=" 4 "></el-col>
@@ -33,29 +33,29 @@
         </el-row>
       </div>
     </el-dialog>
-    <el-dialog v-model=" dialog_for_change " title="修改信息">
+    <el-dialog v-model="dialog_for_change" title="修改信息">
       <div style="margin-left: 120px;">
-        <el-row :gutter=" 20 " class="dialog_row" style="padding-top: 0px">
-          <el-col :span=" 1 "></el-col>
-          <el-col :span=" 5 " style="display: flex"><span
+        <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span
               style=" margin: 0 auto;align-self: center;font-size: medium;">年份</span></el-col>
-          <el-date-picker v-model=" year_p " type="year" placeholder="请选择年份" value-format="YYYY" disabled />
+          <el-date-picker v-model="year_p" type="year" placeholder="请选择年份" value-format="YYYY" disabled />
         </el-row>
-        <el-row :gutter=" 20 " class="dialog_row">
-          <el-col :span=" 1 "></el-col>
-          <el-col :span=" 5 " style="display: flex"><span
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span
               style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳状态</span></el-col>
-          <el-radio-group v-model=" radio2 " class="ml-4">
+          <el-radio-group v-model="radio2" class="ml-4">
             <el-radio label="1" size="large">已缴纳</el-radio>
             <el-radio label="2" size="large">未缴纳</el-radio>
           </el-radio-group>
         </el-row>
-        <el-row :gutter=" 20 " class="dialog_row">
-          <el-col :span=" 1 "></el-col>
-          <el-col :span=" 5 " style="display: flex"><span
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span
               style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳时间</span></el-col>
-          <el-date-picker v-model=" day_p " type="date" placeholder="请选择日期"
-            :disabled=" radio1 == 2 ? true : false " value-format="YYYY-MM-DD" />
+          <el-date-picker v-model="day_p" type="date" placeholder="请选择日期" :disabled="radio1 == 2 ? true : false"
+            value-format="YYYY-MM-DD" />
         </el-row>
         <el-row :gutter=" 20 " class="dialog_row">
           <el-col :span=" 4 "></el-col>
@@ -66,13 +66,13 @@
         </el-row>
       </div>
     </el-dialog>
-    <el-drawer v-model=" drawer ">
+    <el-drawer v-model="drawer">
       <span style="font-size: large;">{{ drawer_roomid }}房间物业费缴纳信息</span>
-      <el-table :data=" drawer_data " :default-sort=" { prop: 'year', order: 'ascending' } ">
+      <el-table :data="drawer_data" :default-sort="{ prop: 'year', order: 'ascending' }">
         <el-table-column prop="year" label="年份" />
         <el-table-column prop="ispaid" label="缴纳状态">
-          <template #default=" zone ">
-            <span>{{zone.row.ispaid == true ? '已缴纳' : '未缴纳'}}</span>
+          <template #default="zone">
+            <span>{{ zone.row.ispaid == true ? '已缴纳' : '未缴纳' }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="pay_time" label="缴纳时间" />
@@ -80,7 +80,7 @@
           <template #header>
             <el-button type="default" @click="dialogVisibleforpayment = true" align="content-center">新增</el-button>
           </template>
-          <template #default=" zone ">
+          <template #default="zone">
             <el-button type="default" @click="handleLookup_lease(zone.row)" align="content-center">修改</el-button>
           </template>
         </el-table-column>
@@ -92,43 +92,43 @@
           <span class="image-font" style="font-size:20px; margin: 0 auto">客户信息</span>
           <div>
             <el-button type="success" @click="dialogVisible = true">新增用户</el-button>
-            <el-dialog v-model=" dialogVisible " title="编辑信息">
-              <el-row :gutter=" 20 " class="dialog_row" style="padding-top: 0px">
-                <el-col :span=" 1 "></el-col>
-                <el-col :span=" 5 " style="display: flex"><span
+            <el-dialog v-model="dialogVisible" title="编辑信息">
+              <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span
                     style=" margin: 0 auto;align-self: center">姓名</span></el-col>
-                <el-col :span=" 14 "><el-input v-model=" add_name " /></el-col>
+                <el-col :span="14"><el-input v-model="add_name" /></el-col>
               </el-row>
-              <el-row :gutter=" 20 " class="dialog_row">
-                <el-col :span=" 1 "></el-col>
-                <el-col :span=" 5 " style="display: flex"><span
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span
                     style=" margin: 0 auto;align-self: center">电话</span></el-col>
-                <el-col :span=" 14 "><el-input v-model=" add_phone " /></el-col>
+                <el-col :span="14"><el-input v-model="add_phone" /></el-col>
               </el-row>
-              <el-row :gutter=" 20 " class="dialog_row">
-                <el-col :span=" 1 "></el-col>
-                <el-col :span=" 5 " style="display: flex"><span
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span
                     style=" margin: 0 auto;align-self: center">公司名称</span></el-col>
-                <el-col :span=" 14 "><el-input v-model=" add_company " /></el-col>
+                <el-col :span="14"><el-input v-model="add_company" /></el-col>
               </el-row>
 
-              <el-row :gutter=" 20 " class="dialog_row">
-                <el-col :span=" 1 "></el-col>
-                <el-col :span=" 5 " style="display: flex"><span
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span
                     style=" margin: 0 auto;align-self: center">法人名称</span></el-col>
-                <el-col :span=" 14 "><el-input v-model=" add_legal " /></el-col>
+                <el-col :span="14"><el-input v-model="add_legal" /></el-col>
               </el-row>
-              <el-row :gutter=" 20 " class="dialog_row">
-                <el-col :span=" 1 "></el-col>
-                <el-col :span=" 5 " style="display: flex"><span
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="1"></el-col>
+                <el-col :span="5" style="display: flex"><span
                     style=" margin: 0 auto;align-self: center">电子邮箱</span></el-col>
-                <el-col :span=" 14 "><el-input v-model=" add_email " /></el-col>
+                <el-col :span="14"><el-input v-model="add_email" /></el-col>
               </el-row>
-              <el-row :gutter=" 20 " class="dialog_row">
-                <el-col :span=" 8 "></el-col>
-                <el-col :span=" 4 " style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large"
+              <el-row :gutter="20" class="dialog_row">
+                <el-col :span="8"></el-col>
+                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large"
                     @click="dialogVisible = false">取消</el-button></el-col>
-                <el-col :span=" 4 " style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large"
+                <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large"
                     @click="handleAddClient()">确认</el-button></el-col>
               </el-row>
             </el-dialog>
@@ -136,37 +136,37 @@
         </div>
       </template>
       <div class="ato-list">
-        <el-table :data=" showClients " :border=" false " style="width: 100%; " :row-style=" { height: '100px' } "
-          :expand-row-keys=" expands " @row-click=" clickRowHandle " row-key="id" row-class-name="table_row">
+        <el-table :data="showClients" :border="false" style="width: 100%; " :row-style="{ height: '100px' }"
+          :expand-row-keys="expands" @row-click="clickRowHandle" row-key="id" row-class-name="table_row">
           <el-table-column type="expand" align="center">
-            <template #default=" props ">
-              <el-row :gutter=" 20 " style="padding-left: 200px">
-                <el-col :span=" 10 " style="text-align: left">
+            <template #default="props">
+              <el-row :gutter="20" style="padding-left: 200px">
+                <el-col :span="10" style="text-align: left">
                   <h3 class="expand_text">租赁信息</h3>
                 </el-col>
-                <el-col :span=" 2 "></el-col>
-                <el-col :span=" 8 " style="display: flex"><el-button size="big" style="align-self:center; margin: 0 auto"
+                <el-col :span="2"></el-col>
+                <el-col :span="8" style="display: flex"><el-button size="big" style="align-self:center; margin: 0 auto"
                     @click="editLease(props.row)">编辑租赁信息</el-button></el-col>
               </el-row>
-              <el-table :data=" props.row.room " :border=" true ">
+              <el-table :data="props.row.room" :border="true" height="250px">
                 <el-table-column label="房间号" prop="id" align="center" />
                 <el-table-column label="起始时间" prop="start_time" align="center">
-                  <template #default=" scope ">
-                    <span>{{scope.row.start_time}}</span>
+                  <template #default="scope">
+                    <span>{{ scope.row.start_time }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="结束时间" prop="end_time" align="center">
-                  <template #default=" scope ">
-                    <span>{{scope.row.end_time}}</span>
+                  <template #default="scope">
+                    <span>{{ scope.row.end_time }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="签约时间" prop="sign_time" align="center">
-                  <template #default=" scope ">
-                    <span>{{scope.row.sign_time}}</span>
+                  <template #default="scope">
+                    <span>{{ scope.row.sign_time }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="物业费信息" prop="payment" align="center">
-                  <template #default=" scope ">
+                  <template #default="scope">
                     <el-button type="primary" style="margin-left: 16px"
                       @click="handleLookup(scope.$index, props.row, scope.row)">
                       查看
@@ -183,9 +183,9 @@
           <el-table-column label="法人名称" prop="legal_person" align="center" />
           <el-table-column align="right">
             <template #header>
-              <el-input v-model=" search " size="big" placeholder="查询" />
+              <el-input v-model="search" size="big" placeholder="查询" />
             </template>
-            <template #default=" scope ">
+            <template #default="scope">
               <el-button size="big" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button size="big" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
@@ -194,84 +194,84 @@
       </div>
       <el-space>
         <div class="title">
-          <el-pagination layout="prev, pager, next" :total=" this.clients.length " hide-on-single-page="true"
-            @current-change=" changePage " :current-page=" currentPage " />
+          <el-pagination layout="prev, pager, next" :total="this.clients.length" hide-on-single-page="true"
+            @current-change="changePage" :current-page="currentPage" />
         </div>
       </el-space>
 
     </el-card>
-    <el-dialog v-model=" show_dialog " :title=' this.dialog_person.name + "的信息" '>
-      <el-row :gutter=" 20 " class="dialog_row" style="padding-top: 0px">
-        <el-col :span=" 1 "></el-col>
-        <el-col :span=" 5 " style="display: flex"><span style=" margin: 0 auto;align-self: center">姓名</span></el-col>
-        <el-col :span=" 14 "><el-input v-model=" dialog_name " /></el-col>
+    <el-dialog v-model="show_dialog" :title='this.dialog_person.name + "的信息"'>
+      <el-row :gutter="20" class="dialog_row" style="padding-top: 0px">
+        <el-col :span="1"></el-col>
+        <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">姓名</span></el-col>
+        <el-col :span="14"><el-input v-model="dialog_name" /></el-col>
       </el-row>
-      <el-row :gutter=" 20 " class="dialog_row">
-        <el-col :span=" 1 "></el-col>
-        <el-col :span=" 5 " style="display: flex"><span style=" margin: 0 auto;align-self: center">电话</span></el-col>
-        <el-col :span=" 14 "><el-input v-model=" dialog_phone " /></el-col>
+      <el-row :gutter="20" class="dialog_row">
+        <el-col :span="1"></el-col>
+        <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">电话</span></el-col>
+        <el-col :span="14"><el-input v-model="dialog_phone" /></el-col>
       </el-row>
-      <el-row :gutter=" 20 " class="dialog_row">
-        <el-col :span=" 1 "></el-col>
-        <el-col :span=" 5 " style="display: flex"><span style=" margin: 0 auto;align-self: center">公司名称</span></el-col>
-        <el-col :span=" 14 "><el-input v-model=" dialog_company " /></el-col>
+      <el-row :gutter="20" class="dialog_row">
+        <el-col :span="1"></el-col>
+        <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">公司名称</span></el-col>
+        <el-col :span="14"><el-input v-model="dialog_company" /></el-col>
       </el-row>
 
-      <el-row :gutter=" 20 " class="dialog_row">
-        <el-col :span=" 1 "></el-col>
-        <el-col :span=" 5 " style="display: flex"><span style=" margin: 0 auto;align-self: center">法人名称</span></el-col>
-        <el-col :span=" 14 "><el-input v-model=" dialog_legal " /></el-col>
+      <el-row :gutter="20" class="dialog_row">
+        <el-col :span="1"></el-col>
+        <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center">法人名称</span></el-col>
+        <el-col :span="14"><el-input v-model="dialog_legal" /></el-col>
       </el-row>
-      <el-row :gutter=" 20 " class="dialog_row">
-        <el-col :span=" 8 "></el-col>
-        <el-col :span=" 4 " style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large"
+      <el-row :gutter="20" class="dialog_row">
+        <el-col :span="8"></el-col>
+        <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large"
             @click="dialogCancel()">取消</el-button></el-col>
-        <el-col :span=" 4 " style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large"
+        <el-col :span="4" style="display: flex"><el-button type="primary" style="margin: 0 auto" size="large"
             @click="dialogConfirm()">确认</el-button></el-col>
       </el-row>
     </el-dialog>
-    <el-dialog v-model=" show_lease_dialog " :title=' this.lease_person.name + "的租赁信息" '>
+    <el-dialog v-model="show_lease_dialog" :title='this.lease_person.name + "的租赁信息"'>
       <div style="text-align: right;padding-bottom: 10px">
         <el-button type="primary" style="padding-bottom: 10px" @click="addNewRoom(this.lease_person)">添加信息</el-button>
       </div>
-      <el-table :data=" this.lease_person.room " :border=" true ">
+      <el-table :data="this.lease_person.room" :border="true" height="300px">
         <el-table-column label="房间号" prop="id" align="center">
-          <template #default=" scope ">
-            <el-input type="text" v-model=" scope.row.id " v-show=" scope.row.is_edit " size="small"></el-input>
-            <span v-show=" !scope.row.is_edit ">{{scope.row.id}}</span>
+          <template #default="scope">
+            <el-input type="text" v-model="scope.row.id" v-show="scope.row.is_edit" size="small"></el-input>
+            <span v-show="!scope.row.is_edit">{{ scope.row.id }}</span>
           </template>
         </el-table-column>
         <el-table-column label="起始时间" prop="start_time" align="center">
-          <template #default=" scope ">
-            <div v-show=" scope.row.is_edit ">
-              <el-date-picker v-model=" scope.row.start_time " type="date" value-format="YYYY-MM-DD" size="small" />
+          <template #default="scope">
+            <div v-show="scope.row.is_edit">
+              <el-date-picker v-model="scope.row.start_time" type="date" value-format="YYYY-MM-DD" size="small" />
             </div>
-            <span v-show=" !scope.row.is_edit ">{{scope.row.start_time}}</span>
+            <span v-show="!scope.row.is_edit">{{ scope.row.start_time }}</span>
           </template>
         </el-table-column>
         <el-table-column label="结束时间" prop="end_time" align="center">
-          <template #default=" scope ">
-            <div v-show=" scope.row.is_edit ">
-              <el-date-picker v-model=" scope.row.end_time " type="date" value-format="YYYY-MM-DD" size="small"
+          <template #default="scope">
+            <div v-show="scope.row.is_edit">
+              <el-date-picker v-model="scope.row.end_time" type="date" value-format="YYYY-MM-DD" size="small"
                 class="time_picker" />
             </div>
-            <span v-show=" !scope.row.is_edit ">{{scope.row.end_time}}</span>
+            <span v-show="!scope.row.is_edit">{{ scope.row.end_time }}</span>
           </template>
         </el-table-column>
         <el-table-column label="签约时间" prop="sign_time" align="center">
-          <template #default=" scope ">
-            <div v-show=" scope.row.is_edit ">
-              <el-date-picker v-model=" scope.row.sign_time " type="date" value-format="YYYY-MM-DD" size="small"
+          <template #default="scope">
+            <div v-show="scope.row.is_edit">
+              <el-date-picker v-model="scope.row.sign_time" type="date" value-format="YYYY-MM-DD" size="small"
                 class="time_picker" />
             </div>
-            <span v-show=" !scope.row.is_edit ">{{scope.row.sign_time }}</span>
+            <span v-show="!scope.row.is_edit">{{ scope.row.sign_time }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
-          <template #default=" rooms ">
-            <el-button size="small" v-show=" !rooms.row.is_edit " @click="rooms.row.is_edit=true">编辑</el-button>
-            <el-button size="small" v-show=" rooms.row.is_edit " @click="saveRoom(rooms.$index)">保存</el-button>
-            <el-button size="small" v-show=" !rooms.row.is_edit " type="danger"
+          <template #default="rooms">
+            <el-button size="small" v-show="!rooms.row.is_edit" @click="rooms.row.is_edit = true">编辑</el-button>
+            <el-button size="small" v-show="rooms.row.is_edit" @click="saveRoom(rooms.$index)">保存</el-button>
+            <el-button size="small" v-show="!rooms.row.is_edit" type="danger"
               @click="deleteRoom(rooms.$index)">删除</el-button>
           </template>
         </el-table-column>
@@ -328,29 +328,7 @@ export default {
       add_email: '',
       dialogVisibleforpayment: false,
       popovershow: false,
-      clients: [
-        {
-          id: 2,
-          name: 'Tom',
-          phone: '123456789',
-          company: 'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-              payment: {
-                year: '2002',
-                ispaid: true,
-                paytime: '2002-09-18'
-              }
-            }
-          ],
-        },
-      ],
+      clients: [],
       filterClients: [],
       showClients: [],
       parentBorder: false,
@@ -392,7 +370,7 @@ export default {
       formData.append('token', localStorage.getItem('token'))
       formData.append('lease_id', this.drawer_room.lease_id)
       formData.append('year', this.year_p)
-      if (this.radio2 == '1') {
+      if (this.radio2 === '1') {
         formData.append('pay_time', this.day_p)
       } else {
         formData.append('pay_time', '')
@@ -421,7 +399,7 @@ export default {
       formData.append('token', localStorage.getItem('token'))
       formData.append('lease_id', this.drawer_room.lease_id)
       formData.append('year', this.year_picked)
-      if (this.radio1 == '1') {
+      if (this.radio1 === '1') {
         formData.append('pay_time', this.day_picked)
       } else {
         formData.append('pay_time', '')
@@ -464,9 +442,10 @@ export default {
             type: 'success',
             message: '添加成功'
           })
+
           this.getClientsInfo()
           this.dialogVisible = false
-          this.getClientsInfo()
+          this.currentPage = 1
         }
         else {
           ElMessage({
@@ -486,10 +465,10 @@ export default {
         data: formData
       }).then(res => {
         that.clients = res.data.clients
-        console.log(res.data)
-        this.filterClients = this.clients
-        this.showClients = this.filterClients.slice(0, 10)
+        console.log(res.data.clients)
       })
+      this.filterClients = this.clients
+      this.showClients = this.filterClients.slice(0, 10)
     },
     clickRowHandle(row, column, event) {
       if (this.expands.includes(row.id)) {
@@ -542,6 +521,7 @@ export default {
               message: '删除成功'
             })
             that.getClientsInfo()
+            that.currentPage = 1
           } else {
             ElMessage({
               type: 'error',
@@ -708,7 +688,6 @@ export default {
     this.parentBorder = ref(false)
     this.childBorder = ref(false)
     this.search = ref('')
-    this.token = localStorage.getItem('token')
     this.getClientsInfo()
   }
 }

@@ -60,8 +60,20 @@
       </el-icon>
       <span class="sideBarFontSize">房间状态</span>
     </el-menu-item>
+    <el-menu-item index="/collectWorks" v-show="type === '-1'">
+      <el-icon>
+        <View />
+      </el-icon>
+      <span class="sideBarFontSize">维修统计</span>
+    </el-menu-item>
+    <el-menu-item index="/collectGuests" v-show="type === '-1'">
+      <el-icon>
+        <View />
+      </el-icon>
+      <span class="sideBarFontSize">访客统计</span>
+    </el-menu-item>
 
-    <el-menu-item index="/knowledgeBase" v-if="type != '0'">
+    <el-menu-item index="/knowledgeBase" v-if="type !== '0'">
       <el-icon title="维修知识库">
         <Notebook />
       </el-icon>
@@ -103,29 +115,12 @@ export default {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
-    computed: {
-      monitor() {
-        return this.$store.state.isCollapsed;
-      }
-    },
-    watch: {
-      monitor() {
-        this.isCollapse = this.$store.state.isCollapsed;
-      }
-    },
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      }
-    },
-    created() {
-      this.type = localStorage.getItem('type')
-      console.log(this.type)
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
     }
   },
+
+
   created() {
     this.type = localStorage.getItem('type')
     console.log(this.type)
@@ -133,10 +128,10 @@ export default {
 }
 </script>
 <style>
-
 .el-menu:not(.el-menu--collapse) {
   width: 200px;
 }
+
 .el-submenu.is-active {
   width: 150px;
 }
