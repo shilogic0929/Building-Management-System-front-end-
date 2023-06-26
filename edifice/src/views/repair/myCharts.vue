@@ -19,7 +19,7 @@
       },
       width: {
         type: String,
-        default: '1200px'
+        default: '670px'
       },
   
       options: {

@@ -1,7 +1,7 @@
 <template>
   <el-menu :collapse="isCollapse" default-active="$route.path" router active-text-color="#0066CC"
            background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose">
-    <el-menu-item index="/homeview">
+    <el-menu-item index="/homeview" v-show="type === '-1'">
       <el-icon title="首页">
         <HomeFilled />
       </el-icon>
@@ -91,7 +91,7 @@
       <el-icon>
         <tools />
       </el-icon>
-      <span class="sideBarFontSize">维修人员</span>
+      <span class="sideBarFontSize">工作人员</span>
     </el-menu-item>
   </el-menu>
 </template>

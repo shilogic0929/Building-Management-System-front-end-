@@ -3,7 +3,14 @@
     <main>
         <div class="container">
             <el-card class="card" style="width: 1500px;">
-                <myCharts id="chart" :options="option" :width="width"></myCharts>
+                <el-row>
+                    <el-col :span="12">
+                        <myCharts id="chart1" :options="option1" :width="width"></myCharts>
+                    </el-col>
+                    <el-col :span="12">
+                        <myCharts id="chart2" :options="option2" :width="width"></myCharts>
+                    </el-col>
+                </el-row>
             </el-card>
         </div>
     </main>
@@ -79,7 +86,8 @@
             width="280"
             align="center">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" 
+            align="center">
             <template v-slot="scope">
                 <el-button round type="info" 
                 size="small"
@@ -196,7 +204,7 @@
 <script>
 import axios from 'axios'
 import myCharts from "./myCharts.vue";
-import { option } from './options.js'
+import { option1, option2 } from './options.js'
 import { MoreFilled } from '@element-plus/icons-vue'
 export default {
     name: "FeedbackTable",
@@ -212,7 +220,8 @@ export default {
     data() {
         return {
             count: 0,
-            option: option,
+            option1: option1,
+            option2 : option2,
             tableData: [],
             selected_table_data: [], 
             all_table_data: [],
@@ -325,6 +334,9 @@ export default {
                 console.log(res)
                 if(res.status == 200) {
                     this.tableData = res.data.data;
+                    for(let i = 0; i < this.tableData.length; i++) 
+                        this.option2.series[0].data[this.tableData[i].type - 1].value++
+                    
                     this.getOption();
                     this.setPaginations()
                     this.handleSizeChange(this.paginations.page_size)
@@ -383,17 +395,17 @@ export default {
             mp1 = sorted1;
             mp2 = sorted2;
             //console.log([...mp]); // 打印出排好序的键值对数组
-            this.option.xAxis.data = [];
+            this.option1.xAxis.data = [];
             // 使用push()方法将键值对添加到数组中
             for(let [key] of mp1) {
-                this.option.xAxis.data.push(key);
+                this.option1.xAxis.data.push(key);
             }
-            this.option.series[0].data = [];
-            this.option.series[1].data = [];
+            this.option1.series[0].data = [];
+            this.option1.series[1].data = [];
             for(let [key, value] of mp1) 
-                this.option.series[0].data.push([key, value])
+                this.option1.series[0].data.push([key, value])
             for(let [key, value] of mp2) 
-                this.option.series[1].data.push([key, value])
+                this.option1.series[1].data.push([key, value])
             //console.log([...this.option.series[0].data])
         },
         handleCurrentChange(page) {
