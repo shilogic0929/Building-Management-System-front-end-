@@ -1,4 +1,4 @@
-export const option = {
+export const option1 = {
     tooltip: {},
     legend: {},
     color: [
@@ -41,4 +41,45 @@ export const option = {
         areaStyle: {},
       },
     ]
+  };
+
+  export const option2 = {
+    legend: {
+      data: ["水", "电", "机械","其他"],
+    },
+    title: {
+      text: "维修类型分析",
+    },
+    series: [
+      {
+        type: "pie",
+        radius: ["25%", "70%"],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 10,
+          borderColor: '#fff',
+          borderWidth: 2
+        },
+        label: {
+          show: false,
+          position: "center",
+        },
+        labelLine: {
+          show: false,
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: "20",
+            fontWeight: "bold",
+          },
+        },
+        data: [
+          { value: 12, name: "水" },
+          { value: 7, name: "电" },
+          { value: 8, name: "机械"},
+          { value: 9, name: "其他"}
+        ],
+      },
+    ],
   };
