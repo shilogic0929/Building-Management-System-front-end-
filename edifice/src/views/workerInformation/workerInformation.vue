@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <el-card>
 
       <el-table :data="tableData" stripe border style="width: 100%">
@@ -155,4 +155,8 @@ export default {
 
 </script>
 
-<style lang="less" scoped></style>
+<style scoped>
+.page {
+  z-index: -1;
+}
+</style>

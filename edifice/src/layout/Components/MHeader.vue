@@ -36,60 +36,62 @@
         </el-dropdown>
       </div>
     </div>
-    <el-dialog v-model="dialogVisible" title="访客申请" width="60%" draggable>
-      <el-card class="input-card">
-        <div>申请表单: </div>
-        <div style="margin: 20px" />
-        <el-form :label-position="top" label-width="100px" :rules="rules" ref="input" style="max-width: 800px">
-          <el-form-item label="姓名">
-            <el-input v-model="input.user_name" />
-          </el-form-item>
-          <el-form-item label="身份证号码" prop="idNumber">
-            <el-input v-model="input.user_id" />
-          </el-form-item>
-          <el-form-item label="联系电话" prop="phone">
-            <el-input v-model="input.phone_num" />
-          </el-form-item>
-          <el-form-item label="访问时间" style="margin-top: 20px;">
-            <div class="block">
-              <el-date-picker v-model="input.visit_time" type="datetime" placeholder="选择日期和时间" />
-            </div>
-          </el-form-item>
-        </el-form>
-        <span class="dialog-footer" style="padding-left: 100px">
+    <body>
+      <el-dialog v-model="dialogVisible" title="访客申请" width="60%" draggable class="dlg" append-to-body="true">
+        <el-card class="input-card">
+          <div>申请表单: </div>
+          <div style="margin: 20px" />
+          <el-form :label-position="top" label-width="100px" :rules="rules" ref="input" style="max-width: 800px">
+            <el-form-item label="姓名">
+              <el-input v-model="input.user_name" />
+            </el-form-item>
+            <el-form-item label="身份证号码" prop="idNumber">
+              <el-input v-model="input.user_id" />
+            </el-form-item>
+            <el-form-item label="联系电话" prop="phone">
+              <el-input v-model="input.phone_num" />
+            </el-form-item>
+            <el-form-item label="访问时间" style="margin-top: 20px;">
+              <div class="block">
+                <el-date-picker v-model="input.visit_time" type="datetime" placeholder="选择日期和时间" />
+              </div>
+            </el-form-item>
+          </el-form>
+          <span class="dialog-footer" style="padding-left: 100px">
+            <el-button @click="dialogVisible = false">
+              取消
+              <el-icon>
+                <CircleClose />
+              </el-icon>
+            </el-button>
+            <el-button class="submit" size="middle" @click="submitInput(input)">
+              提交
+              <el-icon>
+                <Promotion />
+              </el-icon>
+            </el-button>
+          </span>
+        </el-card>
+        <el-card style="margin-top: 20px;!important" v-model="showActivities">
+          <span>申请处理进度</span>
+          <div class="block">
+            <el-timeline>
+              <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp"
+                :color="activity.color" :hollow="activity.hollow">
+                {{ activity.content }}
+              </el-timeline-item>
+            </el-timeline>
+          </div>
+        </el-card>
+        <template #footer>
           <el-button @click="dialogVisible = false">
-            取消
             <el-icon>
               <CircleClose />
             </el-icon>
           </el-button>
-          <el-button class="submit" size="middle" @click="submitInput(input)">
-            提交
-            <el-icon>
-              <Promotion />
-            </el-icon>
-          </el-button>
-        </span>
-      </el-card>
-      <el-card style="margin-top: 20px;!important" v-model="showActivities">
-        <span>申请处理进度</span>
-        <div class="block">
-          <el-timeline>
-            <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp"
-              :color="activity.color" :hollow="activity.hollow">
-              {{ activity.content }}
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-card>
-      <template #footer>
-        <el-button @click="dialogVisible = false">
-          <el-icon>
-            <CircleClose />
-          </el-icon>
-        </el-button>
-      </template>
-    </el-dialog>
+        </template>
+      </el-dialog>
+    </body>
   </div>
 </template>
 
@@ -143,15 +145,17 @@ export default {
       },
       activities: [{
         content: '申请时间',
-        timestamp: '2023-06-23 14:26:00',
-        color: '#0bbd87',
+        timestamp: '',
+        color: '',
+        hollow: true
       }, {
         content: '通过审核',
-        timestamp: '2023-06-24 14:26:00',
-        color: '#0bbd87',
+        timestamp: '',
+        color: '',
+        hollow: true
       }, {
         content: '访问时间',
-        timestamp: '2023-06-25 14:26:00',
+        timestamp: '',
         hollow: true
       }],
       showActivities: false,
@@ -165,7 +169,7 @@ export default {
     }
   },
   mounted() {
-    this.userName = this.$store.state.username
+    this.userName = this.$store.state.username;
   },
   methods: {
     collapse() {
@@ -210,28 +214,70 @@ export default {
         this.$message("请设置访问时间")
         return
       }
-      let date = new Date(input.visit_time).toLocaleDateString()
-      let time = new Date(input.visit_time).toLocaleTimeString()
-      // let dateTime = date + ' ' + time
-      let dateTime = date.split("/").join("-") + ' ' + time
+      let date = new Date()
+      let day = date.toLocaleDateString()
+      let time = date.toLocaleTimeString()
+      let dateTime = day.split("/").join("-")+' '+ time
+      this.activities[0].timestamp = dateTime
+      this.activities[0].color = "#0bbd87"
+      this.activities[1].timestamp = dateTime
+      this.activities[1].color = "#0bbd87"
       console.log(dateTime)
-      const formData = new FormData()
+      let formData = new FormData()
       formData.append('token', localStorage.getItem('token'))
-      formData.append('user_name', input.userName)
+      formData.append('user_name', input.user_name)
       formData.append('user_id', input.user_id)
       formData.append('phone_num', input.phone_num)
-      formData.append('visit_time', dateTime)
+      dateTime = input.visit_time
+      console.log(dateTime)
+      let y = dateTime.getFullYear();
+      let m = dateTime.getMonth() + 1;
+      m = m < 10 ? ('0' + m) : m;
+      let d = dateTime.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      let h = dateTime.getHours();
+      h = h < 10 ? ('0' + h) : h;
+      let minute = dateTime.getMinutes();
+      minute = minute < 10 ? ('0' + minute) : minute;
+      let second = dateTime.getSeconds();
+      second = second < 10 ? ('0' + second) : second;
+      dateTime = y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+      console.log(dateTime);
+      this.input.visit_time = dateTime
+      dateTime = dateTime.replace(/-/g, '-');
+      let visit_time = new Date(dateTime).getTime()
+      visit_time /= 1000
+      formData.append('visit_time', visit_time.toString())
+      console.log(formData.get('user_name'))
+      console.log(formData.get('user_id'))
+      console.log(formData.get('phone_num'))
+      console.log(formData.get('visit_time'))
       this.$axios({
         method: 'POST',
         url: '/userApply',
-        data: formData
+        data: //{
+          // 'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxNTU4MjAsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.65p8pwWLednWSEQlpGcU8Etvlwlf-nUD7WChWz6n0-I',
+          // 'user_name' : 'sxcsxc',
+          // 'user_id' : '220102200010101235',
+          // 'phone_num' : '18888888888',
+          // 'visit_time' : '1687585349'
+        //}
+        formData
       }).then(res => {
         if (res.status !== 200 && res.data.success == false) {
           this.$message.error('提交失败：' + res.statusText);
           return;
         } else {
-          this.$message.success('提交成功')
-          this.dialogVisible = false;
+          if(res.data.errno == 0) {
+            this.$message.success('提交成功')
+            this.activities[2].timestamp = input.visit_time
+            this.activities[2].color = "#0bbd87"
+          }
+          else 
+            this.$message("您已经申请过")
+            setTimeout(() => {
+              this.dialogVisible = false;
+            }, 1000);
         }
       })
     }
@@ -253,11 +299,16 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .icon {
   top: 5px;
   cursor: pointer;
 }
+
+/* .dlg {
+  position: absolute;
+  z-index: 99999;
+} */
 
 .block {
   margin-top: 20px;
