@@ -482,26 +482,32 @@ export default {
         autoAllocate() {
             console.log(this.data4Dlg);
             let period = '1';
-            let time = new Date(this.data4Dlg.expect_time)
-            let hour = time.getHours()
+            let hour = parseInt(this.data4Dlg.expect_time.slice(11, 13));
+            console.log(hour)
             period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
             const formData = new FormData();
             formData.append('token', localStorage.getItem('token'))
-            console.log(localStorage.getItem('token'));
-            formData.append('type', toString(this.data4Dlg.type));
-            formData.append('period', period)
-            formData.append('maintain_time', this.data4Dlg.repair_time.slice(0, 10))
+            //console.log(localStorage.getItem('token'));
+            //formData.append('type', this.data4Dlg.type.toString());
+            formData.append('type', '1');
+            //formData.append('period', period)
+            formData.append('period', '1')
+            //formData.append('maintain_time', this.data4Dlg.repair_time.slice(0, 10))
+            formData.append('maintain_time', '2023-06-24')
+            console.log(this.data4Dlg.type.toString())
             console.log(period);
             console.log(this.data4Dlg.repair_time.slice(0, 10));
             this.$axios({
                 method: 'POST',
                 url: '/autoDeliver',
-                date: formData,
+                date: formData
             }).then(res => {
-                if(res.status !== 200 || res.data.errno == 1004) {
-                    this.$message("该时段无空闲维修工，请手动分配")
+                console.log(res)
+                if(res.status !== 200 || res.data.errno == 1004 || res.data.errno == 1002) {
+                    this.$message.error("该时段无空闲维修工，请手动分配")
                 }
                 else {
+                    console.log(res)
                     this.$message.success("成功!")
                     this.input1.maintainer_name = res.data.data.maintainer_name
                     this.input1.maintainer_id = res.data.data.maintainer_id
