@@ -63,7 +63,9 @@ export default {
   // created() {
   //   this.getGoodsList();
   // },
-
+  beforeRouteEnter(to, from, next){
+    // if(from.name === )
+  },
   mounted() {
     this.init();
     console.log(this.total)
@@ -105,13 +107,10 @@ export default {
       }
     },
     removeById(row) {
-
       if (row.isMaintainer === false) {
-
         alert('不是维修人员！');
       }
       else {
-
         alert('成功派遣！');
         this.$router.push({
           path: '/handleRepair',
