@@ -155,7 +155,7 @@
                 <el-col :span="2"></el-col>
                 <el-col :span="8" style="display: flex"><el-button size="big" style="align-self:center; margin: 0 auto" @click="editLease(props.row)">编辑租赁信息</el-button></el-col>
               </el-row>
-              <el-table :data="props.row.room" :border="true" >
+              <el-table :data="props.row.room" :border="true" height="250px">
                 <el-table-column label="房间号" prop="id" align="center" />
                 <el-table-column label="起始时间" prop="start_time" align="center">
                   <template #default="scope">
@@ -240,7 +240,7 @@
       <div style="text-align: right;padding-bottom: 10px">
         <el-button type="primary" style="padding-bottom: 10px" @click="addNewRoom(this.lease_person)">添加信息</el-button>
       </div>
-      <el-table :data="this.lease_person.room" :border="true">
+      <el-table :data="this.lease_person.room" :border="true" height="300px">
         <el-table-column label="房间号" prop="id" align="center">
           <template #default="scope">
             <el-input type="text" v-model="scope.row.id" v-show="scope.row.is_edit" size="small"></el-input>

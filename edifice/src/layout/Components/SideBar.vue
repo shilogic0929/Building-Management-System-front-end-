@@ -73,7 +73,7 @@
       <span class="sideBarFontSize">访客统计</span>
     </el-menu-item>
 
-    <el-menu-item index="/knowledgeBase" v-if="type != '0'">
+    <el-menu-item index="/knowledgeBase" v-if="type !== '0'">
       <el-icon title="维修知识库">
         <Notebook />
       </el-icon>
