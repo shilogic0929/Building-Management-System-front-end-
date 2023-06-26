@@ -2,7 +2,7 @@
   <div>
     <el-card>
 
-      <el-table :data="tableData" stripe border style="width: 100%">
+      <el-table :data="tableData.slice((currentPage-1)*10,currentPage*10)" style="width: 100%">
         <el-table-column type="index"> </el-table-column>
         <el-table-column prop="name" label="姓名" width="160px"></el-table-column>
         <el-table-column prop="tel" label="电话" width="250px"></el-table-column>
@@ -32,6 +32,14 @@
           layout="total, sizes, prev, pager, next, jumper" :total="total" background>
         </el-pagination>
       </div> -->
+      <div class="flexItem" style="margin-top:20px;">
+        <el-pagination :align='center'
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-size="[10]"
+                       layout="total, prev, pager, next, jumper"
+                       :total="tableData.length"/>
+      </div>
     </el-card>
 
   </div>
@@ -43,6 +51,7 @@
 export default {
   data() {
     return {
+      currentPage: 1,
       queryInfo: {
         query: "",
         pagenum: 1,
@@ -115,7 +124,10 @@ export default {
         }
       })
 
+    },
 
+    handleCurrentChange(val) {
+      this.currentPage = val;
     },
 
     edit(row) {
