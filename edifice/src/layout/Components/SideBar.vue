@@ -54,6 +54,13 @@
       <span class="sideBarFontSize">报修记录</span>
     </el-menu-item>
 
+    <el-menu-item index="/rentIn" v-if="type === '0'">
+      <el-icon title="租赁信息">
+        <Document />
+      </el-icon>
+      <span class="sideBarFontSize">租赁信息</span>
+    </el-menu-item>
+
     <el-menu-item index="/roomStatus" v-if="type === '-1'">
       <el-icon title="房间状态">
         <House />
@@ -86,10 +93,6 @@
       </el-icon>
       <span class="sideBarFontSize">维修人员</span>
     </el-menu-item>
-    <!--          <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">-->
-    <!--            <el-icon><Service /></el-icon>-->
-    <!--            <span class="sideBarFontSize">客服系统</span>-->
-    <!--          </el-menu-item>-->
   </el-menu>
 </template>
 
