@@ -124,7 +124,22 @@ const routes = [{
           title: "房间状态"
         },
         component: () => import('../views/roomStatus/roomStatus.vue'),
-
+      },
+      {
+        path: '/collectWorks',
+        name: "维修统计",
+        meta: {
+          title: "维修统计"
+        },
+        component: () => import('../views/collect/collectWorks.vue')
+      },
+      {
+        path: '/collectGuests',
+        name: "访客统计",
+        meta: {
+          title: "访客统计"
+        },
+        component: () => import('../views/collect/collectGuests.vue')
       },
       {
         path: 'knowledgeBase',

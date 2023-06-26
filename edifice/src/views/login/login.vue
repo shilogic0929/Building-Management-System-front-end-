@@ -22,7 +22,7 @@
 
         <div class="titleDiv">
           <h2 class="loginH2" style="position: relative;top:45px"><strong>大厦</strong>物业管理系统</h2>
-          
+
         </div>
         <el-form ref="loginForm" :rules="rules" :model="ruleForm">
           <el-form-item prop="username">
@@ -212,10 +212,10 @@ export default {
           localStorage.setItem('token', res.data.data.token)
           localStorage.setItem('type', res.data.data.type)
           if (res.data.data.type === 0) {//普通人员
-            this.$router.push('/dashBoard')
+            this.$router.push('/myRepair')
           }
           else if (res.data.data.type === -1) {//管理人
-            this.$router.push('/clientView')
+            this.$router.push('/handleRepair')
           }
           else {//维修人员
             this.$router.push('/repairService')
