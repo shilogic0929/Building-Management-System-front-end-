@@ -60,12 +60,6 @@ export default {
       currentPage: 1,
     };
   },
-  // created() {
-  //   this.getGoodsList();
-  // },
-  beforeRouteEnter(to, from, next){
-    // if(from.name === )
-  },
   mounted() {
     this.init();
     console.log(this.total)
