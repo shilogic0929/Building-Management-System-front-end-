@@ -137,7 +137,8 @@ const routes = [{
                 path: '/rentIn',
                 name: "个人租赁信息",
                 meta: {
-                    title: "个人租赁信息"
+                    title: "个人租赁信息",
+                    judge_type: 2
                 },
                 component: () => import('../views/repair/rentIn.vue')
             },
