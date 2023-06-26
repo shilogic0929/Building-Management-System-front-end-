@@ -616,6 +616,7 @@ export default {
           })
           this.dialogVisible = false
           this.getClientsInfo()
+          this.currentPage = 1
         }
         else {
           ElMessage({
@@ -683,6 +684,7 @@ export default {
               message: '删除成功'
             })
             that.getClientsInfo()
+            that.currentPage = 1
           }else{
             ElMessage({
               type: 'error',
