@@ -72,6 +72,12 @@
       </el-icon>
       <span class="sideBarFontSize">访客统计</span>
     </el-menu-item>
+    <el-menu-item index="/woIn" v-if="type === '-1'">
+      <el-icon>
+        <tools />
+      </el-icon>
+      <span class="sideBarFontSize">维修人员</span>
+    </el-menu-item>
     <!--          <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">-->
     <!--            <el-icon><Service /></el-icon>-->
     <!--            <span class="sideBarFontSize">客服系统</span>-->
@@ -111,6 +117,8 @@ export default {
   }
 }
 </script>
-<style>.el-submenu.is-active {
+<style>
+.el-submenu.is-active {
   width: 150px;
-}</style>
+}
+</style>
