@@ -93,10 +93,27 @@
       </el-icon>
       <span class="sideBarFontSize">工作人员</span>
     </el-menu-item>
+    <el-menu-item v-if="type === '0'">
+      <el-icon>
+        <Message />
+      </el-icon>
+      <span class="sideBarFontSize">访客申请</span>
+    </el-menu-item>
   </el-menu>
 </template>
 
 <script>
+import {
+  Check,
+  CircleCheck,
+  Setting,
+  UserFilled,
+  Plus,
+  House,
+  Guide,
+  SwitchButton, User,
+  Message,
+} from '@element-plus/icons-vue'
 export default {
   data() {
     return {
