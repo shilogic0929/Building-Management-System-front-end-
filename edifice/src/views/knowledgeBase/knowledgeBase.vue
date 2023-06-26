@@ -219,11 +219,11 @@ export default {
   display: inline-block;
   vertical-align: middle;
   padding: 8px 8px;
-  width: 30%;
+  width: calc(100%/3 - 20px);
   height: auto;
   /* border: 1px solid rgb(153, 197, 241); */
 
-  margin: 20px 10px 20px 10px;
+  margin: 10px;
   background: #ffffff;
   border-radius: 36px;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
