@@ -13,7 +13,7 @@
           </div>
         </template>
 
-        <el-table :data="repair" style="width: 100%">
+        <el-table :data="repair.slice((currentPage-1)*10,currentPage*10)" style="width: 100%">
           <el-table-column
               prop="room_id"
               label="房间号"

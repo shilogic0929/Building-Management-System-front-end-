@@ -114,6 +114,15 @@ export default {
     this.init();
   },
   methods: {
+    getNowFormatDate() {
+      let date = new Date()
+      var year = date.getFullYear()
+      var month = date.getMonth() + 1
+      var strDate = date.getDate()
+      if (month < 10) month = `0${month}`
+      if (strDate < 10) strDate = `0${strDate}`
+      return `${year}-${month}-${strDate}`
+    },
     init() {
       var that = this;
       const formData = new FormData();
@@ -131,16 +140,12 @@ export default {
           that.sumTask=temp.sum
           that.todayTask=eval(temp.today.join("+"));
           that.todayFinish=0;
-          var hour=new Date().getHours();
-          for(var i=0;i<4;i++)
-          {
-            if(hour>=that.tool[i])
-              that.todayFinish+=temp.today[i]
-          }
-          
-
+          /*problem here */
+          var tod=that.getNowFormatDate()
           for(let i=0;i<that.repair.length;i++)
           {
+            if(that.repair[i].maintain_time===tod&&that.repair[i].status==2)
+              that.todayFinish++;
             if(that.repair[i].status==2)
               that.table2.push(that.repair[i])
             else
