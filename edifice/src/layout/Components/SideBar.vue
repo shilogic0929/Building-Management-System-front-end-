@@ -96,8 +96,27 @@ export default {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    computed: {
+      monitor() {
+        return this.$store.state.isCollapsed;
+      }
+    },
+    watch: {
+      monitor() {
+        this.isCollapse = this.$store.state.isCollapsed;
+      }
+    },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    },
+    created() {
+      this.type = localStorage.getItem('type')
+      console.log(this.type)
     }
   },
   created() {

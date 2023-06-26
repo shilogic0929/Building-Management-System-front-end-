@@ -81,12 +81,12 @@ const routes = [{
         component: () => import('../views/service/serviceHome.vue'),
       },
       {
-        path: 'addHouseDetail',
-        name: '添加房源细节',
+        path: 'woIn',
+        name: '工人信息',
         meta: {
-          title: "添加房源细节"
+          title: "工人信息"
         },
-        component: () => import('../views/service/addHouseDetail.vue'),
+        component: () => import('../views/workerInformation/workerInformation.vue'),
       },
       {
         path: 'verifyRepair',
@@ -136,7 +136,8 @@ const routes = [{
           title: "维修服务界面"
         },
         component: () => import('../views/repair/repairService.vue'),
-      }, {
+      },
+      {
         path: 'woIn',
         name: '工人信息',
         meta: {

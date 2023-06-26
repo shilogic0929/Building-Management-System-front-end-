@@ -590,7 +590,8 @@ export default {
       },
       language : "zhCn",
       currentPage: 1,
-      expands:[]
+      expands:[],
+      token:'',
     }
   },
   mounted() {
@@ -614,6 +615,7 @@ export default {
             message: '添加成功'
           })
           this.dialogVisible = false
+          this.getClientsInfo()
         }
         else {
           ElMessage({
@@ -626,17 +628,17 @@ export default {
     getClientsInfo(){
       const that = this
       const formData = new FormData();
-      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
+      formData.append('token',this.token)
       this.$axios({
         method:'POST',
         url:'/get_client_info',
         data: formData
       }).then(res => {
         that.clients = res.data.clients
-        console.log(res.data.clients)
+        console.log(res.data)
+        this.filterClients = this.clients
+        this.showClients = this.filterClients.slice(0,10)
       })
-      this.filterClients = this.clients
-      this.showClients = this.filterClients.slice(0,10)
     },
     clickRowHandle(row,column,event){
       if (this.expands.includes(row.id)) {
@@ -668,7 +670,7 @@ export default {
         const that = this
         const formData = new FormData();
         formData.append('id',client.id)
-        formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
+        formData.append('token',this.token)
         this.$axios({
           method:'POST',
           url:'/deleteClientInfo',
@@ -775,7 +777,7 @@ export default {
       formData.append('start_time',start_time.getTime()/1000)
       formData.append('end_time',end_time.getTime()/1000)
       formData.append('sign_time',sign_time.getTime()/1000)
-      formData.append('token',"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE")
+      formData.append('token',this.token)
       this.$axios({
         method:'POST',
         url:'/saveLeaseInfo',
@@ -799,7 +801,7 @@ export default {
     },
     deleteRoom(index){
       const formData = new FormData()
-      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
+      formData.append('token',this.token)
       formData.append('id',this.lease_person.id)
       formData.append('room_id',this.lease_person.room[index].id)
       const that = this
@@ -846,6 +848,7 @@ export default {
     this.parentBorder = ref(false)
     this.childBorder = ref(false)
     this.search = ref('')
+    this.token = localStorage.getItem('token')
     this.getClientsInfo()
   }
 }
