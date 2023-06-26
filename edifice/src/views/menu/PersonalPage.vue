@@ -20,7 +20,7 @@
           </el-form-item>
 
           <el-form-item label="公司：" prop="company">
-            <el-input v-model="form.company" :disabled="disabled" />
+            <el-input v-model="form.company" disabled />
           </el-form-item>
 
           <el-form-item label="维修类型：" prop="type" v-if="form.type > 0">
@@ -37,7 +37,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="onSubmit" :disabled="disabled">提交</el-button>
+            <el-button type="primary" @click="onSubmit" v-if="!disabled">提交</el-button>
           </el-form-item>
         </el-form>
 
