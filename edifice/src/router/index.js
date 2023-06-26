@@ -61,14 +61,6 @@ const routes = [{
         component: () => import('../views/repair/repairReport.vue'),
       },
       {
-        path: 'verifyRepair',
-        name: '报修处理',
-        meta: {
-          title: "报修处理"
-        },
-        component: () => import('../views/service/verifyRepair.vue'),
-      },
-      {
         path: 'repairDetail/:wid',
         name: '报修内容界面',
         meta: {

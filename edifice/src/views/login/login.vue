@@ -35,7 +35,7 @@
 <!--            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>-->
 <!--          </el-form-item>-->
           <el-form-item prop="password">
-            <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password" show-password
+            <el-input placeholder="请输入密码" :prefix-icon="Lock" v-model="ruleForm.password" show-password
               @keyup.enter.native="login()"></el-input>
 
           </el-form-item>

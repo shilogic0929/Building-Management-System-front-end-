@@ -23,7 +23,7 @@
           </el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
-              <router-link to="/dashboard">
+              <router-link to="/homeView">
                 <el-dropdown-item :icon="House">首页</el-dropdown-item>
               </router-link>
               <el-dropdown-item :icon="SwitchButton" @click="quit">注销</el-dropdown-item>
