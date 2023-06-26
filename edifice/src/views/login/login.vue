@@ -18,24 +18,11 @@
       </transition>
     </div> -->
     <div class="loginBox">
-
       <div class="loginCon">
 
         <div class="titleDiv">
-
-          <h2 class="loginH2">
-
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-
-            <strong>大厦</strong>物业管理系统
-          </h2>
-
-
-
-          <i class="el-icon-key"></i>
+          <h2 class="loginH2" style="position: relative;top:45px"><strong>大厦</strong>物业管理系统</h2>
+          
         </div>
         <el-form ref="loginForm" :rules="rules" :model="ruleForm">
           <el-form-item prop="username">

@@ -9,18 +9,18 @@
       <div class="flexItem" style="padding: 20px 0;">
         <el-form :model="form" label-width="150px">
           <el-form-item label="姓名：" prop="name">
-            <el-input v-model="form.name" disabled />
+            <el-input v-model="form.name" :disabled="disabled" />
           </el-form-item>
           <el-form-item label="联系方式：" prop="phone">
-            <el-input v-model="form.phone" disabled />
+            <el-input v-model="form.phone" :disabled="disabled" />
           </el-form-item>
 
           <el-form-item label="法人：" prop="legal">
-            <el-input v-model="form.legal" disabled />
+            <el-input v-model="form.legal" :disabled="disabled" />
           </el-form-item>
 
           <el-form-item label="公司：" prop="company">
-            <el-input v-model="form.company" disabled />
+            <el-input v-model="form.company" :disabled="disabled" />
           </el-form-item>
 
           <el-form-item label="维修类型：" prop="type" v-if="form.type > 0">
@@ -28,18 +28,17 @@
           </el-form-item>
 
           <el-form-item label="邮箱：" prop="email">
-            <el-input v-model="form.email" disabled />
+            <el-input v-model="form.email" :disabled="disabled" />
           </el-form-item>
 
           <el-form-item label="个人描述：">
-            <el-input disabled v-model="form.desc" type="textarea" maxlength="100" resize="none" show-word-limit
-              :autosize="{ minRows: 5 }" />
+            <el-input :disabled="disabled" v-model="form.desc" type="textarea" maxlength="100" resize="none"
+              show-word-limit :autosize="{ minRows: 5 }" />
           </el-form-item>
 
-          <!-- <el-form-item>
-              <el-button type="primary" @click="submit">提交</el-button>
-              <el-button @click="clear">清空</el-button>
-            </el-form-item> -->
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit" :disabled="disabled">提交</el-button>
+          </el-form-item>
         </el-form>
 
       </div>
@@ -48,11 +47,12 @@
 </template>
 
 <script>
-//import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 export default {
   data() {
     return {
+      disabled: true,
       types: ['水', '电', '机械', '其他'],
       form: {
         name: '小王',
@@ -90,31 +90,38 @@ export default {
             that.form.desc = re.description
           that.form.type = re.type
           that.form.is_available = re.is_available
+          if (re.type == -1) that.disabled = false
         }
       })
     },
-    // onSubmit(){
-    //     var data={
-    //         username:this.form.username,
-    //         realname:this.form.name,
-    //         desc:this.form.desc,
-    //         mobile:this.form.phoneNumber,
-    //         id_number:this.form.IdNumber,
-    //         email:this.form.email,
-
-    //     };
-    //     this.$axios.post('/user/modify_user/',JSON.stringify(data)).then(function (request) {
-    //         console.log(request.data)
-    //         if(request.data.errno==0){
-    //             ElMessage({
-    //                 message: request.data.msg,
-    //                 type: 'success',
-    //             })
-    //         }
-    //     })
-    // }
+    onSubmit() {
+      const formData = new FormData()
+      formData.append('token', localStorage.getItem("token"))
+      formData.append('new_name', this.form.name)
+      formData.append('new_phone', this.form.phone)
+      formData.append('new_company', this.form.company)
+      formData.append('new_legal', this.form.legal)
+      formData.append('new_email', this.form.email)
+      formData.append('new_description', this.form.desc)
+      this.$axios({
+        method: 'POST',
+        url: '/changeUserInfo',
+        data: formData
+      }).then(res => {
+        if (res.data.errno == 0) {
+          ElMessage({
+            type: 'success',
+            message: '修改成功'
+          })
+          this.init()
+        }
+      })
+    }
   }
 }
+
+
+
 
 
 </script>
@@ -157,5 +164,6 @@ export default {
 
 .el-textarea {
   width: 350px;
-}</style>
+}
+</style>
 

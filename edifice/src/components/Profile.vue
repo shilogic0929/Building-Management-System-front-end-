@@ -4,14 +4,14 @@
     <div class="profile-container">
       <div class="left-area">
         <div class="bg-area">
-          <a href="#/seeHouse">
+          <a>
             <img src="@/assets/image/living-room.jpg" alt="" class="img-curry c-img-left"/>
           </a>
 
           <p>
             大城市中，很多公司是租赁大厦的房间作为办公场地。从大厦管理方来说，有效盘活大厦使用效率可以带来收益增加，因此拟开发自身的物业管理系统，以更好的实现大厦的利用。
           </p>
-          <a href="#/seeHouse">
+          <a>
             <i class="fa fa-weibo"></i
           ></a>
           <br />
@@ -22,7 +22,6 @@
       <div class="right-area">
         <div class="bg-area">
           <a
-            href="#/appraise"
             ><img
               src="~@/assets/image/furniture.jpg"
               alt=""
@@ -34,7 +33,7 @@
           </p>
           <!-- 使用了图标库font-awesome -->
           <a
-            href="#/appraise"
+
             ><i class="fa fa-weibo"></i
           ></a>
           <br />
@@ -58,8 +57,7 @@ export default {
 
 <style scoped>
 .profile-section {
-  padding: 50px 15px 50px;
-  margin: 20px auto;
+  padding: 50px 15px 50px 10px;
 }
 .profile-container {
   width: 1220px;
@@ -74,7 +72,7 @@ export default {
   display: inline-block;
   text-align: center;
   width: 50%;
-  height: 550px;
+  height: 500px;
   position: relative;
   /* margin: 0px 20px; */
 }
@@ -100,7 +98,7 @@ export default {
 .bg-area {
   background-color: rgb(253, 253, 253);
   margin: 0px 50px;
-  height: 590px;
+  height: 500px;
   box-shadow: 0px 56px 36px -60px #121d12;
 }
 .btn-a {
