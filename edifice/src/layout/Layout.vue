@@ -27,7 +27,12 @@ export default {
   }
 }
 </script>
-<style>
+
+<style scoped>
+.el-main{
+  flex-basis: 3px;
+}
+
 .el-header {
   position: sticky;
   top: 0%;

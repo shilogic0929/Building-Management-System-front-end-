@@ -6,8 +6,6 @@ import HomeView from '@/views/menu/HomeView.vue'
 import Layout from '@/layout/Layout.vue'
 import PersonalPage from '@/views/menu/PersonalPage.vue'
 import Login from '@/views/login/login.vue'
-import seeHouse from '@/views/Rent/seeHouse.vue'
-import houseDetail from '@/views/Rent/houseDetail.vue'
 
 const routes = [{
     path: "/login",
@@ -33,7 +31,7 @@ const routes = [{
     component: Layout,
     redirect: "/login",
     children: [{
-        path: 'dashboard',
+        path: 'homeView',
         name: '首页',
         component: HomeView,
         meta: {
@@ -45,16 +43,6 @@ const routes = [{
         path: 'personalPage',
         name: '个人资料',
         component: PersonalPage,
-      },
-      {
-        path: 'seeHouse',
-        name: '查看房源',
-        component: seeHouse
-      },
-      {
-        path: 'houseDetail',
-        name: '房源信息',
-        component: houseDetail,
       },
       {
         path: 'clientView',
@@ -71,22 +59,6 @@ const routes = [{
           title: "报修界面"
         },
         component: () => import('../views/repair/repairReport.vue'),
-      },
-      {
-        path: 'serviceHome',
-        name: '客服主页',
-        meta: {
-          title: "客服主页"
-        },
-        component: () => import('../views/service/serviceHome.vue'),
-      },
-      {
-        path: 'addHouseDetail',
-        name: '添加房源细节',
-        meta: {
-          title: "添加房源细节"
-        },
-        component: () => import('../views/service/addHouseDetail.vue'),
       },
       {
         path: 'verifyRepair',
@@ -136,7 +108,8 @@ const routes = [{
           title: "维修服务界面"
         },
         component: () => import('../views/repair/repairService.vue'),
-      }, {
+      },
+      {
         path: 'woIn',
         name: '工人信息',
         meta: {
@@ -151,10 +124,25 @@ const routes = [{
           title: "房间状态"
         },
         component: () => import('../views/roomStatus/roomStatus.vue'),
-
       },
       {
-        path: 'KnowledgeBase',
+        path: '/collectWorks',
+        name: "维修统计",
+        meta: {
+          title: "维修统计"
+        },
+        component: () => import('../views/collect/collectWorks.vue')
+      },
+      {
+        path: '/collectGuests',
+        name: "访客统计",
+        meta: {
+          title: "访客统计"
+        },
+        component: () => import('../views/collect/collectGuests.vue')
+      },
+      {
+        path: 'knowledgeBase',
         name: '维修知识库',
         meta: {
           title: "维修知识库"
