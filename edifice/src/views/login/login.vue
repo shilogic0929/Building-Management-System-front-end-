@@ -2,8 +2,8 @@
   <div class="login">
 
     <vue-particles color="#fff" :particleOpacity="0.7" :particlesNumber="100" shapeType="circle" :particleSize="8"
-                   linesColor="#fff" :linesWidth="1" :lineLinked="false" :lineOpacity="0.4" :linesDistance="150" :moveSpeed="2"
-                   :hoverEffect="true" hoverMode="grab" :clickEffect="true" clickMode="push" class="lizi">
+      linesColor="#fff" :linesWidth="1" :lineLinked="false" :lineOpacity="0.4" :linesDistance="150" :moveSpeed="2"
+      :hoverEffect="true" hoverMode="grab" :clickEffect="true" clickMode="push" class="lizi">
     </vue-particles>
 
     <!-- <div class="slideShadow" v-show="showSlide">
@@ -22,7 +22,7 @@
 
         <div class="titleDiv">
           <h2 class="loginH2" style="position: relative;top:45px"><strong>大厦</strong>物业管理系统</h2>
-          
+
         </div>
         <el-form ref="loginForm" :rules="rules" :model="ruleForm">
           <el-form-item prop="username">

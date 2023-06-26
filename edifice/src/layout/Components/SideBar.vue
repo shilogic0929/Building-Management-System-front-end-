@@ -117,19 +117,21 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    },
-  },
-    created() {
-      this.type = localStorage.getItem('type')
-      console.log(this.type)
     }
+  },
+
+
+  created() {
+    this.type = localStorage.getItem('type')
+    console.log(this.type)
+  }
 }
 </script>
 <style>
-
 .el-menu:not(.el-menu--collapse) {
   width: 200px;
 }
+
 .el-submenu.is-active {
   width: 150px;
 }
