@@ -56,6 +56,12 @@
             align="center">
         </el-table-column>
         <el-table-column
+            prop="type"
+            label="报修类型"
+            width="100"
+            align="center">
+        </el-table-column>
+        <el-table-column
             prop="repair_time"
             label="发起时间"
             width="200"
@@ -317,7 +323,6 @@ export default {
                     if(this.tableData.length == 0) 
                         this.tableData = data4Test.feedbackList
                     this.getOption();
-                    this.paginations.page_size = 10;
                     this.setPaginations()
                     this.handleSizeChange(this.paginations.page_size)
                 }
@@ -333,6 +338,7 @@ export default {
                 // this.data4Dlg.status = tmp.status;
                 // this.data4Dlg.room_id = tmp.room_id;
                 this.data4Dlg = JSON.parse(tmp);
+                console.log(this.data4Dlg);
                 this.input1.maintainer_id = this.params.maintainer_id;
                 this.input1.maintainer_name = this.params.maintainer_name;
                 this.input1.maintainer_phone = this.params.maintainer_phone;
@@ -420,7 +426,7 @@ export default {
             // 总页数
             this.paginations.total = this.all_table_data.length;
             this.paginations.page_index = 1;
-            this.paginations.page_size = this.all_table_data.length;
+            this.paginations.page_size = Math.min(10, this.all_table_data.length);
             // 设置默认分页数据
             this.tableData = this.all_table_data.filter((item, index) => {
                 return index < this.paginations.page_size;
@@ -457,6 +463,7 @@ export default {
             this.data4Dlg.status = row.status;
             this.data4Dlg.repair_time = row.repair_time;
             this.data4Dlg.expect_time = row.expect_time;
+            this.data4Dlg.type = row.type;
             this.activities[0].timestamp = row.repair_time;
             this.activities[1].timestamp = row.expect_time;
             console.log(row);
@@ -473,19 +480,22 @@ export default {
             })
         },
         autoAllocate() {
-            console.log(this.data4Dlg.form_id);
-            let period = 0;
+            console.log(this.data4Dlg);
+            let period = '1';
             let time = new Date(this.data4Dlg.expect_time)
             let hour = time.getHours()
             period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
             const formData = new FormData();
             formData.append('token', localStorage.getItem('token'))
-            formData.append('type', 1)
+            console.log(localStorage.getItem('token'));
+            formData.append('type', toString(this.data4Dlg.type));
             formData.append('period', period)
-            formData.append('maintain_time', this.input1.maintain_date)
+            formData.append('maintain_time', this.data4Dlg.repair_time.slice(0, 10))
+            console.log(period);
+            console.log(this.data4Dlg.repair_time.slice(0, 10));
             this.$axios({
                 method: 'POST',
-                url: '',
+                url: '/autoDeliver',
                 date: formData,
             }).then(res => {
                 if(res.status !== 200 || res.data.errno == 1004) {
@@ -514,11 +524,11 @@ export default {
         },
         submitInput(data4Dlg, input) {
             console.log(this.data4Dlg.form_id);
-            if(input.maintainer_id === '') {
+            if(this.input1.maintainer_id === '') {
                 this.$message("请输入内容")
                 return
             }
-            if(input.maintain_date === '' || input.maintain_period === '') {
+            if(this.input1.maintain_date === '' || this.input1.maintain_period === '') {
                 this.$message("请设置维修时间")
                 return
             }
@@ -527,7 +537,7 @@ export default {
                 this.addDialogVisible = false
                 return
             }
-            let date = new Date(input.maintain_date).toLocaleDateString()
+            let date = new Date(this.input1.maintain_date).toLocaleDateString()
             //let time=new Date(input.maintain_time).toLocaleTimeString()
             // let dateTime = date + ' ' + time
             //let dateTime = date.split("/").join("-")+' '+ time
@@ -536,17 +546,20 @@ export default {
             mp.set('2', '10:00-12:00')
             mp.set('3', '14:00-16:00')
             mp.set('4', '16:00-18:00')
-            this.activities[2].timestamp = date + mp[input.maintain_period]
+            date = date.split("/").join("-")
+            console.log(date)
+            console.log(this.data4Dlg)
+            //this.activities[2].timestamp = date + ' ' + mp[this.input1.maintain_period]
             //console.log(dateTime);
             const formData = new FormData()
             formData.append('form_id', this.data4Dlg.form_id)
             formData.append('token', localStorage.getItem('token'))
-            formData.append('maintain_date',input.date)
-            formData.append('maintain_period', input.maintain_period)
-            formData.append('maintainer_name',input.maintainer_name)
-            formData.append('maintainer_id',input.maintainer_id)
-            formData.append('maintainer_phone',input.maintainer_phone)
-            
+            formData.append('maintain_date',date)
+            formData.append('maintain_period', this.input1.maintain_period)
+            formData.append('maintainer_name',this.input1.maintainer_name)
+            formData.append('maintainer_id',this.input1.maintainer_id)
+            formData.append('maintainer_phone',this.input1.maintainer_phone)
+            //console.log(this.input1.maintain_period)
             this.$axios({
                 method:'POST',
                 url: '/setMaintainer',
@@ -560,20 +573,22 @@ export default {
                 //更新表单
                 this.getFeedbackList(); 
                 this.addDialogVisible = false;
-                localStorage.removeItem('data4Dlg');
+                //localStorage.removeItem('data4Dlg');
                 this.input1.maintainer_id = ''
                 this.input1.maintainer_name = ''
                 this.input1.maintainer_phone = ''
                 this.input1.maintain_period = ''
                 this.input1.maintain_date = ''
                 this.activities[2].hollow = true;
+                this.activities[2].timestamp = ''
             }})
         },
         closeDlg() {
             this.input1.maintainer_id = '';
             this.input1.maintainer_name = '';
             this.input1.maintainer_phone = '';
-            this.input1.maintain_time = '';
+            this.input1.maintain_date = '';
+            this.input1.maintain_period = ''
             this.addDialogVisible = false;
             localStorage.removeItem('data4Dlg');
         },
