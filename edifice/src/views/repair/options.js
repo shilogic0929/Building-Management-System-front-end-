@@ -52,7 +52,7 @@ export const option1 = {
     },
     tooltip: {
         trigger: 'item',
-        formatter: "{b}: {c} ({d}%)"
+        formatter: "{d}%"
     },
     series: [
       {
