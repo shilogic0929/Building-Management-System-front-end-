@@ -9,7 +9,7 @@
       </el-button>
     </div>
     <div class="headRight">
-      <div class="headTitle">大厦物业管理系统</div>
+      <div class="headTitle">致真大厦物业管理系统</div>
       <div class="personalHome">
         <el-dropdown>
           <!-- <div class="userDrop_text">exit</div> -->
@@ -36,6 +36,7 @@
         </el-dropdown>
       </div>
     </div>
+
     <body>
       <el-dialog v-model="dialogVisible" title="访客申请" width="60%" draggable class="dlg" append-to-body="true">
         <el-card class="input-card">
@@ -217,7 +218,7 @@ export default {
       let date = new Date()
       let day = date.toLocaleDateString()
       let time = date.toLocaleTimeString()
-      let dateTime = day.split("/").join("-")+' '+ time
+      let dateTime = day.split("/").join("-") + ' ' + time
       this.activities[0].timestamp = dateTime
       this.activities[0].color = "#0bbd87"
       this.activities[1].timestamp = dateTime
@@ -261,23 +262,23 @@ export default {
           // 'user_id' : '220102200010101235',
           // 'phone_num' : '18888888888',
           // 'visit_time' : '1687585349'
-        //}
-        formData
+          //}
+          formData
       }).then(res => {
         if (res.status !== 200 && res.data.success == false) {
           this.$message.error('提交失败：' + res.statusText);
           return;
         } else {
-          if(res.data.errno == 0) {
+          if (res.data.errno == 0) {
             this.$message.success('提交成功')
             this.activities[2].timestamp = input.visit_time
             this.activities[2].color = "#0bbd87"
           }
-          else 
+          else
             this.$message("您已经申请过")
-            setTimeout(() => {
-              this.dialogVisible = false;
-            }, 1000);
+          setTimeout(() => {
+            this.dialogVisible = false;
+          }, 1000);
         }
       })
     }
