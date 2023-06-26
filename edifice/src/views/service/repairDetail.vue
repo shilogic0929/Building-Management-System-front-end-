@@ -85,8 +85,8 @@
         <div class = "card-header" style="margin-bottom:0px;">
           <span class="image-font" style="color:black;font-size:16px;">处理报修</span>
 
-          <el-button type="primary" v-if="status==0" @click="serciceBegin()" round>进行处理</el-button>
-          <el-button type="success" v-else-if="status==1" @click="visible=true">完成处理提交</el-button>
+          <!-- <el-button type="primary" v-if="status==0" @click="serciceBegin()" round>进行处理</el-button> -->
+          <el-button type="success" v-if="status==1" @click="visible=true">完成处理提交</el-button>
           <el-button type="info" v-else>已完成</el-button>
         </div>
       </el-card>
@@ -160,6 +160,16 @@ export default {
     init(){
       var that=this;
       const formData=new FormData();
+      formData.append('token',localStorage.getItem('token'))
+      this.$axios({
+        method: 'POST',
+        url: '/get_user_info',
+        data: formData})
+        .then(function (request) {
+          console.log(request.data.data);
+          that.form.solver=request.data.data.name
+      })
+      formData=new FormData();
       formData.append('token',localStorage.getItem('token'))
       formData.append('wid',this.wid)
       this.$axios({
