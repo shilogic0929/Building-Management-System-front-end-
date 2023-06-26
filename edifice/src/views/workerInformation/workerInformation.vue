@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <el-card style="margin-top: 30px;">
       <h1 class="image-font" style="font-size:30px; margin: 10px auto 30px">工作人员信息</h1>
 
@@ -160,4 +160,8 @@ export default {
 
 </script>
 
-<style lang="less" scoped></style>
+<style scoped>
+.page {
+  z-index: -1;
+}
+</style>
