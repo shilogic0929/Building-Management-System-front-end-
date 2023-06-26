@@ -45,7 +45,7 @@
           setTimeout(() => {
             this.myChart.resize({
               animation: {
-                duration: 400
+                duration: 300
               }
             })
           }, 0);
@@ -84,7 +84,7 @@
           // 应用配置项
           this.myChart.setOption(this.options);
         }
-      }, 1000);
+      }, 500);
     }
   }
   </script>

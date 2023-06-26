@@ -192,9 +192,26 @@ export default {
     }
   },
   mounted() {
+    this.typeAnalyse()
     this.init();
   },
   methods: {
+    typeAnalyse() {
+      const formData = new FormData()
+      formData.append('token', localStorage.getItem('token'))
+      this.$axios({
+          method:'POST',
+          url: '/repairList',
+          data: formData
+      }).then((res)=>{
+          console.log(res)
+          if(res.status == 200) {
+            let tmp = res.data.data;
+            for(let i = 0; i < tmp.length; i++) 
+              this.option.series[0].data[tmp[i].type - 1].value++
+          }
+      })
+    },
     init() {
       this.getManageData();
       this.drawChart1();
@@ -378,21 +395,6 @@ export default {
         })
       })
     }
-  },
-  typeAnalyse() {
-    const formData = new FormData()
-    formData.append('token', localStorage.getItem('token'))
-    this.$axios({
-        method:'POST',
-        url: '/repairList',
-        data: formData
-    }).then((res)=>{
-        console.log(res)
-        if(res.status == 200) {
-          for(let i = 0; i < res.data.data.length; i++) 
-            this.option.series[0].data[res.data.data[i].type - 1].value++
-        }
-    })
   },
   setup() {
     // 时间
