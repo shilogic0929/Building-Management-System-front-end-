@@ -233,9 +233,6 @@ export default {
       this.activities[0].color = "#0bbd87"
       this.activities[1].timestamp = dateTime
       this.activities[1].color = "#0bbd87"
-      console.log(input.visit_time)
-      let timestamp = Date.parse(new Date(input.visit_time).toString());
-      console.log(timestamp)
       let formData = new FormData()
       formData.append('token', localStorage.getItem('token'))
       formData.append('user_name', input.user_name)
