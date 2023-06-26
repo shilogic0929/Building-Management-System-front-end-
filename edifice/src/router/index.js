@@ -31,8 +31,7 @@ const routes = [{
         name: 'layout',
         component: Layout,
         redirect: "/login",
-        children: [
-            {
+        children: [{
                 path: 'homeView',
                 name: '首页',
                 component: HomeView,

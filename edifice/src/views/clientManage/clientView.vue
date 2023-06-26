@@ -31,10 +31,12 @@
           value-format="YYYY-MM-DD"
         />
         </el-row>
-        <el-row :gutter="20" class="dialog_row">
-          <el-col :span="4"></el-col>
-          <el-col :span="4" style="display: flex"><el-button type="primary" size="large" @click="dialogVisible = false">取消</el-button></el-col>
-          <el-col :span="8" style="display: flex"><el-button type="primary" size="large" @click="handleAddPayment()">确认</el-button></el-col>
+        <el-row :gutter=" 20 " class="dialog_row">
+          <el-col :span=" 4 "></el-col>
+          <el-col :span=" 4 " style="display: flex"><el-button type="primary" size="large"
+              @click="dialogVisibleforpayment = false">取消</el-button></el-col>
+          <el-col :span=" 8 " style="display: flex"><el-button type="primary" size="large"
+              @click="handleAddPayment()">确认</el-button></el-col>
         </el-row>
       </div>
     </el-dialog>
@@ -70,10 +72,12 @@
           value-format="YYYY-MM-DD"
         />
         </el-row>
-        <el-row :gutter="20" class="dialog_row">
-          <el-col :span="4"></el-col>
-          <el-col :span="4" style="display: flex"><el-button type="primary" size="large" @click="dialogVisible = false">取消</el-button></el-col>
-          <el-col :span="8" style="display: flex"><el-button type="primary" size="large" @click="handleChangePayment()">确认</el-button></el-col>
+        <el-row :gutter=" 20 " class="dialog_row">
+          <el-col :span=" 4 "></el-col>
+          <el-col :span=" 4 " style="display: flex"><el-button type="primary" size="large"
+              @click="dialog_for_change = false">取消</el-button></el-col>
+          <el-col :span=" 8 " style="display: flex"><el-button type="primary" size="large"
+              @click="handleChangePayment()">确认</el-button></el-col>
         </el-row>
       </div>
     </el-dialog>

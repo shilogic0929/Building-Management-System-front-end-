@@ -14,11 +14,11 @@
           <span>历史订单量&nbsp;{{ sumTask }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
-          <el-icon><Grid /></el-icon>
+          <el-icon><List /></el-icon>
           <span>今日接单&nbsp;{{ todayTask }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
-          <el-icon><Check /></el-icon>
+          <el-icon><Finished /></el-icon>
           <span>今日完成&nbsp;{{ todayFinish }}</span>
         </el-col>
         <el-col :span="6" class="flexItem datahead">
@@ -43,7 +43,7 @@
         </template>
 
         <el-table v-if="!isfinished" :data="table1" style="width: 100%">
-          <el-table-column label="序号" width="250">
+          <el-table-column label="工单号" width="250">
             <template #default="scope">
               <span class="red"></span>
               <a @click="lookInfo(scope.row)" style="cursor: pointer;">
