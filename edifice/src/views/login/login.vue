@@ -45,16 +45,14 @@
           <!--            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2"-->
           <!--              show-password></el-input>-->
           <!--          </el-form-item>-->
-          <el-row gutter="10">
-            <el-col :span="12">
+          <div class="flexItem">
 
               <el-button color="#2b4a85" class="loginBtn" @click="login()">登录</el-button>
 
-            </el-col>
             <!--            <el-col :span="12">-->
             <!--              <el-button color="#2b4a85" class="loginBtn" @click="register()">注册</el-button>-->
             <!--            </el-col>-->
-          </el-row>
+          </div>
         </el-form>
       </div>
     </div>
@@ -218,7 +216,7 @@ export default {
             this.$router.push('/myRepair')
           }
           else if (res.data.data.type === -1) {//管理人
-            this.$router.push('/handleRepair')
+            this.$router.push('/homeView')
           }
           else {//维修人员
             this.$router.push('/repairService')

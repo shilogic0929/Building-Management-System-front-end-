@@ -69,13 +69,13 @@
     </el-menu-item>
     <el-menu-item index="/collectWorks" v-show="type === '-1'">
       <el-icon>
-        <View />
+        <BrushFilled />
       </el-icon>
       <span class="sideBarFontSize">维修统计</span>
     </el-menu-item>
     <el-menu-item index="/collectGuests" v-show="type === '-1'">
       <el-icon>
-        <View />
+        <TrendCharts />
       </el-icon>
       <span class="sideBarFontSize">访客统计</span>
     </el-menu-item>
