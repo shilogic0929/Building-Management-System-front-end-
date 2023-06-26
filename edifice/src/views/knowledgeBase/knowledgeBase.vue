@@ -16,16 +16,14 @@
         <el-tag class="ml-2" type="success" @click="showOther">其他</el-tag>
       </div>
 
-      <div class="QandAs" style="text-align: start;">
+      <div class="QandAs">
         <div class="QandA" v-for="(item, ind) in showData" :key="ind">
           <p class="knowTitle">
-            <span style="margin-left: 10px;">{{ item.problem }}</span>
-
-            <el-tag class="ml-2" effect="plain" type="info" v-if="problem[item.type - 1] === 0">全部</el-tag>
-            <el-tag class="ml-2">水</el-tag>
-            <el-tag class="ml-2" type="warning">电</el-tag>
-            <el-tag class="ml-2" type="info">机械</el-tag>
-            <el-tag class="ml-2" type="success">其他</el-tag>
+            <span>{{ item.problem }}</span>
+            <el-tag class="ml-2" v-show="item.type === 1">水</el-tag>
+            <el-tag class="ml-2" v-show="item.type === 2" type="warning">电</el-tag>
+            <el-tag class="ml-2" v-show="item.type === 3" type="info">机械</el-tag>
+            <el-tag class="ml-2" v-show="item.type === 4" type="success">其他</el-tag>
 
             <!-- <el-icon>
               <Orange v-if="item.type == 1" />
@@ -35,9 +33,8 @@
             </el-icon> -->
             <!-- {{ problem[item.type - 1] }} -->
           </p>
-          <hr style="background-color: rgb(153, 197, 241);opacity: 0.3;" />
-          <p>问题：{{ item.problem }}</p>
-          <p>解决方式：{{ item.solution }}</p>
+          <!-- <hr style="background-color: rgb(153, 197, 241);opacity: 0.3;" /> -->
+          <p class="solutionClass">解决方式：{{ item.solution }}</p>
         </div>
       </div>
     </el-card>
@@ -207,7 +204,14 @@ export default {
 
 .QandAs {
   margin-top: 20px;
-  background: #f8f8f8;
+  text-align: start;
+  display: flex;
+  height: 100vh;
+  flex-flow: column wrap;
+  /* justify-content: center; */
+  align-items: flex-start;
+
+  /* background: #f8f8f8; */
 }
 
 .QandA {
@@ -215,14 +219,14 @@ export default {
   display: inline-block;
   vertical-align: middle;
   padding: 8px 8px;
-  width: 260px;
-  height: 200px;
+  width: 30%;
+  height: auto;
   /* border: 1px solid rgb(153, 197, 241); */
 
-  margin-left: 20px;
+  margin: 20px 10px 20px 10px;
   background: #ffffff;
   border-radius: 36px;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.03);
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
 }
 
 .QandA:hover {
@@ -233,10 +237,17 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 30px;
+  font-size: 25px;
   /* padding: 5px 0 5px 0;
   margin-left: 20px;
   margin-top: 20px; */
+  margin: 20px 10px 20px 10px;
+  line-height: 33px;
+}
+
+.solutionClass {
+  font-size: 20px;
+  line-height: 25px;
   margin: 20px 10px 20px 10px;
 }
 </style>
