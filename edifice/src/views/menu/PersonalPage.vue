@@ -166,4 +166,3 @@ export default {
   width: 350px;
 }
 </style>
-

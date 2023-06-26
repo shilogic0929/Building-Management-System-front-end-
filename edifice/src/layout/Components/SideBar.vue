@@ -1,6 +1,6 @@
 <template>
   <el-menu :collapse="isCollapse" default-active="$route.path" router active-text-color="#0066CC"
-    background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose">
+           background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose">
     <el-menu-item index="/homeview">
       <el-icon title="首页">
         <HomeFilled />
