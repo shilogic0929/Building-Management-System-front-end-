@@ -18,9 +18,18 @@
 
     <div class="QandAs" style="text-align: start;">
       <div class="QandA" v-for="(item,ind) in showData" :key="ind">
-        {{ problem[item.type-1] }}
-        {{ item.problem }}
-        {{ item.solution }}
+        <p class="knowTitle">
+          <el-icon>
+            <Orange v-if="item.type==1"/>
+            <Opportunity v-else-if="item.type==2"/>
+            <Setting v-else-if="item.type==3"/>
+            <Crop v-else/>
+          </el-icon>
+          <span style="margin-left: 10px;">{{ problem[item.type-1] }}</span>
+        </p>
+        <hr style="background-color: rgb(153, 197, 241);opacity: 0.3;"/>
+        <p>问题：{{ item.problem }}</p>
+        <p>解决方式：{{ item.solution }}</p>
       </div>
     </div>
     </el-card>
@@ -210,5 +219,12 @@ export default {
 
 .QandA:hover{
   box-shadow: 0 0 2px 2px #f8f8f8;
+}
+
+.knowTitle{
+  display: flex; 
+  align-items: center; 
+  justify-content: left; 
+  font-size: 18px;
 }
 </style>
