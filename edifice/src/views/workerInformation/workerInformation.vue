@@ -52,6 +52,7 @@ export default {
   data() {
     return {
       currentPage: 1,
+      fromPath: "",
       queryInfo: {
         query: "",
         pagenum: 1,
@@ -98,8 +99,17 @@ export default {
     this.init();
     console.log(this.total)
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      // 通过 `vm` 访问组件实例,将值传入fromPath
+      vm.fromPath = from.path;
+      console.log(to)
+      console.log(from)
+    });
+  },
   methods: {
     init() {
+
 
 
       var naid = localStorage.getItem("token");
@@ -126,6 +136,7 @@ export default {
 
     },
 
+
     handleCurrentChange(val) {
       this.currentPage = val;
     },
@@ -146,18 +157,23 @@ export default {
         alert('不是维修人员！');
       }
       else {
+        if (this.fromPath === '/handleRepair') {
 
-        alert('成功派遣！');
-        this.$router.push({
-          path: '/handleRepair',
-          //name: '处理报修界面',
-          query: {
-            //form_id:this.row.worker_id,
-            maintainer_name: row.name,
-            maintainer_id: row.user_id,
-            maintainer_phone: row.tel,
-          }
-        })
+          alert('成功派遣！');
+          this.$router.push({
+            path: '/handleRepair',
+            //name: '处理报修界面',
+            query: {
+              //form_id:this.row.worker_id,
+              maintainer_name: row.name,
+              maintainer_id: row.user_id,
+              maintainer_phone: row.tel,
+            }
+          })
+        }
+        else{
+          alert('可以维修！');
+        }
       }
     },
 
