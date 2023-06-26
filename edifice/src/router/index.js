@@ -175,6 +175,8 @@ router.beforeEach(async (to, from, next) => {
     else if(to.meta.judge_type === 0){
         if(token === null){
             next('/login')
+        }else{
+            next()
         }
     }
     else if(to.meta.judge_type === 1){
