@@ -93,10 +93,6 @@
       </el-icon>
       <span class="sideBarFontSize">维修人员</span>
     </el-menu-item>
-    <!--          <el-menu-item index="/serviceHome" v-if="this.$store.state.isService">-->
-    <!--            <el-icon><Service /></el-icon>-->
-    <!--            <span class="sideBarFontSize">客服系统</span>-->
-    <!--          </el-menu-item>-->
   </el-menu>
 </template>
 
