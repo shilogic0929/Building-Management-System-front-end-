@@ -13,7 +13,7 @@
           </div>
         </template>
 
-        <el-table :data="repair" style="width: 100%">
+        <el-table :data="repair.slice((currentPage-1)*10,currentPage*10)" style="width: 100%">
           <el-table-column
             label="序号"
             width="180">
@@ -59,6 +59,14 @@
           </el-table-column>
         </el-table>
 
+        <div class="flexItem" style="margin-top:20px;">
+          <el-pagination :align='center' 
+            @current-change="handleCurrentChange"
+            :current-page="currentPage" 
+            :page-size="[10]"
+            layout="total, prev, pager, next, jumper" 
+            :total="repair.length"/>
+        </div>
       </el-card>
     </div>
 
@@ -149,7 +157,7 @@ export default {
   data(){
     return{
         img:require("@/assets/image/inner-banner3.jpg"),
-
+        currentPage: 1,
         flow: "",
         visible:false,
         visible2:false,
@@ -198,7 +206,9 @@ export default {
           that.repair=request.data.data
       })
     },
-  
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
     filterTag(value, row) {
       return row.status === value;
     },
