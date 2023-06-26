@@ -1,5 +1,102 @@
 <template>
   <div class="ato-content clearfix">
+    <el-dialog v-model="dialogVisibleforpayment" title="编辑信息">
+      <div style="margin-left: 120px;">
+        <el-row :gutter="20" class="dialog_row" style="padding-top: 0px" >
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">年份</span></el-col>
+          <el-date-picker
+            v-model="year_picked"
+            type="year"
+            placeholder="请选择年份"
+            value-format="YYYY"
+          />
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳状态</span></el-col>
+          <el-radio-group v-model="radio1" class="ml-4">
+            <el-radio label="1" size="large">已缴纳</el-radio>
+            <el-radio label="2" size="large">未缴纳</el-radio>
+          </el-radio-group>
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳时间</span></el-col>
+          <el-date-picker
+          v-model="day_picked"
+          type="date"
+          placeholder="请选择日期"
+          :disabled="radio1 === 2 ? true : false"
+          value-format="YYYY-MM-DD"
+        />
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="4"></el-col>
+          <el-col :span="4" style="display: flex"><el-button type="primary" size="large" @click="dialogVisible = false">取消</el-button></el-col>
+          <el-col :span="8" style="display: flex"><el-button type="primary" size="large" @click="handleAddPayment()">确认</el-button></el-col>
+        </el-row>
+      </div>
+    </el-dialog>
+    <el-dialog v-model="dialog_for_change" title="修改信息">
+      <div style="margin-left: 120px;">
+        <el-row :gutter="20" class="dialog_row" style="padding-top: 0px" >
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">年份</span></el-col>
+          <el-date-picker
+            v-model="year_p"
+            type="year"
+            placeholder="请选择年份"
+            value-format="YYYY"
+            disabled
+          />
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳状态</span></el-col>
+          <el-radio-group v-model="radio2" class="ml-4">
+            <el-radio label="1" size="large">已缴纳</el-radio>
+            <el-radio label="2" size="large">未缴纳</el-radio>
+          </el-radio-group>
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="1"></el-col>
+          <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳时间</span></el-col>
+          <el-date-picker
+          v-model="day_p"
+          type="date"
+          placeholder="请选择日期"
+          :disabled="radio1 == 2 ? true : false"
+          value-format="YYYY-MM-DD"
+        />
+        </el-row>
+        <el-row :gutter="20" class="dialog_row">
+          <el-col :span="4"></el-col>
+          <el-col :span="4" style="display: flex"><el-button type="primary" size="large" @click="dialogVisible = false">取消</el-button></el-col>
+          <el-col :span="8" style="display: flex"><el-button type="primary" size="large" @click="handleChangePayment()">确认</el-button></el-col>
+        </el-row>
+      </div>
+    </el-dialog>
+    <el-drawer v-model="drawer">
+      <span style="font-size: large;">{{ drawer_roomid }}房间物业费缴纳信息</span>
+      <el-table :data="drawer_data"  :default-sort="{ prop: 'year', order: 'ascending' }">
+        <el-table-column  prop="year" label="年份" />
+        <el-table-column  prop="ispaid" label="缴纳状态">
+          <template #default="zone">
+            <span>{{zone.row.ispaid == true ? '已缴纳' : '未缴纳'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  prop="pay_time" label="缴纳时间" />
+        <el-table-column >
+          <template #header>
+            <el-button type="default" @click="dialogVisibleforpayment = true" align="content-center">新增</el-button>
+          </template>
+          <template #default="zone">
+            <el-button type="default" @click="handleLookup_lease(zone.row)" align="content-center">修改</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-drawer>
     <el-card>
       <template #header>
         <div class = "card-header" style="margin-bottom:0px;">
@@ -73,6 +170,13 @@
                 <el-table-column label="签约时间" prop="sign_time" align="center">
                   <template #default="scope">
                     <span>{{scope.row.sign_time}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="物业费信息" prop="payment" align="center">
+                  <template #default="scope">
+                    <el-button type="primary" style="margin-left: 16px" @click="handleLookup(scope.$index, props.row, scope.row)">
+                      查看
+                    </el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -198,7 +302,7 @@
 
 <script>
 import {computed,ref} from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox,ElDrawer,ElDatePicker } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 const _ResizeObserver = window.ResizeObserver;
@@ -224,343 +328,27 @@ export default {
   data(){
     return {
       dialogVisible: false,
+      dialog_for_change: false,
+      drawer: false,
+      drawer_roomid: 0,
+      drawer_room:{},
+      drawer_data: [],
+      drawer_person: {},
+      drawer_lease_id: 0,
+      year_picked: '',
+      day_picked: '',
+      radio1: '', 
+      radio2: '',
+      year_p: '',
+      day_p:'',
       add_name: '',
       add_phone: '',
       add_legal: '',
       add_company: '',
-      add_email:'',
-      clients: [
-        {
-          id:1,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:2,
-          name: 'Tom',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:3,
-          name: 'Tom',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:4,
-          name: 'Tom',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:5,
-          name: 'Tom',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:6,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:7,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:8,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:9,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:10,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-        {
-          id:11,
-          name: 'Jack',
-          phone: '123456789',
-          company:'a公司',
-          legal_person: 'Jane',
-          room: [
-            {
-              id: '201',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '202',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-            {
-              id: '203',
-              start_time: '2002-09-10',
-              end_time: '2005-09-10',
-              sign_time: '2001-06-20',
-              is_edit: false,
-            },
-          ],
-        },
-      ],
+      add_email: '',
+      dialogVisibleforpayment: false,
+      popovershow: false,
+      clients: [],
       filterClients:[],
       showClients:[],
       parentBorder:false,
@@ -590,13 +378,72 @@ export default {
       },
       language : "zhCn",
       currentPage: 1,
-      expands:[],
-      token:'',
+      expands:[]
     }
   },
   mounted() {
   },
   methods: {
+    handleChangePayment() {
+      const formData = new FormData()
+      formData.append('token', localStorage.getItem('token'))
+      formData.append('lease_id', this.drawer_room.lease_id)
+      formData.append('year', this.year_p)
+      if (this.radio2 === '1') {
+        formData.append('pay_time',this.day_p)
+      } else {
+        formData.append('pay_time','')
+      }
+      this.$axios({
+        method: 'POST',
+        url: '/changePayment',
+        data:formData
+      }).then(res => {
+        if (res.data.errno === 0) {
+          ElMessage({
+            type: 'success',
+            message: '修改成功'
+          })
+          this.dialog_for_change = false
+          location.reload()
+        }
+      })
+    },
+    handleLookup_lease(payment){
+      this.dialog_for_change = true
+      this.year_p = payment.year
+    },
+    handleAddPayment() {
+      const formData = new FormData()
+      formData.append('token', localStorage.getItem('token'))
+      formData.append('lease_id', this.drawer_room.lease_id)
+      formData.append('year', this.year_picked)
+      if (this.radio1 === '1') {
+        formData.append('pay_time',this.day_picked)
+      } else {
+        formData.append('pay_time','')
+      }
+      this.$axios({
+        method: 'POST',
+        url: '/addPayment',
+        data:formData
+      }).then(res => {
+        if (res.data.errno === 0) {
+          ElMessage({
+            type: 'success',
+            message: '添加成功'
+          })
+          this.dialogVisibleforpayment = false
+          location.reload()
+        }
+        if (res.data.errno === 1002) {
+          ElMessage({
+            type: 'error',
+            message: '年份超出租赁时段'
+          })
+        }
+      })
+    },
     handleAddClient() {
       const formData = new FormData()
       formData.append('new_name', this.add_name)
@@ -614,8 +461,8 @@ export default {
             type: 'success',
             message: '添加成功'
           })
-          this.dialogVisible = false
           this.getClientsInfo()
+          this.dialogVisible = false
           this.currentPage = 1
         }
         else {
@@ -629,17 +476,17 @@ export default {
     getClientsInfo(){
       const that = this
       const formData = new FormData();
-      formData.append('token',this.token)
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
       this.$axios({
         method:'POST',
         url:'/get_client_info',
         data: formData
       }).then(res => {
         that.clients = res.data.clients
-        console.log(res.data)
-        this.filterClients = this.clients
-        this.showClients = this.filterClients.slice(0,10)
+        console.log(res.data.clients)
       })
+      this.filterClients = this.clients
+      this.showClients = this.filterClients.slice(0,10)
     },
     clickRowHandle(row,column,event){
       if (this.expands.includes(row.id)) {
@@ -649,6 +496,14 @@ export default {
         this.expands.push(row.id);
       }
       console.log(row.room)
+    },
+    handleLookup(index, client, room) {
+      this.drawer_person = client
+      this.drawer_room = room
+      this.drawer_roomid = room.id
+      this.drawer_data = room.payment
+      this.drawer_lease_id = room.lease_id
+      this.drawer = true
     },
     handleEdit(index,client){
       this.dialog_person = client
@@ -671,7 +526,7 @@ export default {
         const that = this
         const formData = new FormData();
         formData.append('id',client.id)
-        formData.append('token',this.token)
+        formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
         this.$axios({
           method:'POST',
           url:'/deleteClientInfo',
@@ -779,7 +634,7 @@ export default {
       formData.append('start_time',start_time.getTime()/1000)
       formData.append('end_time',end_time.getTime()/1000)
       formData.append('sign_time',sign_time.getTime()/1000)
-      formData.append('token',this.token)
+      formData.append('token',"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE")
       this.$axios({
         method:'POST',
         url:'/saveLeaseInfo',
@@ -803,7 +658,7 @@ export default {
     },
     deleteRoom(index){
       const formData = new FormData()
-      formData.append('token',this.token)
+      formData.append('token','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxODY4MjYsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.AKB9ft6J9o1_X4ORdWAPCPGCN2EVLD-aktmJrYeZRxE')
       formData.append('id',this.lease_person.id)
       formData.append('room_id',this.lease_person.room[index].id)
       const that = this
@@ -850,7 +705,6 @@ export default {
     this.parentBorder = ref(false)
     this.childBorder = ref(false)
     this.search = ref('')
-    this.token = localStorage.getItem('token')
     this.getClientsInfo()
   }
 }
