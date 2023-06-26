@@ -17,21 +17,25 @@ import SideBar from "./Components/SideBar.vue";
 import MHeader from "./Components/MHeader.vue";
 import MainPage from "./Components/MainPage.vue";
 export default {
-    methods: {
-      
-    },
-    components: {
-      SideBar,
-      MHeader,
-      MainPage,
-    }
+  methods: {
+
+  },
+  components: {
+    SideBar,
+    MHeader,
+    MainPage,
   }
+}
 </script>
 
 <style scoped>
 .el-main{
   flex-basis: 3px;
 }
+
+.el-header {
+  position: sticky;
+  top: 0%;
+  z-index: 1;
+}
 </style>
-
-

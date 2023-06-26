@@ -1,76 +1,121 @@
 <template>
   <div>
-    <div class="right">
-      <a href="2f">123</a>
-      <n-anchor affix :show-rail="true" :show-background="false" ignore-gap>
-        <n-anchor-link v-for="n in 25" :key="n" :title="n.toString() + '层'" :href="'#' + n + 'f'" />
-        <!--
-        <n-anchor-link title="1层" href="#id" />
-        <n-anchor-link title="2层" href="#id" /> -->
-      </n-anchor>
-    </div>
-    <div>
-      <RoomMap ref="f1" :thislevel="'1'" id="1f"></RoomMap>
-      <RoomMap :thislevel="'2'" id="2f"></RoomMap>
-      <RoomMap :thislevel="'3'"></RoomMap>
-      <!--  <RoomMap :thislevel="'4'"></RoomMap>
-      <RoomMap :thislevel="'5'"></RoomMap>
-      <RoomMap :thislevel="'6'"></RoomMap>
-      <RoomMap :thislevel="'7'"></RoomMap>
-      <RoomMap :thislevel="'8'"></RoomMap>
-      <RoomMap :thislevel="'9'"></RoomMap>
-      <RoomMap :thislevel="'10'"></RoomMap>
-      <RoomMap :thislevel="'11'"></RoomMap>
-      <RoomMap :thislevel="'12'"></RoomMap>
-      <RoomMap :thislevel="'13'"></RoomMap>
-      <RoomMap :thislevel="'14'"></RoomMap>
-      <RoomMap :thislevel="'15'"></RoomMap>
-      <RoomMap :thislevel="'16'"></RoomMap>
-      <RoomMap :thislevel="'17'"></RoomMap>
-      <RoomMap :thislevel="'18'"></RoomMap>
-      <RoomMap :thislevel="'19'"></RoomMap>
-      <RoomMap :thislevel="'20'"></RoomMap>
-      <RoomMap :thislevel="'21'"></RoomMap>
-      <RoomMap :thislevel="'22'"></RoomMap>
-      <RoomMap :thislevel="'23'"></RoomMap>
-      <RoomMap :thislevel="'24'"></RoomMap>
-      <RoomMap :thislevel="'25'"></RoomMap> -->
+    <div class="mainArea" style="margin-top: 60px;">
+      <div class="left">
+        <!-- <RoomMap v-for="(n,index) in 25" :key="index"  :thislevel="n.toString()" ref="'roomMap'+n.toString()"></RoomMap> -->
+        <RoomMap :thislevel="'1'" ref="roomMap1"></RoomMap>
+        <RoomMap :thislevel="'2'" ref="roomMap2"></RoomMap>
+        <RoomMap :thislevel="'3'" ref="roomMap3"></RoomMap>
+        <RoomMap :thislevel="'4'" ref="roomMap4"></RoomMap>
+        <RoomMap :thislevel="'5'" ref="roomMap5"></RoomMap>
+        <RoomMap :thislevel="'6'" ref="roomMap6"></RoomMap>
+        <RoomMap :thislevel="'7'" ref="roomMap7"></RoomMap>
+        <RoomMap :thislevel="'8'" ref="roomMap8"></RoomMap>
+        <RoomMap :thislevel="'9'" ref="roomMap9"></RoomMap>
+        <RoomMap :thislevel="'10'" ref="roomMap10"></RoomMap>
+        <RoomMap :thislevel="'11'" ref="roomMap11"></RoomMap>
+        <RoomMap :thislevel="'12'" ref="roomMap12"></RoomMap>
+        <RoomMap :thislevel="'13'" ref="roomMap13"></RoomMap>
+        <RoomMap :thislevel="'14'" ref="roomMap14"></RoomMap>
+        <RoomMap :thislevel="'15'" ref="roomMap15"></RoomMap>
+        <RoomMap :thislevel="'16'" ref="roomMap16"></RoomMap>
+        <RoomMap :thislevel="'17'" ref="roomMap17"></RoomMap>
+        <RoomMap :thislevel="'18'" ref="roomMap18"></RoomMap>
+        <RoomMap :thislevel="'19'" ref="roomMap19"></RoomMap>
+        <RoomMap :thislevel="'20'" ref="roomMap20"></RoomMap>
+        <RoomMap :thislevel="'21'" ref="roomMap21"></RoomMap>
+        <RoomMap :thislevel="'22'" ref="roomMap22"></RoomMap>
+        <RoomMap :thislevel="'23'" ref="roomMap23"></RoomMap>
+        <RoomMap :thislevel="'24'" ref="roomMap24"></RoomMap>
+        <RoomMap :thislevel="'25'" ref="roomMap25"></RoomMap>
+      </div>
+      <div class="right">
+        <el-tabs tab-position="right" @tab-click="jump" v-model="tabName">
+          <el-tab-pane v-for="(n, index) in 25" :key="index" :label="n.toString() + '层'" :href="'#roomMap' + (index + 1)"
+            :id="'roomMap' + (index + 1)"></el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
 
   </div>
 </template>
 
 <script>
-import { NAnchor, NAnchorLink } from "naive-ui";
+// import { NAnchor, NAnchorLink } from "naive-ui";
 import RoomMap from '@/components/RoomMap.vue'
 export default {
   data() {
     return {
-      anchorRef: null,
+      height: null,
+      tabName: '1',
+
     };
   },
   components: {
     RoomMap,
-    NAnchor,
-    NAnchorLink
   },
-
+  created() {
+    this.getHight()
+    window.addEventListener('resize', this.getHight)
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.getHight)
+    this.$router.replace({ path: '/empty' })
+    console.log('destroyed');
+  },
+  watch: {
+    '$route': 'getPath'
+  },
   methods: {
-    scrollTo(href) {
-      this.anchorRef.scrollTo(href);
-    }
+    getPath() {
+      location.reload()
+      // this.$router.replace({ path: '/empty', })
+      // console.log('destroyed');
+      // console.log('getPath');
+      // console.log(this.$route);
+
+    },
+    getHight() {
+      this.height = document.documentElement.clientHeight - 50 + 'px'
+
+    },
+    jump(tab, event) {
+      console.log('tabName:', this.tabName);
+      // console.log(tab, event);
+      //todo
+      // 获取选中的标签页的索引
+      const selectedIndex = parseInt(this.tabName) + 1;
+      console.log('selectedIndex:', selectedIndex);
+      // 构建要跳转的锚点的名称
+      const anchorName = 'roomMap' + selectedIndex;
+      console.log('anchorName:')
+      console.log(anchorName);
+      // 获取对应的 RoomMap 组件的引用
+      const roomMapRef = this.$refs[anchorName];
+
+      // 滚动到相应的锚点
+      if (roomMapRef) {
+        roomMapRef.$el.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    },
   }
 }
 </script>
 <style>
-/* .el-tabs__item {
+.el-tabs__item {
   height: 30px;
+}
+
+/* .container {
+  height: ;
 } */
 
-/* .right {
+.right {
   position: absolute;
   top: 50%;
   right: 50px;
   transform: translate(0, -50%);
-} */
+}
 </style>
