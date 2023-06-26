@@ -61,6 +61,7 @@ const routes = [{
         component: () => import('../views/repair/repairReport.vue'),
       },
       {
+<<<<<<< HEAD
         path: 'woIn',
         name: '工人信息',
         meta: {
@@ -69,6 +70,8 @@ const routes = [{
         component: () => import('../views/workerInformation/workerInformation.vue'),
       },
       {
+=======
+>>>>>>> master
         path: 'verifyRepair',
         name: '报修处理',
         meta: {
@@ -116,7 +119,11 @@ const routes = [{
           title: "维修服务界面"
         },
         component: () => import('../views/repair/repairService.vue'),
+<<<<<<< HEAD
       } ,
+=======
+      },
+>>>>>>> master
       {
         path: 'woIn',
         name: '工人信息',

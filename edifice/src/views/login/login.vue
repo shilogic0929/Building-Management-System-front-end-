@@ -28,12 +28,12 @@
           <el-form-item prop="username">
             <el-input placeholder="请输入账号" :prefix-icon="User" v-model="ruleForm.username"></el-input>
           </el-form-item>
-<!--          <el-form-item prop="telephone" v-if="dialogVisible">-->
-<!--            <el-input placeholder="请输入电话" prefix-icon="el-icon-lock" v-model="ruleForm.telephone"></el-input>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item prop="mail" v-if="dialogVisible">-->
-<!--            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>-->
-<!--          </el-form-item>-->
+          <!--          <el-form-item prop="telephone" v-if="dialogVisible">-->
+          <!--            <el-input placeholder="请输入电话" prefix-icon="el-icon-lock" v-model="ruleForm.telephone"></el-input>-->
+          <!--          </el-form-item>-->
+          <!--          <el-form-item prop="mail" v-if="dialogVisible">-->
+          <!--            <el-input placeholder="请输入邮箱" prefix-icon="el-icon-lock" v-model="ruleForm.mail"></el-input>-->
+          <!--          </el-form-item>-->
           <el-form-item prop="password">
             <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password" show-password
               @keyup.enter.native="login()"></el-input>
@@ -41,19 +41,19 @@
           </el-form-item>
 
 
-<!--          <el-form-item prop="password2" v-if="dialogVisible">-->
-<!--            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2"-->
-<!--              show-password></el-input>-->
-<!--          </el-form-item>-->
+          <!--          <el-form-item prop="password2" v-if="dialogVisible">-->
+          <!--            <el-input placeholder="请再次输入密码" prefix-icon="el-icon-lock" v-model="ruleForm.password2"-->
+          <!--              show-password></el-input>-->
+          <!--          </el-form-item>-->
           <el-row gutter="10">
             <el-col :span="12">
 
               <el-button color="#2b4a85" class="loginBtn" @click="login()">登录</el-button>
 
             </el-col>
-<!--            <el-col :span="12">-->
-<!--              <el-button color="#2b4a85" class="loginBtn" @click="register()">注册</el-button>-->
-<!--            </el-col>-->
+            <!--            <el-col :span="12">-->
+            <!--              <el-button color="#2b4a85" class="loginBtn" @click="register()">注册</el-button>-->
+            <!--            </el-col>-->
           </el-row>
         </el-form>
       </div>
@@ -115,21 +115,20 @@ export default {
         password2: "",
       },
 
-      rules: {
-        username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 30, message: "长度在3到30个字符", trigger: "blur" }
-        ],
-        telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
-        mail: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" },
-          { min: 8, message: "长度至少超过8位", trigger: "blur" },
-          { validator: validatePass },
-        ],
-        // password2: [{ required: true, message: "请再次输入密码", trigger: "blur" }]
-        // }
-      }
-    }
+      // rules: {
+      //   username: [
+      //     { required: true, message: "请输入用户名", trigger: "blur" },
+      //     { min: 3, max: 15, message: "长度在3到5个字符", trigger: "blur" }
+      //   ],
+      //   telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
+      //   mail: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
+      //   password: [{ required: true, message: "请输入密码", trigger: "blur" },
+      //   { min: 8, message: "长度至少超过8位", trigger: "blur" },
+      //   { validator: validatePass },
+      //   ],
+      // password2: [{ required: true, message: "请再次输入密码", trigger: "blur" }]
+      // }
+    };
   },
   mounted() {
     this.init();

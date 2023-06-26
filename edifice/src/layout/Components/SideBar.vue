@@ -117,12 +117,12 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    }
+    },
   },
-  created() {
-    this.type = localStorage.getItem('type')
-    console.log(this.type)
-  }
+    created() {
+      this.type = localStorage.getItem('type')
+      console.log(this.type)
+    }
 }
 </script>
 <style>
