@@ -98,53 +98,6 @@
       <span class="sideBarFontSize" @click="dialogVisible = true">访客申请</span>
     </el-menu-item>
   </el-menu>
-  <el-dialog v-model="dialogVisible" title="访客申请" width="60%" draggable class="dlg" append-to-body="true">
-        <el-card class="input-card">
-          <div>申请表单: </div>
-          <div style="margin: 20px" />
-          <el-form :label-position="top" label-width="100px" :rules="rules" ref="input" style="max-width: 800px">
-            <el-form-item label="姓名">
-              <el-input v-model="input.user_name" />
-            </el-form-item>
-            <el-form-item label="身份证号码" prop="idNumber">
-              <el-input v-model="input.user_id" />
-            </el-form-item>
-            <el-form-item label="联系电话" prop="phone">
-              <el-input v-model="input.phone_num" />
-            </el-form-item>
-            <el-form-item label="访问时间" style="margin-top: 20px;">
-              <div class="block">
-                <el-date-picker v-model="input.visit_time" type="datetime" placeholder="选择日期和时间" value-format="YYYY-MM-DD HH:mm:ss"/>
-              </div>
-            </el-form-item>
-          </el-form>
-          <span class="dialog-footer" style="padding-left: 100px">
-            <el-button @click="dialogVisible = false">
-              取消
-              <el-icon>
-                <CircleClose />
-              </el-icon>
-            </el-button>
-            <el-button class="submit" size="middle" @click="submitInput(input)">
-              提交
-              <el-icon>
-                <Promotion />
-              </el-icon>
-            </el-button>
-          </span>
-        </el-card>
-        <el-card style="margin-top: 20px;!important" v-model="showActivities">
-          <span>申请处理进度</span>
-          <div class="block">
-            <el-timeline>
-              <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp"
-                :color="activity.color" :hollow="activity.hollow">
-                {{ activity.content }}
-              </el-timeline-item>
-            </el-timeline>
-          </div>
-        </el-card>
-      </el-dialog>
 </template>
 
 <script>
