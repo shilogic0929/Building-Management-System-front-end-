@@ -55,7 +55,7 @@
         <el-row :gutter="20" class="dialog_row">
           <el-col :span="1"></el-col>
           <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳状态</span></el-col>
-          <el-radio-group v-model="radio1" class="ml-4">
+          <el-radio-group v-model="radio2" class="ml-4">
             <el-radio label="1" size="large">已缴纳</el-radio>
             <el-radio label="2" size="large">未缴纳</el-radio>
           </el-radio-group>
@@ -64,7 +64,7 @@
           <el-col :span="1"></el-col>
           <el-col :span="5" style="display: flex"><span style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳时间</span></el-col>
           <el-date-picker
-          v-model="day_picked"
+          v-model="day_p"
           type="date"
           placeholder="请选择日期"
           :size="default"
@@ -75,7 +75,7 @@
         <el-row :gutter="20" class="dialog_row">
           <el-col :span="4"></el-col>
           <el-col :span="4" style="display: flex"><el-button type="primary" size="large" @click="dialogVisible = false">取消</el-button></el-col>
-          <el-col :span="8" style="display: flex"><el-button type="primary" size="large" @click="handleAddPayment()">确认</el-button></el-col>
+          <el-col :span="8" style="display: flex"><el-button type="primary" size="large" @click="handleChangePayment()">确认</el-button></el-col>
         </el-row>
       </div>
     </el-dialog>
@@ -340,7 +340,9 @@ export default {
       year_picked: '',
       day_picked: '',
       radio1: '', 
+      radio2: '',
       year_p: '',
+      day_p:'',
       add_name: '',
       add_phone: '',
       add_legal: '',
@@ -406,6 +408,31 @@ export default {
   mounted() {
   },
   methods: {
+    handleChangePayment() {
+      const formData = new FormData()
+      formData.append('token', localStorage.getItem('token'))
+      formData.append('lease_id', this.drawer_room.lease_id)
+      formData.append('year', this.year_p)
+      if (this.radio2 == '1') {
+        formData.append('pay_time',this.day_p)
+      } else {
+        formData.append('pay_time','')
+      }
+      this.$axios({
+        method: 'POST',
+        url: '/changePayment',
+        data:formData
+      }).then(res => {
+        if (res.data.errno === 0) {
+          ElMessage({
+            type: 'success',
+            message: '修改成功'
+          })
+          this.dialog_for_change = false
+          location.reload()
+        }
+      })
+    },
     handleLookup_lease(payment){
       this.dialog_for_change = true
       this.year_p = payment.year
@@ -431,7 +458,7 @@ export default {
             message: '添加成功'
           })
           this.dialogVisibleforpayment = false
-          this.getClientsInfo()
+          location.reload()
         }
         if (res.data.errno === 1002) {
           ElMessage({
