@@ -504,7 +504,7 @@ export default {
           label: i.toString() + '层',
         });
       }
-      console.log(this.options);
+      // console.log(this.options);
     },
 
     initChart(thislev) {
@@ -517,11 +517,11 @@ export default {
         url: 'http://10.251.252.218/test/getRoomStatus',
         data: formData
       }).then(res => {
-        console.log('res.data.data');
-        console.log(res.data.data);
+        // console.log('res.data.data');
+        // console.log(res.data.data);
         this.roomStatus = res.data.data;
-        console.log('this.roomStatus');
-        console.log(this.roomStatus);
+        // console.log('this.roomStatus');
+        // console.log(this.roomStatus);
         const roomNoArray2 = [];
         this.roomStatus.forEach(element => {
           roomNoArray2.push(new Array(element.roomNo, element.isRented, element.userName, element.startTime, element.endTime, element.Company))
