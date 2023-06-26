@@ -206,7 +206,6 @@ export default {
   margin-top: 20px;
   text-align: start;
   display: flex;
-  min-height: 100vh;
   flex-wrap: wrap;
   /* justify-content: center; */
   align-items: flex-start;

@@ -175,61 +175,61 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes
 })
-router.beforeEach(async (to, from, next) => {
-    let token = localStorage.getItem('token')
-    let type = localStorage.getItem('type')
-    if(to.meta.judge_type === -1){
-        if(token !== null){
-            next(false)
-        }else {
-            next()
-        }
-    }
-    else if(to.meta.judge_type === 0){
-        if(token === null){
-            next('/login')
-        }else{
-            next()
-        }
-    }
-    else if(to.meta.judge_type === 1){
-        if(token === null){
-            next('/login')
-        }else{
-            if(type !== '-1'){
-                next(false)
-            }else next()
-        }
-    }
-    else if(to.meta.judge_type === 2){
-        if(token === null){
-            next('/login')
-        }else{
-            if(type !== '0'){
-                next(false)
-            }
-            else next()
-        }
-    }
-    else if(to.meta.judge_type === 3){
-        if(token === null){
-            next('/login')
-        }else{
-            if(type !== '1' && type !== '2' && type !== '3'){
-                next(false)
-            }
-            else next()
-        }
-    }
-    else{
-        if(token === null){
-            next('/login')
-        }else{
-            if(type !== '-1' && type !== '1' && type !== '2' && type !== '3'){
-                next(false)
-            }
-            else next()
-        }
-    }
-});
+// router.beforeEach(async (to, from, next) => {
+//     let token = localStorage.getItem('token')
+//     let type = localStorage.getItem('type')
+//     if(to.meta.judge_type === -1){
+//         if(token !== null){
+//             next(false)
+//         }else {
+//             next()
+//         }
+//     }
+//     else if(to.meta.judge_type === 0){
+//         if(token === null){
+//             next('/login')
+//         }else{
+//             next()
+//         }
+//     }
+//     else if(to.meta.judge_type === 1){
+//         if(token === null){
+//             next('/login')
+//         }else{
+//             if(type !== '-1'){
+//                 next(false)
+//             }else next()
+//         }
+//     }
+//     else if(to.meta.judge_type === 2){
+//         if(token === null){
+//             next('/login')
+//         }else{
+//             if(type !== '0'){
+//                 next(false)
+//             }
+//             else next()
+//         }
+//     }
+//     else if(to.meta.judge_type === 3){
+//         if(token === null){
+//             next('/login')
+//         }else{
+//             if(type !== '1' && type !== '2' && type !== '3'){
+//                 next(false)
+//             }
+//             else next()
+//         }
+//     }
+//     else{
+//         if(token === null){
+//             next('/login')
+//         }else{
+//             if(type !== '-1' && type !== '1' && type !== '2' && type !== '3'){
+//                 next(false)
+//             }
+//             else next()
+//         }
+//     }
+// });
 export default router
