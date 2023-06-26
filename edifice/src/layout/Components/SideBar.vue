@@ -93,10 +93,6 @@
       </el-icon>
       <span class="sideBarFontSize">工作人员</span>
     </el-menu-item>
-    <el-menu-item index="/visitor" v-if="type === '0'">
-      <el-icon><Message /></el-icon>
-      <span class="sideBarFontSize" @click="dialogVisible = true">访客申请</span>
-    </el-menu-item>
   </el-menu>
 </template>
 
@@ -160,66 +156,6 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    },
-    submitInput(input) {
-      if (input.user_name === '') {
-        this.$message("请输入您的姓名")
-        return
-      }
-      if (input.user_id === '') {
-        this.$message("请输入您的身份证号码")
-        return
-      }
-      if (input.phone_num === '') {
-        this.$message("请输入您的联系电话")
-        return
-      }
-      if (input.user_id === '') {
-        this.$message("请输入您的身份证号码")
-        return
-      }
-      if (input.visit_time === '') {
-        this.$message("请设置访问时间")
-        return
-      }
-      this.activities[0].timestamp = dateTime
-      this.activities[0].color = "#0bbd87"
-      this.activities[1].timestamp = dateTime
-      this.activities[1].color = "#0bbd87"
-      let formData = new FormData()
-      formData.append('token', localStorage.getItem('token'))
-      formData.append('user_name', input.user_name)
-      formData.append('user_id', input.user_id)
-      formData.append('phone_num', input.phone_num)
-      formData.append('visit_time', timestamp)
-      this.$axios({
-        method: 'POST',
-        url: '/userApply',
-        data: //{
-          // 'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxNTU4MjAsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.65p8pwWLednWSEQlpGcU8Etvlwlf-nUD7WChWz6n0-I',
-          // 'user_name' : 'sxcsxc',
-          // 'user_id' : '220102200010101235',
-          // 'phone_num' : '18888888888',
-          // 'visit_time' : '1687585349'
-          //}
-          formData
-      }).then(res => {
-        if (res.status !== 200 && res.data.success == false) {
-          this.$message.error('提交失败：' + res.statusText);
-          return;
-        } else {
-          if (res.data.errno == 0) {
-            this.$message.success('提交成功')
-            this.activities[2].timestamp = input.visit_time
-            this.activities[2].color = "#0bbd87"
-          }
-          else
-            this.$message("您已经申请过")
-          setTimeout(() => {
-            this.dialogVisible = false;
-          }, 1000);
-        }
-      })
     }
   },
   created() {
