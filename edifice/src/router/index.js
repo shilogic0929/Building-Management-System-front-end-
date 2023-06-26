@@ -134,6 +134,14 @@ const routes = [{
                 component: () => import('../views/collect/collectGuests.vue')
             },
             {
+                path: '/rentIn',
+                name: "个人租赁信息",
+                meta: {
+                    title: "个人租赁信息"
+                },
+                component: () => import('../views/repair/rentIn.vue')
+            },
+            {
                 path: 'knowledgeBase',
                 name: '维修知识库',
                 meta: {
