@@ -1,8 +1,9 @@
 <template>
   <div>
-    <el-card>
+    <el-card style="margin-top: 30px;">
+      <h1 class="image-font" style="font-size:30px; margin: 10px auto 30px">工作人员信息</h1>
 
-      <el-table :data="tableData" stripe border style="width: 100%">
+      <el-table :data="tableData" stripe border style="width: 100%;" ref="workerTable">
         <el-table-column type="index"> </el-table-column>
         <el-table-column prop="name" label="姓名" width="160px"></el-table-column>
         <el-table-column prop="tel" label="电话" width="250px"></el-table-column>
@@ -94,7 +95,7 @@ export default {
 
 
       var naid = localStorage.getItem("token");
-      console.log(naid)
+      // console.log(naid)
 
       const formData = new FormData()
       formData.append('page', this.queryInfo.pagenum)
@@ -106,10 +107,13 @@ export default {
         data: formData
       }).then(res => {
         console.log(res.data)
-        console.log(res.data.errno)
+        // console.log(res.data.errno)
         if (res.data.errno === 0) {
           // this.tableData=JSON.parse(res.data.data)
-          this.tableData = res.data.data
+          this.$nextTick(() => {
+            this.tableData = res.data.data
+            this.$refs.workerTable.doLayout()
+          })
 
 
         }
