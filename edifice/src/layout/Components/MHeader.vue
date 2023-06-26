@@ -13,7 +13,7 @@
       <div class="personalHome">
         <el-dropdown>
           <!-- <div class="userDrop_text">exit</div> -->
-          <el-icon :size="15" class="userDrop">
+          <el-icon :size="22" class="userDrop">
             <user />
           </el-icon>
           <el-avatar :size="30">

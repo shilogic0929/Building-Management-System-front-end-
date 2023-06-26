@@ -9,7 +9,7 @@
       </template>
 
       <div class="flexItem" style="padding:40px 0;">
-        <img src="../../assets/repair.png" style="height: 320px;width: 320px;margin:0 20px 40px -20px" />
+        <img src="../../assets/repair2.png" style="height: 320px;width: 320px;margin:0 60px 40px -20px" />
         <el-form :model="form" label-width="150px" :rules="rules">
           <el-form-item label="联系人姓名：" prop="name">
             <el-input v-model="form.name" />
@@ -185,8 +185,7 @@ export default {
         this.value2="",
         this.form.time="",
         this.form.desc="",
-        this.form.date="",
-        this.form.period=""
+        this.form.date=""
       },
 
     }

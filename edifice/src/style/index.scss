@@ -58,7 +58,7 @@ html,body,#app{
         }
         .personalHome{
             float: right;
-            margin-right:20px;
+            margin-right:35px;
             .el-dropdown{
                 color: #fff;
                 .userDrop_text{
@@ -67,6 +67,7 @@ html,body,#app{
                     height: 30px;
                 }
                 .userDrop{
+                    cursor: pointer;
                     float: left;
                     margin-top: 7px;
                     margin-left: 0px;
