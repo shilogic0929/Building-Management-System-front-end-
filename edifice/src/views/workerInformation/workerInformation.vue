@@ -50,7 +50,6 @@
 export default {
   data() {
     return {
-      currentPage: 1,
       fromPath: "",
       queryInfo: {
         query: "",
@@ -62,12 +61,6 @@ export default {
       total: 10,
       currentPage: 1,
     };
-  },
-  // created() {
-  //   this.getGoodsList();
-  // },
-  beforeRouteEnter(to, from, next) {
-    // if(from.name === )
   },
   mounted() {
     this.init();
