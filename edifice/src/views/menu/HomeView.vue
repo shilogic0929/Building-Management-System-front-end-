@@ -46,19 +46,19 @@
       <span class="analyse2">
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;维修类型分析</span>
+          <myCharts id="chart" :options="option" :width="width"></myCharts>
         </div>
         <div>
           <!-- TODO 维修类型 -->
         </div>
       </span>
-      <span class="analyse3">
+      <!-- <span class="analyse3">
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;访客公司统计</span>
         </div>
         <div>
-          <!-- TODO 访客公司统计 -->
         </div>
-      </span>
+      </span> -->
       <span class="analyse4" style="margin-left: 20px;">
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;今日待派发工单</span>
@@ -75,14 +75,20 @@
 <script>
 import * as echarts from "echarts"
 import { ref, onMounted } from "vue";
+import myCharts from "../repair/myCharts.vue";
+import { option2 } from '../repair/options.js'
 
 export default {
+  components: {
+      myCharts,
+  },
   data() {
     return {
       visitors: 22356,
       repairs: 446,
       today_visit: 287,
       today_repair: 45,
+      option: option2,
       works_year: [
         {
           year: '2019',
@@ -373,6 +379,21 @@ export default {
       })
     }
   },
+  typeAnalyse() {
+    const formData = new FormData()
+    formData.append('token', localStorage.getItem('token'))
+    this.$axios({
+        method:'POST',
+        url: '/repairList',
+        data: formData
+    }).then((res)=>{
+        console.log(res)
+        if(res.status == 200) {
+          for(let i = 0; i < res.data.data.length; i++) 
+            this.option.series[0].data[res.data.data[i].type - 1].value++
+        }
+    })
+  },
   setup() {
     // 时间
     const hour = ref(0);
@@ -443,8 +464,8 @@ export default {
 
 .analyse2 {
   display: inline-block;
-  width: 25%;
-  height: 300px;
+  width: 49.3%;
+  height: 360px;
   background-color: white;
   box-shadow: 0 0 2px 2px #efefef;
   border-radius: 4px;

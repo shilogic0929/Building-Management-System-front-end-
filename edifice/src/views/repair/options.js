@@ -48,7 +48,11 @@ export const option1 = {
       data: ["水", "电", "机械","其他"],
     },
     title: {
-      text: "维修类型分析",
+      text: "",
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: "{b}: {c} ({d}%)"
     },
     series: [
       {
@@ -61,11 +65,11 @@ export const option1 = {
           borderWidth: 2
         },
         label: {
-          show: false,
+          show: true,
           position: "center",
         },
         labelLine: {
-          show: false,
+          show: true,
         },
         emphasis: {
           label: {
@@ -75,10 +79,10 @@ export const option1 = {
           },
         },
         data: [
-          { value: 12, name: "水" },
-          { value: 7, name: "电" },
-          { value: 8, name: "机械"},
-          { value: 9, name: "其他"}
+          { value: 0, name: "水" },
+          { value: 0, name: "电" },
+          { value: 0, name: "机械"},
+          { value: 0, name: "其他"}
         ],
       },
     ],
