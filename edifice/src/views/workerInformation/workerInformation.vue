@@ -3,7 +3,8 @@
     <el-card style="margin-top: 30px;">
       <h1 class="image-font" style="font-size:30px; margin: 10px auto 30px">工作人员信息</h1>
 
-      <el-table :data="tableData" stripe border style="width: 100%;" ref="workerTable">
+      <el-table :data="tableData.slice((currentPage - 1) * 10, currentPage * 10)" style="width: 100%" stripe border
+        ref="workerTable">
         <el-table-column type="index"> </el-table-column>
         <el-table-column prop="name" label="姓名" width="160px"></el-table-column>
         <el-table-column prop="tel" label="电话" width="250px"></el-table-column>
@@ -33,6 +34,10 @@
           layout="total, sizes, prev, pager, next, jumper" :total="total" background>
         </el-pagination>
       </div> -->
+      <div class="flexItem" style="margin-top:20px;">
+        <el-pagination :align='center' @current-change="handleCurrentChange" :current-page="currentPage" :page-size="[10]"
+          layout="total, prev, pager, next, jumper" :total="tableData.length" />
+      </div>
     </el-card>
 
   </div>
@@ -44,6 +49,8 @@
 export default {
   data() {
     return {
+      currentPage: 1,
+      fromPath: "",
       queryInfo: {
         query: "",
         pagenum: 1,
@@ -90,8 +97,17 @@ export default {
     this.init();
     console.log(this.total)
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      // 通过 `vm` 访问组件实例,将值传入fromPath
+      vm.fromPath = from.path;
+      console.log(to)
+      console.log(from)
+    });
+  },
   methods: {
     init() {
+
 
 
       var naid = localStorage.getItem("token");
@@ -120,7 +136,11 @@ export default {
         }
       })
 
+    },
 
+
+    handleCurrentChange(val) {
+      this.currentPage = val;
     },
 
     edit(row) {
@@ -139,18 +159,23 @@ export default {
         alert('不是维修人员！');
       }
       else {
+        if (this.fromPath === '/handleRepair') {
 
-        alert('成功派遣！');
-        this.$router.push({
-          path: '/handleRepair',
-          //name: '处理报修界面',
-          query: {
-            //form_id:this.row.worker_id,
-            maintainer_name: row.name,
-            maintainer_id: row.user_id,
-            maintainer_phone: row.tel,
-          }
-        })
+          alert('成功派遣！');
+          this.$router.push({
+            path: '/handleRepair',
+            //name: '处理报修界面',
+            query: {
+              //form_id:this.row.worker_id,
+              maintainer_name: row.name,
+              maintainer_id: row.user_id,
+              maintainer_phone: row.tel,
+            }
+          })
+        }
+        else {
+          alert('可以维修！');
+        }
       }
     },
 
