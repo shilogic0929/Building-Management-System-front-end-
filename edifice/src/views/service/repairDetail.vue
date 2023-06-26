@@ -169,13 +169,13 @@ export default {
           console.log(request.data.data);
           that.form.solver=request.data.data.name
       })
-      formData=new FormData();
-      formData.append('token',localStorage.getItem('token'))
-      formData.append('wid',this.wid)
+      const formData2=new FormData();
+      formData2.append('token',localStorage.getItem('token'))
+      formData2.append('wid',this.wid)
       this.$axios({
         method: 'POST',
         url: '/repairDetail',
-        data: formData})
+        data: formData2})
         .then(function (request) {
           var res=request.data.data;
           that.rid=res.rid;
@@ -212,7 +212,7 @@ export default {
                     message: request.data.msg,
                     type: 'success',
                   })
-            this.visible = false
+            that.visible = false
         })
         this.init()
       }
