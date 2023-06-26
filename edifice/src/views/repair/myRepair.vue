@@ -70,10 +70,8 @@
         <el-descriptions-item width="100px">
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              报修房间编号
+              <el-icon><Discount /></el-icon>
+              &nbsp;报修房间号
             </div>
           </template>
           {{rid}}
@@ -81,10 +79,8 @@
         <el-descriptions-item>
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              报修类型
+              <el-icon><Setting /></el-icon>
+              &nbsp;报修类型
             </div>
           </template>
           {{types[type-1]}}
@@ -92,10 +88,8 @@
         <el-descriptions-item>
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              问题描述
+              <el-icon><Tickets /></el-icon>
+              &nbsp;问题描述
             </div>
           </template>
           {{info}}
@@ -116,10 +110,8 @@
         <el-descriptions-item v-if="status!=0">
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              维修人联系电话
+              <el-icon><Iphone /></el-icon>
+              &nbsp;维修人联系电话
             </div>
           </template>
           {{phone}}
@@ -128,10 +120,8 @@
         <el-descriptions-item v-if="status!=0">
           <template #label>
             <div class="cell-item">
-              <el-icon>
-                <user />
-              </el-icon>
-              维修时间
+              <el-icon><Timer /></el-icon>
+              &nbsp;维修时间
             </div>
           </template>
           {{time}}
