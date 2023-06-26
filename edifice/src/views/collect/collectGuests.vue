@@ -471,10 +471,10 @@ export default {
         method: 'GET',
         url: '/getVisitorNumber'
       }).then( res => {
-        console.log(res.data.data)
-        this.company = res.data.data
+        console.log(res.data)
+        this.company = res.data.data.company
         this.choose_name = this.company[0].name
-        console.log(this.company)
+        this.company_total = res.data.data.company_total
         let myBar = echarts.init(this.$refs.mybar)
         myBar.setOption({
           color:[
