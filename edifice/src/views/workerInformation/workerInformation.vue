@@ -110,10 +110,11 @@ export default {
         // console.log(res.data.errno)
         if (res.data.errno === 0) {
           // this.tableData=JSON.parse(res.data.data)
-          this.$nextTick(() => {
-            this.tableData = res.data.data
-            this.$refs.workerTable.doLayout()
-          })
+          // this.$nextTick(() => {
+          this.tableData = res.data.data
+          //   this.$refs.workerTable.doLayout()
+          //   console.log('this.tableData', this.tableData);
+          // })
 
 
         }
