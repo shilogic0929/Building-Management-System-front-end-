@@ -1,6 +1,6 @@
 <template>
   <el-menu :collapse="isCollapse" default-active="$route.path" router active-text-color="#0066CC"
-           background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose">
+    background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose">
     <el-menu-item index="/homeview">
       <el-icon title="首页">
         <HomeFilled />
@@ -119,6 +119,8 @@ export default {
       console.log(key, keyPath);
     }
   },
+
+
   created() {
     this.type = localStorage.getItem('type')
     console.log(this.type)
@@ -126,10 +128,10 @@ export default {
 }
 </script>
 <style>
-
 .el-menu:not(.el-menu--collapse) {
   width: 200px;
 }
+
 .el-submenu.is-active {
   width: 150px;
 }

@@ -61,14 +61,6 @@ const routes = [{
         component: () => import('../views/repair/repairReport.vue'),
       },
       {
-        path: 'woIn',
-        name: '工人信息',
-        meta: {
-          title: "工人信息"
-        },
-        component: () => import('../views/workerInformation/workerInformation.vue'),
-      },
-      {
         path: 'verifyRepair',
         name: '报修处理',
         meta: {
@@ -116,7 +108,7 @@ const routes = [{
           title: "维修服务界面"
         },
         component: () => import('../views/repair/repairService.vue'),
-      } ,
+      },
       {
         path: 'woIn',
         name: '工人信息',
@@ -134,17 +126,17 @@ const routes = [{
         component: () => import('../views/roomStatus/roomStatus.vue'),
       },
       {
-        path:'/collectWorks',
+        path: '/collectWorks',
         name: "维修统计",
-        meta:{
+        meta: {
           title: "维修统计"
         },
         component: () => import('../views/collect/collectWorks.vue')
       },
       {
-        path:'/collectGuests',
+        path: '/collectGuests',
         name: "访客统计",
-        meta:{
+        meta: {
           title: "访客统计"
         },
         component: () => import('../views/collect/collectGuests.vue')

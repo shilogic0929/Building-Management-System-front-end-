@@ -120,13 +120,13 @@ export default {
       this.$axios({
         method: 'POST',
         url: '/getLeaseRoom',
-        data: formData
+        data: formData})
         .then(function (request) {
           //console.log(request.data.data);
           for (var i = 0; i < request.data.data.length; i++)
             that.house.push(request.data.data[i].room_id)
           })
-        })
+        
       },
       submit(){
           if(this.form.name&&this.form.rid&&this.form.phone&&this.form.description&&
