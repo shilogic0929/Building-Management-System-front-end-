@@ -161,6 +161,16 @@ export default {
       var that=this;
       const formData=new FormData();
       formData.append('token',localStorage.getItem('token'))
+      this.$axios({
+        method: 'POST',
+        url: '/get_user_info',
+        data: formData})
+        .then(function (request) {
+          console.log(request.data.data);
+          that.form.solver=request.data.data.name
+      })
+      formData=new FormData();
+      formData.append('token',localStorage.getItem('token'))
       formData.append('wid',this.wid)
       this.$axios({
         method: 'POST',
