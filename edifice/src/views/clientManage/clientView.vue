@@ -21,13 +21,13 @@
           <el-col :span="1"></el-col>
           <el-col :span="5" style="display: flex"><span
               style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳时间</span></el-col>
-          <el-date-picker v-model="day_picked" type="date" placeholder="请选择日期" :size="default"
+          <el-date-picker v-model="day_picked" type="date" placeholder="请选择日期"
             :disabled=" radio1 == 2 ? true : false " value-format="YYYY-MM-DD" />
         </el-row>
         <el-row :gutter=" 20 " class="dialog_row">
           <el-col :span=" 4 "></el-col>
           <el-col :span=" 4 " style="display: flex"><el-button type="primary" size="large"
-              @click="dialogVisible = false">取消</el-button></el-col>
+              @click="dialogVisibleforpayment = false">取消</el-button></el-col>
           <el-col :span=" 8 " style="display: flex"><el-button type="primary" size="large"
               @click="handleAddPayment()">确认</el-button></el-col>
         </el-row>
@@ -54,13 +54,13 @@
           <el-col :span=" 1 "></el-col>
           <el-col :span=" 5 " style="display: flex"><span
               style=" margin: 0 auto;align-self: center;font-size: medium;">缴纳时间</span></el-col>
-          <el-date-picker v-model=" day_p " type="date" placeholder="请选择日期" :size="default "
+          <el-date-picker v-model=" day_p " type="date" placeholder="请选择日期"
             :disabled=" radio1 == 2 ? true : false " value-format="YYYY-MM-DD" />
         </el-row>
         <el-row :gutter=" 20 " class="dialog_row">
           <el-col :span=" 4 "></el-col>
           <el-col :span=" 4 " style="display: flex"><el-button type="primary" size="large"
-              @click="dialogVisible = false">取消</el-button></el-col>
+              @click="dialog_for_change = false">取消</el-button></el-col>
           <el-col :span=" 8 " style="display: flex"><el-button type="primary" size="large"
               @click="handleChangePayment()">确认</el-button></el-col>
         </el-row>
