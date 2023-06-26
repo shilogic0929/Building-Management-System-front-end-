@@ -101,7 +101,7 @@ export default {
       this.$axios({
         method: 'POST',
         url: '/getLeaseRoom',
-        data: formData
+        data: formData})
         .then(function (request) {
           //console.log(request.data.data);
           for (var i = 0; i < request.data.data.length; i++)
@@ -109,7 +109,7 @@ export default {
         })
 
 
-      })},
+      },
       submit() {
           if(this.form.name&&this.form.rid&&this.form.phone&&this.form.description)
           {
