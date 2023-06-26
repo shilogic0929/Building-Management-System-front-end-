@@ -34,32 +34,43 @@
         <el-table-column
             prop="form_id"
             label="反馈号"
-            width="100"
+            width="70"
             align="center">
         </el-table-column>
         <el-table-column
             prop="user_id"
             label="用户号"
-            width="100"
+            width="70"
             align="center">
         </el-table-column>
         <el-table-column
             prop="room_id"
             label="房间号"
-            width="100"
+            width="70"
             align="center">
         </el-table-column>
         <el-table-column
             prop="status"
             label="状态"
-            width="150"
+            width="100"
             align="center">
+            <template v-slot="scope">                    
+                <p v-if="scope.row.status==0">未处理</p>
+                <p v-if="scope.row.status==1">进行中</p>
+                <p v-if="scope.row.status==2">已完成</p>               
+            </template>
         </el-table-column>
         <el-table-column
             prop="type"
             label="报修类型"
             width="100"
             align="center">
+            <template v-slot="scope">                    
+                <p v-if="scope.row.type==1">水</p>
+                <p v-if="scope.row.type==2">电</p>
+                <p v-if="scope.row.type==3">机械</p>
+                <p v-if="scope.row.type==4">其他</p>               
+            </template>
         </el-table-column>
         <el-table-column
             prop="repair_time"
