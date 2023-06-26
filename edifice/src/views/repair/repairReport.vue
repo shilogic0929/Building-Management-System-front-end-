@@ -163,7 +163,6 @@ export default {
                         message: request.data.msg,
                         type: 'success',
                       })
-                  that.$router.push('/myRepair')
                 }
             })
           }
