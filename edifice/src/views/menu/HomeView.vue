@@ -1,8 +1,46 @@
 <template>
+  <div class="main-area">
+    <!-- <profile></profile> -->
+    <div class="conclude">
+      <div class="cludeTitle">
+        <span class="Lline">|</span><span>&nbsp;管理概况</span>
+      </div>
+      
+      <div style="margin-top: 20px">
+        <span class="cludeItem" style="background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);">
+          <div>总访客数</div>
+          <div>22356</div>
+        </span>
+        <span class="cludeItem" style="background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);">
+          <div>总维修工单数</div>
+          <div>446</div>
+        </span>
+        <span class="cludeItem" style="background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%);">
+          <div>今日访客数</div>
+          <div>287</div>
+        </span>
+        <span class="cludeItem" style="background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);">
+          <div>今日工单数</div>
+          <div>45</div>
+        </span>
+      </div>
+    </div>
 
-    <div class="main-area">
+    <div style="height: 330px; margin-top: 20px; text-align: start;">
+      <span class="analyse">
+        <div class="cludeTitle">
+          <span class="Lline">|</span><span>&nbsp;访客公司分析</span>
+        </div>
 
-      <profile></profile>
+      </span>
+      <span class="analyse" style="margin-left: 20px;">
+        <div class="cludeTitle">
+          <span class="Lline">|</span><span>&nbsp;工单数量统计</span>
+        </div>
+
+      </span>
+    </div>
+
 
   </div>
 </template>
@@ -19,20 +57,7 @@ export default {
   methods: {
 
   },
-
-
-
   setup() {
-    // const clickA = () => {
-    //   audio.value.play();
-    // };
-
-    // onMounted(() => {
-    //   // 监听全局点击事件
-    //   window.addEventListener("click", clickA);
-    //   // audio.value.play();
-    //   console.log(audio.value);
-    // });
     // 时间
     const hour = ref(0);
     const minute = ref(0);
@@ -60,7 +85,49 @@ export default {
 </script>
 
 <style scoped>
-/* 去掉了scoped 其样式可以被其子组件使用 */
+.conclude{
+  background-color: white;
+  height: 200px;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 2px #efefef;
+  text-align: start;
+  padding: 15px 15px;
+}
+.cludeTitle{
+  font-size: 15px;
+  font-weight: bold;
+}
+.Lline{
+  color: rgb(64, 64, 254);
+}
+.cludeItem{
+  margin-left: 25px;
+  margin-right: 5px;
+  display: inline-block;
+  width: 260px;
+  height: 120px;
+  border-radius: 8px;
+  text-align: center;
+  padding: 35px 40px;
+  font-size: 18px;
+  color: white;
+}
+.cludeItem div:nth-child(2)
+{
+  margin-top: 16px;
+  font-weight: bold;
+}
+.analyse{
+  display: inline-block;
+  width: 49%;
+  height: 330px;
+  background-color: white;
+  box-shadow: 0 0 2px 2px #efefef;
+  border-radius: 4px;
+  padding: 15px 15px;
+}
+
+
 .newh2 {
   font-weight: 600;
   color: #333;
@@ -107,9 +174,9 @@ ul {
   color: #777;
 }
 .main-area {
-  width: 100vw;
   background-color: rgb(247, 247, 247);
-  z-index:1;
+  min-height: 44vw;
+  padding: 25px 25px;
 }
 /* 长引用 */
 .quote-wrap {

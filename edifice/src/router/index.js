@@ -18,14 +18,6 @@ const routes = [{
     hidden: true
 },
     {
-        path: '/skip',
-        name: "跳转界面",
-        meta: {
-            title: "跳转界面"
-        },
-        component: () => import('../views/login/skip.vue'),
-    },
-    {
         path: '/',
         name: 'layout',
         component: Layout,

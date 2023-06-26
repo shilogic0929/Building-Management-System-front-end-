@@ -4,16 +4,13 @@
     <div class="profile-container">
       <div class="left-area">
         <div class="bg-area">
-          <a>
-            <img src="@/assets/image/living-room.jpg" alt="" class="img-curry c-img-left"/>
-          </a>
+          <img src="@/assets/image/living-room.jpg" alt="" class="img-curry c-img-left"/>
+
 
           <p>
             大城市中，很多公司是租赁大厦的房间作为办公场地。从大厦管理方来说，有效盘活大厦使用效率可以带来收益增加，因此拟开发自身的物业管理系统，以更好的实现大厦的利用。
           </p>
-          <a>
-            <i class="fa fa-weibo"></i
-          ></a>
+          <i class="fa fa-weibo"></i>
           <br />
           
         </div>
@@ -21,21 +18,16 @@
 
       <div class="right-area">
         <div class="bg-area">
-          <a
-            ><img
+          <img
               src="~@/assets/image/furniture.jpg"
               alt=""
               class="img-curry c-img-right"
-          /></a>
+          />
 
           <p>
             大厦管理系统系统包括了客户、空间与人员管理功能，保障各项功能有条不紊地进行。此外，还有访客管理方便外部人员参观。维修知识库的建立让知识，与你分享。
           </p>
-          <!-- 使用了图标库font-awesome -->
-          <a
-
-            ><i class="fa fa-weibo"></i
-          ></a>
+          <i class="fa fa-weibo"></i>
           <br />
           
         </div>
@@ -48,9 +40,6 @@
 export default {
 
   methods:{
-    goRent(){
-      this.$router.push("/seeHouse")
-    }
   }
 };
 </script>
@@ -90,10 +79,11 @@ export default {
 .right-area p {
   width: 90%;
   line-height: 25px;
-  font-size: 17px;
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 16px;
   padding: 0px 20px;
-  margin: 0px 10px !important;
+  margin: 15px 10px;
+  text-align: start;
+  text-indent: 32px;
 }
 .bg-area {
   background-color: rgb(253, 253, 253);

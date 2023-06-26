@@ -24,7 +24,7 @@
           <h2 class="loginH2" style="position: relative;top:45px"><strong>大厦</strong>物业管理系统</h2>
 
         </div>
-        <el-form ref="loginForm" :rules="rules" :model="ruleForm">
+        <el-form ref="loginForm" :model="ruleForm">
           <el-form-item prop="username">
             <el-input placeholder="请输入账号" :prefix-icon="User" v-model="ruleForm.username"></el-input>
           </el-form-item>
@@ -135,7 +135,6 @@ export default {
   },
   methods: {
     init() {
-      console.log("start");
       // 实例化socket
       //   this.socket=this.global.ws;
       //
@@ -209,6 +208,10 @@ export default {
       }).then(res => {
 
         if (res.data.errno === 0) {
+          ElMessage({
+                    message: "登录成功",
+                    type: 'success',
+                  })
           localStorage.setItem('token', res.data.data.token)
           localStorage.setItem('type', res.data.data.type)
           if (res.data.data.type === 0) {//普通人员
@@ -221,6 +224,12 @@ export default {
             this.$router.push('/repairService')
           }
           console.log(res.data.data.type);
+        }
+        else {
+          ElMessage({
+                    message: "账号或密码错误",
+                    type: 'error',
+                  })
         }
       })
     },
