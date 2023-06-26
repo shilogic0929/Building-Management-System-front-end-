@@ -215,7 +215,7 @@ export default {
             this.$router.push('/myRepair')
           }
           else if (res.data.data.type === -1) {//管理人
-            this.$router.push('/handleRepair')
+            this.$router.push('/homeview')
           }
           else {//维修人员
             this.$router.push('/repairService')
