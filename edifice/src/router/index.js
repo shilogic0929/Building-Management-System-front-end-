@@ -179,7 +179,11 @@ router.beforeEach(async (to, from, next) => {
     let token = localStorage.getItem('token')
     let type = localStorage.getItem('type')
     if(to.meta.judge_type === -1){
-        next()
+        if(token !== null){
+            next(false)
+        }else {
+            next()
+        }
     }
     else if(to.meta.judge_type === 0){
         if(token === null){

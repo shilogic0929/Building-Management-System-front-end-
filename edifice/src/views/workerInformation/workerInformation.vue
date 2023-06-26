@@ -3,7 +3,7 @@
     <el-card style="margin-top: 30px;">
       <h1 class="image-font" style="font-size:30px; margin: 10px auto 30px">工作人员信息</h1>
 
-      <el-table :data="tableData" stripe border style="width: 100%;" ref="workerTable">
+      <el-table :data="show_tableData" stripe border style="width: 100%;" ref="workerTable">
         <el-table-column type="index"> </el-table-column>
         <el-table-column prop="name" label="姓名" width="160px"></el-table-column>
         <el-table-column prop="tel" label="电话" width="250px"></el-table-column>
@@ -19,7 +19,7 @@
 
             <!--            <el-button size="mini" type="primary"  icon="el-icon-edit" @click="edit(scope.row)">state</el-button>-->
             <el-button size="mini" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">
-              {{ scope.row.category == '-1' ? '不可维修' : scope.row.isMaintainer == true ? '空闲当中' : '正接单中' }}
+              {{ scope.row.category === '-1' ? '不可维修' : scope.row.isMaintainer === true ? '空闲当中' : '正接单中' }}
 
             </el-button>
           </template>
@@ -33,6 +33,11 @@
           layout="total, sizes, prev, pager, next, jumper" :total="total" background>
         </el-pagination>
       </div> -->
+      <el-space>
+        <div class="title">
+          <el-pagination layout="prev, pager, next" :total="this.tableData.length" hide-on-single-page="true" @current-change="changePage" :current-page="currentPage"/>
+        </div>
+      </el-space>
     </el-card>
 
   </div>
@@ -49,54 +54,26 @@ export default {
         pagenum: 1,
         pagesize: 10
       },
-      tableData: [
-        {
-          tel: '15456547896',
-          name: '管宁',
-          job: '高级工人',
-          category: '水电工',
-          isMaintainer: true,
-        },
-        // {
-        //   phone: '16587452687',
-        //   name: '许邵',
-        //   job:'低级工人',
-        //   type:'木工',
-        //   if_use: '可用'
-        // }, {
-        //   phone: '18659324785',
-        //   name: '杨彪',
-        //   job:'中级工人',
-        //   type:'装修工',
-        //   if_use: '可用'
-        // }, {
-        //   phone: '18596957458',
-        //   name: '刘焉',
-        //   job:'低级工人',
-        //   type:'清洁工',
-        //   if_use: '可用'
-        // }
-
-
-      ],
-      total: 10
+      tableData: [],
+      show_tableData:[],
+      total: 10,
+      currentPage: 1,
     };
   },
   // created() {
   //   this.getGoodsList();
   // },
-
+  beforeRouteEnter(to, from, next){
+    // if(from.name === )
+  },
   mounted() {
     this.init();
     console.log(this.total)
   },
   methods: {
     init() {
-
-
       var naid = localStorage.getItem("token");
       // console.log(naid)
-
       const formData = new FormData()
       formData.append('page', this.queryInfo.pagenum)
       formData.append('numInOnePage', this.queryInfo.pagesize)
@@ -109,20 +86,17 @@ export default {
         console.log(res.data)
         // console.log(res.data.errno)
         if (res.data.errno === 0) {
-          // this.tableData=JSON.parse(res.data.data)
-          // this.$nextTick(() => {
           this.tableData = res.data.data
-          //   this.$refs.workerTable.doLayout()
-          //   console.log('this.tableData', this.tableData);
-          // })
-
-
+          if(this.tableData.length > 10){
+            this.show_tableData = this.tableData.slice(0,10)
+          }else{
+            this.show_tableData = this.tableData
+          }
         }
       })
 
 
     },
-
     edit(row) {
 
       if (row.isMaintainer === false) {
@@ -133,13 +107,10 @@ export default {
       }
     },
     removeById(row) {
-
       if (row.isMaintainer === false) {
-
         alert('不是维修人员！');
       }
       else {
-
         alert('成功派遣！');
         this.$router.push({
           path: '/handleRepair',
@@ -153,7 +124,15 @@ export default {
         })
       }
     },
-
+    changePage(val){
+      console.log(val)
+      this.currentPage = val
+      let start_index = (val-1) * 10
+      let end_index = start_index + 10
+      this.show_tableData = this.tableData.slice(start_index,end_index)
+    },
+  },
+  watch:{
 
   }
 };
