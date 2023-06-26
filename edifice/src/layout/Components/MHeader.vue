@@ -175,9 +175,9 @@ export default {
     },
     quit() {
       console.log("quit");
-      localStorage.setItem('token', 0);
-      var naid = localStorage.getItem("token");
-      console.log(naid);
+      localStorage.clear();
+      // var naid = localStorage.getItem("token");
+      // console.log(naid);
       // this.$axios.post('/user/logout/',JSON.stringify()).then(function (request) {
       //    ElMessage({
       //       message: request.data.msg,
