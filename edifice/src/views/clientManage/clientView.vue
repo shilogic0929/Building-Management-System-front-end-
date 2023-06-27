@@ -695,7 +695,7 @@ export default {
           this.clients.filter(
               (data) =>
                   !newValue ||
-                  data.name.toLowerCase().includes(newValue.toLowerCase())
+                  data.name.toLowerCase().includes(newValue.toLowerCase()) || data.room.some(item => item.id.toString().includes(newValue))
           ))
       this.showClients = this.filterClients.slice(0,10)
     },
