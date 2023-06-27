@@ -84,7 +84,7 @@
           // 应用配置项
           this.myChart.setOption(this.options);
         }
-      }, 500);
+      }, 1000);
     }
   }
   </script>
