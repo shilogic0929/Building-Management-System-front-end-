@@ -395,8 +395,6 @@ export default {
       formData.append('year', this.year_p)
       if (this.radio2 === '1') {
         formData.append('pay_time',this.day_p)
-      } else {
-        formData.append('pay_time','')
       }
       this.$axios({
         method: 'POST',
