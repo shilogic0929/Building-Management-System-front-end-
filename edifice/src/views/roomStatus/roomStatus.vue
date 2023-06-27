@@ -80,8 +80,8 @@ export default {
 
     },
     jump(tab) {
-      var str=JSON.parse(JSON.stringify(tab)).props.label
-      str=str.substr(0, str.length - 1);
+      var str = JSON.parse(JSON.stringify(tab)).props.label
+      str = str.substr(0, str.length - 1);
       console.log(str)
       const selectedIndex = parseInt(str);
       //console.log('selectedIndex:', selectedIndex);
@@ -105,7 +105,7 @@ export default {
 </script>
 <style>
 .el-tabs__item {
-  height: 30px;
+  height: 24px;
 }
 
 /* .container {
