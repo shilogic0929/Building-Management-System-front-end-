@@ -7,19 +7,19 @@
         <el-table-column type="index"> </el-table-column>
         <el-table-column prop="name" label="姓名" width="160px"></el-table-column>
         <el-table-column prop="tel" label="电话" width="250px"></el-table-column>
-        <el-table-column prop="job" label="岗位" width="140px"></el-table-column>
+        <el-table-column prop="job" label="岗位" width="180px"></el-table-column>
         <el-table-column prop="category" label="维修类型" width="180px">
           <template v-slot="scope">{{ scope.row.category == '-1' ? '管理人员' : '维修人员' }}</template>
 
         </el-table-column>
-        <el-table-column prop="isMaintainer" label="可用状态" width="300px">
+        <el-table-column prop="isMaintainer" label="可用状态" >
 
 
           <template v-slot="scope">
 
             <!--            <el-button size="mini" type="primary"  icon="el-icon-edit" @click="edit(scope.row)">state</el-button>-->
-            <el-button size="mini" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">
-              {{ scope.row.category === '-1' ? '不可维修' : scope.row.isMaintainer === true ? '空闲当中' : '正接单中' }}
+            <el-button size="small" type="warning" icon="el-icon-delete" @click="removeById(scope.row)">
+              {{ scope.row.category == '-1' ? '不可维修' : scope.row.isMaintainer == true ? '空闲当中' : '正接单中' }}
 
             </el-button>
           </template>
@@ -50,7 +50,6 @@
 export default {
   data() {
     return {
-      currentPage: 1,
       fromPath: "",
       queryInfo: {
         query: "",
@@ -62,12 +61,6 @@ export default {
       total: 10,
       currentPage: 1,
     };
-  },
-  // created() {
-  //   this.getGoodsList();
-  // },
-  beforeRouteEnter(to, from, next) {
-    // if(from.name === )
   },
   mounted() {
     this.init();

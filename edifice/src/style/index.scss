@@ -105,16 +105,16 @@ html,body,#app{
     height: 100%;
 }
 
+.el-menu{
+  height: 100%;
+  .el-sub-menu .el-menu-item {
+      min-width: 185px;
+  }
+}
+
 .el-menu:not(.el-menu--collapse) {
     width: 200px;
     height: 100%;
-}
-
-.el-menu{
-    height: 100%;
-    .el-sub-menu .el-menu-item {
-        min-width: 185px;
-    }
 }
 
 .el-main{
@@ -141,9 +141,6 @@ html,body,#app{
     .UserImage{
         width:25%;
         float:left;
-        .UserImageCon{
-            
-        }
         .UserImageChange{
             margin-top: 50px;
             height: 100%;
@@ -191,6 +188,15 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top:5px;
+    margin-bottom: 20px;
+    font-size:18px;
+    font-family: "微软雅黑";
+    color: $myColor;
+
+    .el-button{
+        margin-right: 10px;
+    }
   }
 
 .card-content {
@@ -212,19 +218,6 @@ a {
     margin-right: 100px;
     margin-top:25px;
     margin-bottom:25px;
-}
-
-.card-header{
-    margin-top:5px;
-    margin-bottom: 20px;
-    font-size:18px;
-    font-family: "微软雅黑";
-    color: $myColor;
-
-    .el-button{
-        margin-right: 10px;
-    }
-
 }
 
 .title{
