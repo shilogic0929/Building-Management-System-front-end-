@@ -35,7 +35,8 @@
       </div> -->
       <el-space>
         <div class="title">
-          <el-pagination layout="prev, pager, next" :total="this.tableData.length" hide-on-single-page="true" @current-change="changePage" :current-page="currentPage"/>
+          <el-pagination layout="prev, pager, next" :total="this.tableData.length" hide-on-single-page="true"
+            @current-change="changePage" :current-page="currentPage" />
         </div>
       </el-space>
     </el-card>
@@ -49,26 +50,29 @@
 export default {
   data() {
     return {
+      fromPath: "",
       queryInfo: {
         query: "",
         pagenum: 1,
         pagesize: 10
       },
       tableData: [],
-      show_tableData:[],
+      show_tableData: [],
       total: 10,
       currentPage: 1,
     };
   },
-  // created() {
-  //   this.getGoodsList();
-  // },
-  beforeRouteEnter(to, from, next){
-    // if(from.name === )
-  },
   mounted() {
     this.init();
     console.log(this.total)
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      // 通过 `vm` 访问组件实例,将值传入fromPath
+      vm.fromPath = from.path;
+      console.log(to)
+      console.log(from)
+    });
   },
   methods: {
     init() {
@@ -87,15 +91,19 @@ export default {
         // console.log(res.data.errno)
         if (res.data.errno === 0) {
           this.tableData = res.data.data
-          if(this.tableData.length > 10){
-            this.show_tableData = this.tableData.slice(0,10)
-          }else{
+          if (this.tableData.length > 10) {
+            this.show_tableData = this.tableData.slice(0, 10)
+          } else {
             this.show_tableData = this.tableData
           }
         }
       })
 
+    },
 
+
+    handleCurrentChange(val) {
+      this.currentPage = val;
     },
     edit(row) {
 
@@ -111,28 +119,34 @@ export default {
         alert('不是维修人员！');
       }
       else {
-        alert('成功派遣！');
-        this.$router.push({
-          path: '/handleRepair',
-          //name: '处理报修界面',
-          query: {
-            //form_id:this.row.worker_id,
-            maintainer_name: row.name,
-            maintainer_id: row.user_id,
-            maintainer_phone: row.tel,
-          }
-        })
+        if (this.fromPath === '/handleRepair') {
+
+          alert('成功派遣！');
+          this.$router.push({
+            path: '/handleRepair',
+            //name: '处理报修界面',
+            query: {
+              //form_id:this.row.worker_id,
+              maintainer_name: row.name,
+              maintainer_id: row.user_id,
+              maintainer_phone: row.tel,
+            }
+          })
+        }
+        else {
+          alert('可以维修！');
+        }
       }
     },
-    changePage(val){
+    changePage(val) {
       console.log(val)
       this.currentPage = val
-      let start_index = (val-1) * 10
+      let start_index = (val - 1) * 10
       let end_index = start_index + 10
-      this.show_tableData = this.tableData.slice(start_index,end_index)
+      this.show_tableData = this.tableData.slice(start_index, end_index)
     },
   },
-  watch:{
+  watch: {
 
   }
 };
