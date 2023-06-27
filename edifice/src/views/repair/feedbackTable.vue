@@ -22,6 +22,17 @@
             <el-form-item label="用户号：">
                 <el-input prefix-icon="el-icon-search" v-model="search_data.search_user_id" clearable></el-input>
             </el-form-item>
+            <el-form-item label="工单处理状态：">
+                <!-- <el-input prefix-icon="el-icon-search" v-model="search_data.search_status" clearable></el-input> -->
+                <el-select v-model="status_value" class="m-2" placeholder="检索工单状态">
+                    <el-option
+                    v-for="item in select_options"
+                    :key="item.status_value"
+                    :label="item.label"
+                    :value="item.status_value"
+                    />
+                </el-select>
+            </el-form-item>
             <el-form-item class="btnSearch">
                 <el-button type="primary" size="small"  @click="handleSearch()">筛选</el-button>
             </el-form-item>
@@ -228,6 +239,7 @@
 import myCharts from "./myCharts.vue";
 import { option1, option2 } from './options.js'
 import { MoreFilled } from '@element-plus/icons-vue'
+import { ref } from 'vue'
 export default {
     name: "FeedbackTable",
     components: {
@@ -244,13 +256,28 @@ export default {
             count: 0,
             option1: option1,
             option2 : option2,
+            status_value : ref(),
+            select_options : [{
+                status_value: -1,
+                label: '全部',
+            },{
+                status_value: 0,
+                label: '未处理',
+            }, {
+                status_value: 1,
+                label: '进行中',
+            }, {
+                status_value: 2,
+                label: '已完成',
+            },],
             tableData: [],
             selected_table_data: [], 
             all_table_data: [],
             //筛选条件数据
             search_data:{
                 search_room_id:'',
-                search_user_id:''
+                search_user_id:'',
+                // search_status:''
             },
             //format_status_list:['全部','已处理','未处理'],
             // 分页属性
@@ -480,12 +507,14 @@ export default {
             this.selected_table_data = [];
             pojo = {
                 room_id: this.search_data.search_room_id,  
-                user_id: this.search_data.search_user_id             
+                user_id: this.search_data.search_user_id,
+                status: this.status_value           
             }
             for(let item of this.all_table_data) {
                 console.log(item)
                 if((pojo.room_id === '' || item.room_id == pojo.room_id) &&
-                (pojo.user_id === '' || item.user_id == pojo.user_id)) {
+                (pojo.user_id === '' || item.user_id == pojo.user_id) && 
+                (pojo.status == -1 || pojo.status == item.status) ) {
                     this.selected_table_data.push(item);
                 }
             }
