@@ -79,24 +79,24 @@ export default {
       this.height = document.documentElement.clientHeight - 50 + 'px'
 
     },
-    jump(tab, event) {
-      console.log('tabName:', this.tabName);
-      // console.log(tab, event);
-      //todo
-      // 获取选中的标签页的索引
-      const selectedIndex = parseInt(this.tabName) + 1;
-      console.log('selectedIndex:', selectedIndex);
+    jump(tab) {
+      var str=JSON.parse(JSON.stringify(tab)).props.label
+      str=str.substr(0, str.length - 1);
+      console.log(str)
+      const selectedIndex = parseInt(str);
+      //console.log('selectedIndex:', selectedIndex);
       // 构建要跳转的锚点的名称
       const anchorName = 'roomMap' + selectedIndex;
-      console.log('anchorName:')
-      console.log(anchorName);
+      //console.log('anchorName:')
+      //console.log(anchorName);
       // 获取对应的 RoomMap 组件的引用
       const roomMapRef = this.$refs[anchorName];
-
+      console.log(roomMapRef)
       // 滚动到相应的锚点
       if (roomMapRef) {
         roomMapRef.$el.scrollIntoView({
-          behavior: 'smooth'
+          behavior: 'smooth',
+          block: "end"
         });
       }
     },
