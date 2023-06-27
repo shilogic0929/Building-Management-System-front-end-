@@ -5,6 +5,18 @@
         <h2>查看个人租赁信息</h2>
       </div>
     </div>
+    <el-drawer v-model="drawer">
+      <span style="font-size: large;">{{ drawer_roomid }}房间物业费缴纳信息</span>
+      <el-table :data="drawer_data"  :default-sort="{ prop: 'year', order: 'ascending' }">
+        <el-table-column  prop="year" label="年份" />
+        <el-table-column  prop="ispaid" label="缴纳状态">
+          <template #default="zone">
+            <span>{{zone.row.ispaid == true ? '已缴纳' : '未缴纳'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column  prop="pay_time" label="缴纳时间" />
+      </el-table>
+    </el-drawer>
     <div class="serviceGrid">
       <el-card>
         <template #header>
@@ -23,18 +35,26 @@
               prop="start_time"
               label="开始时间"
               column-key="start_time"
-              width="250">
+              width="200">
           </el-table-column>
           <el-table-column
               prop="end_time"
               label="结束时间"
               column-key="end_time"
-              width="250">
+              width="200">
           </el-table-column>
           <el-table-column
               prop="repair_time"
               label="申请时间"
-              column-key="repair_time">
+              column-key="repair_time"
+              width="180">
+          </el-table-column>
+          <el-table-column label="物业费信息" prop="payments" align="center">
+            <template #default="scope">
+              <el-button type="primary" style="margin-left: 16px" @click="handleLookup(scope.$index, scope.row)">
+                查看
+              </el-button>
+            </template>
           </el-table-column>
 
         </el-table>
@@ -66,13 +86,25 @@ export default {
       visible:false,
       visible2:false,
       rid:"",
-      type:1,
+      type: 1,
+      drawer: false,
+      drawer_lease_id: 0,
+      drawer_data: [],
+      drawer_roomid: 0,
+      drawer_room: {},
       repair:[
         {
           room_id:1,
           start_time: "2023-6-16",
           end_time: "2023-6-17",
-          repair_time:"2023-6-15"
+          repair_time: "2023-6-15",
+          payments: [{
+            year: '2012',
+            ispaid: true,
+            pay_time: '2023-6-17'
+          }
+          ],
+          lease_id:0
         }
       ]
     }
@@ -94,6 +126,13 @@ export default {
             console.log(request.data.data);
             that.repair=request.data.data
           })
+    },
+    handleLookup(index, room) {
+      this.drawer_room = room
+      this.drawer_roomid = room.room_id
+      this.drawer_data = room.payments
+      this.drawer_lease_id = room.lease_id
+      this.drawer = true
     },
     handleCurrentChange(val) {
       this.currentPage = val;
