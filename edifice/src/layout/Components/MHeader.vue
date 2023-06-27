@@ -23,11 +23,11 @@
           </el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
-              <router-link to="/homeView">
+              <router-link to="/homeView " v-show="usertype === '-1'">
                 <el-dropdown-item :icon="House">首页</el-dropdown-item>
               </router-link>
               <router-link to="/personalPage">
-                <el-dropdown-item :icon="UserFilled" v-show="user_type === '-1'">个人信息</el-dropdown-item>
+                <el-dropdown-item :icon="UserFilled">个人信息</el-dropdown-item>
               </router-link>
               <el-dropdown-item :icon="SwitchButton" @click="quit">注销</el-dropdown-item>
               <!-- <el-dropdown-item :icon="Message" v-model="user_type" @click="showDlg">访客申请</el-dropdown-item> -->
@@ -113,6 +113,7 @@ import {
 export default {
   data() {
     return {
+      userType: '',
       color: "#009966",
       userName: "",
       Plus: Plus,
@@ -163,6 +164,8 @@ export default {
     }
   },
   created() {
+    this.userType = localStorage.getItem('type');
+    console.log(this.userType);
     this.user_type = localStorage.getItem('type') == 0 ? true : false;
     //getActivityList();
     if (this.activities.length > 0) {
