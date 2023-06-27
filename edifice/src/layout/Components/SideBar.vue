@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-menu :collapse="isCollapse" default-active="$route.path" router active-text-color="#0066CC"
            background-color="#FFFFFF" class="el-menu-vertical-demo" text-color="#000000" @open="handleOpen" @close="handleClose">
     <el-menu-item index="/homeview" v-show="type === '-1'">
@@ -61,6 +62,13 @@
       <span class="sideBarFontSize">租赁信息</span>
     </el-menu-item>
 
+    <el-menu-item v-if="type === '0'" @click="showDlg">
+      <el-icon title="访客申请">
+        <Document />
+      </el-icon>
+      <span class="sideBarFontSize">访客申请</span>
+    </el-menu-item>
+
     <el-menu-item index="/roomStatus" v-if="type === '-1'">
       <el-icon title="房间状态">
         <House />
@@ -94,6 +102,64 @@
       <span class="sideBarFontSize">工作人员</span>
     </el-menu-item>
   </el-menu>
+
+  <body>
+      <el-dialog v-model="dialogVisible" title="访客申请" width="60%" draggable class="dlg" append-to-body="true">
+        <el-card class="input-card">
+          <div>申请表单: </div>
+          <div style="margin: 20px" />
+          <el-form :label-position="top" label-width="100px" :rules="rules" ref="input" style="max-width: 800px">
+            <el-form-item label="姓名">
+              <el-input v-model="input.user_name" />
+            </el-form-item>
+            <el-form-item label="身份证号码" prop="idNumber">
+              <el-input v-model="input.user_id" />
+            </el-form-item>
+            <el-form-item label="联系电话" prop="phone">
+              <el-input v-model="input.phone_num" />
+            </el-form-item>
+            <el-form-item label="访问时间" style="margin-top: 20px;">
+              <div class="block">
+                <el-date-picker v-model="input.visit_time" type="datetime" placeholder="选择日期和时间" />
+              </div>
+            </el-form-item>
+          </el-form>
+          <span class="dialog-footer" style="padding-left: 100px">
+            <el-button @click="dialogVisible = false">
+              取消
+              <el-icon>
+                <CircleClose />
+              </el-icon>
+            </el-button>
+            <el-button class="submit" size="middle" @click="submitInput(input)">
+              提交
+              <el-icon>
+                <Promotion />
+              </el-icon>
+            </el-button>
+          </span>
+        </el-card>
+        <el-card style="margin-top: 20px;!important" v-model="showActivities">
+          <el-divider content-position="center">申请处理流程</el-divider>
+          <div class="block">
+            <el-timeline>
+              <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp"
+                :color="activity.color" :hollow="activity.hollow">
+                {{ activity.content }}
+              </el-timeline-item>
+            </el-timeline>
+          </div>
+        </el-card>
+        <template #footer>
+          <el-button @click="dialogVisible = false">
+            <el-icon>
+              <CircleClose />
+            </el-icon>
+          </el-button>
+        </template>
+      </el-dialog>
+    </body>
+  </div>
 </template>
 
 <script>
@@ -156,6 +222,107 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+    showDlg() {
+      this.dialogVisible = true;
+    },
+    submitInput(input) {
+      if (input.user_name === '') {
+        this.$message("请输入您的姓名")
+        return
+      }
+      if (input.user_id === '') {
+        this.$message("请输入您的身份证号码")
+        return
+      }
+      if (input.phone_num === '') {
+        this.$message("请输入您的联系电话")
+        return
+      }
+      if (input.user_id === '') {
+        this.$message("请输入您的身份证号码")
+        return
+      }
+      if (input.visit_time === '') {
+        this.$message("请设置访问时间")
+        return
+      }
+      let date = new Date()
+      let day = date.toLocaleDateString()
+      let time = date.toLocaleTimeString()
+      let dateTime = day.split("/").join("-") + ' ' + time
+      this.activities[0].timestamp = dateTime
+      this.activities[0].color = "#0bbd87"
+      this.activities[1].timestamp = dateTime
+      this.activities[1].color = "#0bbd87"
+      console.log(dateTime)
+      let formData = new FormData()
+      formData.append('token', localStorage.getItem('token'))
+      formData.append('user_name', input.user_name)
+      formData.append('user_id', input.user_id)
+      formData.append('phone_num', input.phone_num)
+      dateTime = input.visit_time
+      console.log(dateTime)
+      let y = dateTime.getFullYear();
+      let m = dateTime.getMonth() + 1;
+      m = m < 10 ? ('0' + m) : m;
+      let d = dateTime.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      let h = dateTime.getHours();
+      h = h < 10 ? ('0' + h) : h;
+      let minute = dateTime.getMinutes();
+      minute = minute < 10 ? ('0' + minute) : minute;
+      let second = dateTime.getSeconds();
+      second = second < 10 ? ('0' + second) : second;
+      dateTime = y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+      console.log(dateTime);
+      this.input.visit_time = dateTime
+      dateTime = dateTime.replace(/-/g, '-');
+      let visit_time = new Date(dateTime).getTime()
+      visit_time /= 1000
+      formData.append('visit_time', visit_time.toString())
+      console.log(formData.get('user_name'))
+      console.log(formData.get('user_id'))
+      console.log(formData.get('phone_num'))
+      console.log(formData.get('visit_time'))
+      this.$axios({
+        method: 'POST',
+        url: '/userApply',
+        data: //{
+          // 'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxNTU4MjAsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.65p8pwWLednWSEQlpGcU8Etvlwlf-nUD7WChWz6n0-I',
+          // 'user_name' : 'sxcsxc',
+          // 'user_id' : '220102200010101235',
+          // 'phone_num' : '18888888888',
+          // 'visit_time' : '1687585349'
+          //}
+          formData
+      }).then(res => {
+        if (res.status !== 200 && res.data.success == false) {
+          this.$message.error('提交失败：' + res.statusText);
+          return;
+        } else {
+          if (res.data.errno == 0) {
+            this.$message.success('提交成功')
+            this.activities[2].timestamp = input.visit_time
+            this.activities[2].color = "#0bbd87"
+          }
+          else
+            this.$message("您已经申请过")
+          setTimeout(() => {
+            this.dialogVisible = false;
+            this.input.user_name = ""
+            this.input.user_id = ""
+            this.input.phone_num = ""
+            this.input.visit_time = ""
+            this.activities[0].timestamp = ''
+            this.activities[0].color = ""
+            this.activities[1].timestamp = ''
+            this.activities[1].color = ""
+            this.activities[2].timestamp = ''
+            this.activities[2].color = ""
+          }, 3000);
+        }
+      })
     }
   },
   created() {
@@ -171,5 +338,11 @@ export default {
 
 .el-submenu.is-active {
   width: 150px;
+}
+.el-divider {
+    background-color: #5ea9ff;
+    height: 3px;
+    margin: 2px 0;
+    margin-bottom: 20px;
 }
 </style>
