@@ -42,28 +42,21 @@
     </div>
 
 
-    <div style="height: 300px; margin-top: 20px; text-align: start;" class="flexItem">
-      <span class="analyse2">
+    <div style="height: 400px; margin-top: 20px; text-align: start;" class="flexItem">
+      <span class="analyse">
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;维修类型分析</span>
-          <myCharts id="chart" :options="option" :width="width"></myCharts>
         </div>
-        <div>
-          <!-- TODO 维修类型 -->
+        <div style="margin-top: 30px;">
+          <myCharts id="chart" :options="option" width="100%"></myCharts>
         </div>
       </span>
-      <!-- <span class="analyse3">
-        <div class="cludeTitle">
-          <span class="Lline">|</span><span>&nbsp;访客公司统计</span>
-        </div>
-        <div>
-        </div>
-      </span> -->
-      <span class="analyse4" style="margin-left: 20px;">
+
+      <span class="analyse" style="margin-left: 20px;">
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;今日待派发工单</span>
         </div>
-        <div>
+        <div style="margin-top: 30px;">
           <!-- TODO 今日待派发工单 -->
           <el-table :data="OrderToday" style="width: 100%" max-height="252px" @click="toHandleRepair">
             <el-table-column prop="contact_name" label="姓名" width="80">
@@ -87,7 +80,6 @@ import * as echarts from "echarts"
 import { ref, onMounted } from "vue";
 import myCharts from "../repair/myCharts.vue";
 import { option2 } from '../repair/options.js'
-import moment from "moment";
 
 export default {
   components: {
@@ -221,8 +213,6 @@ export default {
         url: '/getTodayOrder',
         data: formData
       }).then((res) => {
-        console.log('repairList')
-        console.log(res)
         if (res.data.errno == 0 && res.data.data.length != 0) {
           that.OrderToday = res.data.data;
           console.log(this.OrderToday);
@@ -250,7 +240,6 @@ export default {
       s = s < 10 ? ('0' + s) : s;
       return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
     },
-
     typeAnalyse() {
       const formData = new FormData()
       formData.append('token', localStorage.getItem('token'))
@@ -513,38 +502,6 @@ export default {
   display: inline-block;
   width: 50%;
   height: 400px;
-  background-color: white;
-  box-shadow: 0 0 2px 2px #efefef;
-  border-radius: 4px;
-  padding: 15px 15px;
-}
-
-.analyse2 {
-  display: inline-block;
-  width: 49.3%;
-  height: 360px;
-  background-color: white;
-  box-shadow: 0 0 2px 2px #efefef;
-  border-radius: 4px;
-  padding: 15px 15px;
-  /* margin-right: 10px; */
-}
-
-.analyse3 {
-  display: inline-block;
-  width: 25%;
-  height: 300px;
-  background-color: white;
-  box-shadow: 0 0 2px 2px #efefef;
-  border-radius: 4px;
-  padding: 15px 15px;
-  /* margin-left: 10px; */
-}
-
-.analyse4 {
-  display: inline-block;
-  width: 50%;
-  height: 300px;
   background-color: white;
   box-shadow: 0 0 2px 2px #efefef;
   border-radius: 4px;
