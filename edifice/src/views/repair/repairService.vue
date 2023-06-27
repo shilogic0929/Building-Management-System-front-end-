@@ -123,8 +123,10 @@ export default {
       if (strDate < 10) strDate = `0${strDate}`
       return `${year}-${month}-${strDate}`
     },
-    init() {
+    init() {      
       var that = this;
+      that.table1=[];
+      that.table2=[];
       const formData = new FormData();
       formData.append('token', localStorage.getItem('token'))
 

@@ -31,7 +31,7 @@
                 &nbsp;报修类型
               </div>
             </template>
-            <div>{{ types[type] }}</div>
+            <div>{{ types[type-1] }}</div>
           </el-descriptions-item>
 
           <el-descriptions-item>
