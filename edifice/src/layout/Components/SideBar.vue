@@ -68,14 +68,14 @@
       <span class="sideBarFontSize">房间状态</span>
     </el-menu-item>
     <el-menu-item index="/collectWorks" v-show="type === '-1'">
-      <el-icon>
-        <View />
+      <el-icon title="维修统计">
+        <BrushFilled />
       </el-icon>
       <span class="sideBarFontSize">维修统计</span>
     </el-menu-item>
     <el-menu-item index="/collectGuests" v-show="type === '-1'">
-      <el-icon>
-        <View />
+      <el-icon title="访客统计">
+        <TrendCharts />
       </el-icon>
       <span class="sideBarFontSize">访客统计</span>
     </el-menu-item>
@@ -88,7 +88,7 @@
     </el-menu-item>
 
     <el-menu-item index="/woIn" v-if="type === '-1'">
-      <el-icon>
+      <el-icon title="工作人员">
         <tools />
       </el-icon>
       <span class="sideBarFontSize">工作人员</span>

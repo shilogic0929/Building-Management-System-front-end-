@@ -206,8 +206,7 @@ export default {
   margin-top: 20px;
   text-align: start;
   display: flex;
-  height: 100vh;
-  flex-flow: column wrap;
+  flex-wrap: wrap;
   /* justify-content: center; */
   align-items: flex-start;
 
@@ -226,18 +225,20 @@ export default {
   margin: 10px;
   background: #ffffff;
   border-radius: 36px;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 2px 2px #f8f8f8;
+  cursor: pointer;
 }
 
 .QandA:hover {
-  box-shadow: 0 0 2px 2px #f8f8f8;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
 }
 
 .knowTitle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 25px;
+  font-size: 22px;
+  font-weight: bold;
   /* padding: 5px 0 5px 0;
   margin-left: 20px;
   margin-top: 20px; */
@@ -246,7 +247,7 @@ export default {
 }
 
 .solutionClass {
-  font-size: 20px;
+  font-size: 16px;
   line-height: 25px;
   margin: 20px 10px 20px 10px;
 }
