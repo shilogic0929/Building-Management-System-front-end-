@@ -129,7 +129,7 @@ export default {
         name: "",
         username:"张洪源",
         repair_time:"",
-        type:3,
+        type:1,
         types: ["水","电","机械","其他"],
         phone:18904672108,
         desc:"",
@@ -172,7 +172,6 @@ export default {
         url: '/repairDetail',
         data: formData2})
         .then(function (request) {
-          console.log(request.data.data);
           var res=request.data.data;
           that.rid=res.rid;
           that.type=res.type;
@@ -209,9 +208,9 @@ export default {
                     message: request.data.msg,
                     type: 'success',
                   })
+            that.init()
             that.visible = false
         })
-        this.init()
       }
       else
       {

@@ -60,7 +60,7 @@
           </el-table-column>
         </el-table>
 
-        <el-table v-else :data="table2" style="width: 100%">
+        <el-table v-else :data="table2.slice((currentPage-1)*10,currentPage*10)" style="width: 100%">
           <el-table-column label="序号" width="250">
             <template #default="scope">
               <a @click="lookInfo(scope.row)" style="cursor: pointer;">
@@ -74,6 +74,14 @@
             <el-tag type="success" disable-transitions>已完成</el-tag>
           </el-table-column>
         </el-table>
+        <div class="flexItem" style="margin-top:20px;" v-if="isfinished">
+          <el-pagination :align='center' 
+            @current-change="handleCurrentChange"
+            :current-page="currentPage" 
+            :page-size="[10]"
+            layout="total, prev, pager, next, jumper" 
+            :total="table2.length"/>
+        </div>
 
       </el-card>
     </div>
@@ -89,6 +97,7 @@ export default {
         img:require("@/assets/image/inner-banner3.jpg"),
         isfinished: false,
         tool: [10,12,16,18],
+        currentPage: 1,
         sumTask: 1,
         todayTask: 4,
         todayFinish: 3,
@@ -174,6 +183,9 @@ export default {
                   message: "更新成功",
                   type: 'success',
                 })
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
     }
   }
 }
