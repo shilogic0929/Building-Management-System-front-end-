@@ -534,6 +534,8 @@ export default {
             this.data4Dlg.type = row.type;
             this.activities[0].timestamp = row.repair_time;
             this.activities[1].timestamp = row.expect_time;
+            this.activities[3].timestamp = ''
+            this.activities[3].hollow = true
             console.log(row);
             this.addDialogVisible = true
         },
