@@ -30,14 +30,14 @@
                 <el-dropdown-item :icon="UserFilled">个人信息</el-dropdown-item>
               </router-link>
               <el-dropdown-item :icon="SwitchButton" @click="quit">注销</el-dropdown-item>
-              <el-dropdown-item :icon="Message" v-model="user_type" @click="showDlg">访客申请</el-dropdown-item>
+              <!-- <el-dropdown-item :icon="Message" v-model="user_type" @click="showDlg">访客申请</el-dropdown-item> -->
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
     </div>
 
-    <body>
+    <!-- <body>
       <el-dialog v-model="dialogVisible" title="访客申请" width="60%" draggable class="dlg" append-to-body="true">
         <el-card class="input-card">
           <div>申请表单: </div>
@@ -92,7 +92,7 @@
           </el-button>
         </template>
       </el-dialog>
-    </body>
+    </body> -->
   </div>
 </template>
 
@@ -191,107 +191,107 @@ export default {
       // });
       this.$router.push("/login")
     },
-    showDlg() {
-      this.dialogVisible = true;
-    },
-    submitInput(input) {
-      if (input.user_name === '') {
-        this.$message("请输入您的姓名")
-        return
-      }
-      if (input.user_id === '') {
-        this.$message("请输入您的身份证号码")
-        return
-      }
-      if (input.phone_num === '') {
-        this.$message("请输入您的联系电话")
-        return
-      }
-      if (input.user_id === '') {
-        this.$message("请输入您的身份证号码")
-        return
-      }
-      if (input.visit_time === '') {
-        this.$message("请设置访问时间")
-        return
-      }
-      let date = new Date()
-      let day = date.toLocaleDateString()
-      let time = date.toLocaleTimeString()
-      let dateTime = day.split("/").join("-") + ' ' + time
-      this.activities[0].timestamp = dateTime
-      this.activities[0].color = "#0bbd87"
-      this.activities[1].timestamp = dateTime
-      this.activities[1].color = "#0bbd87"
-      console.log(dateTime)
-      let formData = new FormData()
-      formData.append('token', localStorage.getItem('token'))
-      formData.append('user_name', input.user_name)
-      formData.append('user_id', input.user_id)
-      formData.append('phone_num', input.phone_num)
-      dateTime = input.visit_time
-      console.log(dateTime)
-      let y = dateTime.getFullYear();
-      let m = dateTime.getMonth() + 1;
-      m = m < 10 ? ('0' + m) : m;
-      let d = dateTime.getDate();
-      d = d < 10 ? ('0' + d) : d;
-      let h = dateTime.getHours();
-      h = h < 10 ? ('0' + h) : h;
-      let minute = dateTime.getMinutes();
-      minute = minute < 10 ? ('0' + minute) : minute;
-      let second = dateTime.getSeconds();
-      second = second < 10 ? ('0' + second) : second;
-      dateTime = y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
-      console.log(dateTime);
-      this.input.visit_time = dateTime
-      dateTime = dateTime.replace(/-/g, '-');
-      let visit_time = new Date(dateTime).getTime()
-      visit_time /= 1000
-      formData.append('visit_time', visit_time.toString())
-      console.log(formData.get('user_name'))
-      console.log(formData.get('user_id'))
-      console.log(formData.get('phone_num'))
-      console.log(formData.get('visit_time'))
-      this.$axios({
-        method: 'POST',
-        url: '/userApply',
-        data: //{
-          // 'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxNTU4MjAsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.65p8pwWLednWSEQlpGcU8Etvlwlf-nUD7WChWz6n0-I',
-          // 'user_name' : 'sxcsxc',
-          // 'user_id' : '220102200010101235',
-          // 'phone_num' : '18888888888',
-          // 'visit_time' : '1687585349'
-          //}
-          formData
-      }).then(res => {
-        if (res.status !== 200 && res.data.success == false) {
-          this.$message.error('提交失败：' + res.statusText);
-          return;
-        } else {
-          if (res.data.errno == 0) {
-            this.$message.success('提交成功')
-            this.activities[2].timestamp = input.visit_time
-            this.activities[2].color = "#0bbd87"
-          }
-          else
-            this.$message("您已经申请过")
-          setTimeout(() => {
-            this.dialogVisible = false;
-            this.input.user_name = ""
-            this.input.user_id = ""
-            this.input.phone_num = ""
-            this.input.visit_time = ""
-            this.activities[0].timestamp = ''
-            this.activities[0].color = ""
-            this.activities[1].timestamp = ''
-            this.activities[1].color = ""
-            this.activities[2].timestamp = ''
-            this.activities[2].color = ""
-          }, 3000);
-        }
-      })
-    }
+    // showDlg() {
+    //   this.dialogVisible = true;
+    // },
+    // submitInput(input) {
+    //   if (input.user_name === '') {
+    //     this.$message("请输入您的姓名")
+    //     return
+    //   }
+    //   if (input.user_id === '') {
+    //     this.$message("请输入您的身份证号码")
+    //     return
+    //   }
+    //   if (input.phone_num === '') {
+    //     this.$message("请输入您的联系电话")
+    //     return
+    //   }
+    //   if (input.user_id === '') {
+    //     this.$message("请输入您的身份证号码")
+    //     return
+    //   }
+    //   if (input.visit_time === '') {
+    //     this.$message("请设置访问时间")
+    //     return
+    //   }
+    //   let date = new Date()
+    //   let day = date.toLocaleDateString()
+    //   let time = date.toLocaleTimeString()
+    //   let dateTime = day.split("/").join("-") + ' ' + time
+    //   this.activities[0].timestamp = dateTime
+    //   this.activities[0].color = "#0bbd87"
+    //   this.activities[1].timestamp = dateTime
+    //   this.activities[1].color = "#0bbd87"
+    //   console.log(dateTime)
+    //   let formData = new FormData()
+    //   formData.append('token', localStorage.getItem('token'))
+    //   formData.append('user_name', input.user_name)
+    //   formData.append('user_id', input.user_id)
+    //   formData.append('phone_num', input.phone_num)
+    //   dateTime = input.visit_time
+    //   console.log(dateTime)
+    //   let y = dateTime.getFullYear();
+    //   let m = dateTime.getMonth() + 1;
+    //   m = m < 10 ? ('0' + m) : m;
+    //   let d = dateTime.getDate();
+    //   d = d < 10 ? ('0' + d) : d;
+    //   let h = dateTime.getHours();
+    //   h = h < 10 ? ('0' + h) : h;
+    //   let minute = dateTime.getMinutes();
+    //   minute = minute < 10 ? ('0' + minute) : minute;
+    //   let second = dateTime.getSeconds();
+    //   second = second < 10 ? ('0' + second) : second;
+    //   dateTime = y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+    //   console.log(dateTime);
+    //   this.input.visit_time = dateTime
+    //   dateTime = dateTime.replace(/-/g, '-');
+    //   let visit_time = new Date(dateTime).getTime()
+    //   visit_time /= 1000
+    //   formData.append('visit_time', visit_time.toString())
+    //   console.log(formData.get('user_name'))
+    //   console.log(formData.get('user_id'))
+    //   console.log(formData.get('phone_num'))
+    //   console.log(formData.get('visit_time'))
+    //   this.$axios({
+    //     method: 'POST',
+    //     url: '/userApply',
+    //     data: //{
+    //       // 'token' : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImZmZkBnZy5jb20iLCJleHAiOjc3ODcxNTU4MjAsImVtYWlsIjoiZmZmQGdnLmNvbSJ9.65p8pwWLednWSEQlpGcU8Etvlwlf-nUD7WChWz6n0-I',
+    //       // 'user_name' : 'sxcsxc',
+    //       // 'user_id' : '220102200010101235',
+    //       // 'phone_num' : '18888888888',
+    //       // 'visit_time' : '1687585349'
+    //       //}
+    //       formData
+    //   }).then(res => {
+    //     if (res.status !== 200 && res.data.success == false) {
+    //       this.$message.error('提交失败：' + res.statusText);
+    //       return;
+    //     } else {
+    //       if (res.data.errno == 0) {
+    //         this.$message.success('提交成功')
+    //         this.activities[2].timestamp = input.visit_time
+    //         this.activities[2].color = "#0bbd87"
+    //       }
+    //       else
+    //         this.$message("您已经申请过")
+    //       setTimeout(() => {
+    //         this.dialogVisible = false;
+    //         this.input.user_name = ""
+    //         this.input.user_id = ""
+    //         this.input.phone_num = ""
+    //         this.input.visit_time = ""
+    //         this.activities[0].timestamp = ''
+    //         this.activities[0].color = ""
+    //         this.activities[1].timestamp = ''
+    //         this.activities[1].color = ""
+    //         this.activities[2].timestamp = ''
+    //         this.activities[2].color = ""
+    //       }, 3000);
+    //     }
+    //   })
+    // }
   },
   watch: {
     monitor() {
