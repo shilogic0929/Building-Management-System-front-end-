@@ -132,7 +132,6 @@ export default {
           if(this.form.name&&this.form.rid&&this.form.phone&&this.form.description&&
             this.form.maintain_day)
           {
-            var that=this;
             const formData=new FormData();
             formData.append('token',localStorage.getItem('token'))
             formData.append('name',this.form.name)
@@ -178,12 +177,12 @@ export default {
           this.$router.push("/myRepair")
       },
       clear(){
-        this.form.name="",
-        this.form.phone="",
-        this.value="",
-        this.value2="",
-        this.form.time="",
-        this.form.desc="",
+        this.form.name="";
+        this.form.phone="";
+        this.value="";
+        this.value2="";
+        this.form.time="";
+        this.form.desc="";
         this.form.date=""
       },
 

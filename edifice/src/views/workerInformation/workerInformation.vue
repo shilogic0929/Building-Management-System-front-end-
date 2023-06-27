@@ -45,7 +45,7 @@
 </template>
 
 <script>
-// import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 export default {
   data() {
@@ -108,20 +108,32 @@ export default {
     edit(row) {
 
       if (row.isMaintainer === false) {
-        alert('不为维修人员！');
+        ElMessage({
+                  message: "不为维修人员！",
+                  type: 'error',
+                })
       }
       else {
-        alert('可以维修！');
+        ElMessage({
+                  message: "可以维修！",
+                  type: 'success',
+                })
       }
     },
     removeById(row) {
       if (row.isMaintainer === false) {
-        alert('不是维修人员！');
+        ElMessage({
+                  message: "不是维修人员！",
+                  type: 'error',
+                })
       }
       else {
         if (this.fromPath === '/handleRepair') {
 
-          alert('成功派遣！');
+          ElMessage({
+                  message: "成功派遣！",
+                  type: 'success',
+                })
           this.$router.push({
             path: '/handleRepair',
             //name: '处理报修界面',
@@ -134,7 +146,10 @@ export default {
           })
         }
         else {
-          alert('可以维修！');
+          ElMessage({
+                  message: "可以维修！",
+                  type: 'success',
+                })
         }
       }
     },
