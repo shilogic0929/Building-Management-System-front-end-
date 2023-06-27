@@ -45,7 +45,7 @@
           setTimeout(() => {
             this.myChart.resize({
               animation: {
-                duration: 1000
+                duration: 3000
               }
             })
           }, 0);
