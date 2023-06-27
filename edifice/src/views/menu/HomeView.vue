@@ -56,12 +56,12 @@
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;今日待派发工单</span>
         </div>
-        <div style="margin-top: 30px;">
+        <div style="margin-top: 10px;">
           <!-- TODO 今日待派发工单 -->
-          <el-table :data="OrderToday" style="width: 100%" max-height="252px" @click="toHandleRepair">
+          <el-table :data="OrderToday" style="width: 100%;cursor: pointer;" max-height="330px" @click="toHandleRepair">
             <el-table-column prop="contact_name" label="姓名" width="80">
             </el-table-column>
-            <el-table-column prop="repair_time" label="提交时间" width="160">
+            <el-table-column prop="repair_time" label="提交时间" width="180">
             </el-table-column>
             <el-table-column prop="description" label="问题描述">
             </el-table-column>
@@ -478,7 +478,7 @@ export default {
 }
 
 .Lline {
-  color: rgb(64, 64, 254);
+  color: rgb(64, 222, 254);
 }
 
 .cludeItem {
@@ -488,14 +488,13 @@ export default {
   height: 120px;
   border-radius: 8px;
   text-align: center;
-  padding: 35px 40px;
-  font-size: 18px;
-  color: white;
+  padding: 30px 40px;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.834);
+  font-weight: bold;
 }
-
 .cludeItem div:nth-child(2) {
   margin-top: 16px;
-  font-weight: bold;
 }
 
 .analyse {
