@@ -383,6 +383,7 @@ export default {
                 console.log(res)
                 if(res.status == 200) {
                     this.tableData = res.data.data.reverse();
+                    this.all_table_data = res.data.data.reverse();
                     if(this.tableData.length == 0) 
                         this.tableData = data4Test.feedbackList
                     for(let i = 0; i < this.tableData.length; i++) 
@@ -460,13 +461,13 @@ export default {
             //console.log([...this.option.series[0].data])
         },
         handleCurrentChange(page) {
-            if(this.all_table_data.length === 0) {
-                this.all_table_data = this.tableData;
+            if(this.selected_table_data.length === 0) {
+                this.selected_table_data = this.all_table_data;
             }
             this.paginations.page_index = page;
             // 当前页
             let sortnum = this.paginations.page_size * (page - 1);
-            let table = this.all_table_data.filter((item, index) => {
+            let table = this.selected_table_data.filter((item, index) => {
                 return index >= sortnum;
             });
             // 设置默认分页数据
@@ -475,34 +476,31 @@ export default {
             });
         },
         handleSizeChange(page_size) {
-            if(this.all_table_data.length === 0) {
-                this.all_table_data = this.tableData;
+            if(this.selected_table_data.length === 0) {
+                this.selected_table_data = this.all_table_data;
             }
             // 切换size
             this.paginations.page_index = 1;
             this.paginations.page_size = page_size;
-            this.tableData = this.all_table_data.filter((item, index) => {
+            this.tableData = this.selected_table_data.filter((item, index) => {
                 return index < page_size;
             });
         },
         setPaginations() {
-            // if(this.all_table_data.length === 0) {
-                this.all_table_data = this.tableData;
-            //}
+            if(this.selected_table_data.length === 0) {
+                this.selected_table_data = this.all_table_data;
+            }
             // 总页数
-            this.paginations.total = this.all_table_data.length;
+            this.paginations.total = this.selected_table_data.length;
             this.paginations.page_index = 1;
-            this.paginations.page_size = Math.min(10, this.all_table_data.length);
+            this.paginations.page_size = Math.min(10, this.selected_table_data.length);
             // 设置默认分页数据
-            this.tableData = this.all_table_data.filter((item, index) => {
+            this.tableData = this.selected_table_data.filter((item, index) => {
                 return index < this.paginations.page_size;
             });
         },
         //筛选
         handleSearch() {
-            if(this.all_table_data.length === 0) {
-                this.all_table_data = this.tableData;
-            }
             let pojo;
             this.selected_table_data = [];
             pojo = {
@@ -521,7 +519,10 @@ export default {
             //console.log(this.selected_table_data)
             this.tableData = this.selected_table_data;
             this.paginations.total = this.tableData.length;
-            this.paginations.page_size = 10;    
+            this.paginations.page_size = Math.min(this.paginations.total, 10);    
+            this.tableData = this.tableData.filter((item, index) => {
+                return index < this.paginations.page_size;
+            });
         },
         checkOperator(row) {
             this.data4Dlg.form_id = row.form_id;
