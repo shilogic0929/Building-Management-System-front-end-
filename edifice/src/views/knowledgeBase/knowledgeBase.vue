@@ -20,21 +20,19 @@
         <div class="QandA" v-for="(item, ind) in showData" :key="ind">
           <p class="knowTitle">
             <span>{{ item.problem }}</span>
+
             <el-tag class="ml-2" v-show="item.type === 1">水</el-tag>
             <el-tag class="ml-2" v-show="item.type === 2" type="warning">电</el-tag>
             <el-tag class="ml-2" v-show="item.type === 3" type="info">机械</el-tag>
             <el-tag class="ml-2" v-show="item.type === 4" type="success">其他</el-tag>
-
-            <!-- <el-icon>
-              <Orange v-if="item.type == 1" />
-              <Opportunity v-else-if="item.type == 2" />
-              <Setting v-else-if="item.type == 3" />
-              <Crop v-else />
-            </el-icon> -->
-            <!-- {{ problem[item.type - 1] }} -->
           </p>
-          <!-- <hr style="background-color: rgb(153, 197, 241);opacity: 0.3;" /> -->
+          <p class="knowContent">
           <p class="solutionClass">解决方式：{{ item.solution }}</p>
+          <el-icon class="delete" size="20" @click="deletethis(item)" hover>
+            <delete />
+          </el-icon>
+          </p>
+
         </div>
       </div>
     </el-card>
@@ -104,6 +102,30 @@ export default {
     this.init();
   },
   methods: {
+    deletethis(item) {
+      var that = this;
+      console.log("删除")
+      console.log(item.id);
+      const formData = new FormData();
+      formData.append('token', localStorage.getItem('token'))
+      formData.append('id', item.id)
+      this.$axios({
+        method: 'POST',
+        url: '/deleteSolution',
+        data: formData
+      })
+        .then(function (request) {
+          console.log(request.data.data);
+          if (request.data.errno === 0) {
+            ElMessage({
+              message: '删除成功',
+              type: 'success'
+            });
+            //reload
+            that.init();
+          }
+        })
+    },
     init() {
       var that = this;
       const formData = new FormData();
@@ -221,7 +243,6 @@ export default {
   width: calc(100%/3 - 20px);
   height: auto;
   /* border: 1px solid rgb(153, 197, 241); */
-
   margin: 10px;
   background: #ffffff;
   border-radius: 36px;
@@ -233,6 +254,17 @@ export default {
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
 }
 
+.knowContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.delete {
+  margin-right: 15px;
+  cursor: pointer;
+}
+
 .knowTitle {
   display: flex;
   align-items: center;
@@ -242,13 +274,13 @@ export default {
   /* padding: 5px 0 5px 0;
   margin-left: 20px;
   margin-top: 20px; */
-  margin: 20px 10px 20px 10px;
+  margin: 20px 10px 0px 10px;
   line-height: 33px;
 }
 
 .solutionClass {
   font-size: 16px;
   line-height: 25px;
-  margin: 20px 10px 20px 10px;
+  margin: 10px 10px 10px 10px;
 }
 </style>
