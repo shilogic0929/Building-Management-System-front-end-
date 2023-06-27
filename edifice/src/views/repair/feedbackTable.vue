@@ -544,8 +544,8 @@ export default {
                     this.input1.maintainer_name = res.data.data.maintainer_name
                     this.input1.maintainer_id = res.data.data.maintainer_id
                     this.input1.maintainer_phone = res.data.data.maintainer_phone
-                    this.input1.maintain_date = new Date(res.data.data).toLocaleDateString()
-                    hour = new Date(res.data.data).getHours();
+                    this.input1.maintain_date = new Date(res.data.data.maintain_time * 1000).toLocaleDateString()
+                    hour = new Date(res.data.data.maintain_time * 1000).getHours();
                     this.input1.maintain_period = hour < 10 ? '1' : (hour < 12 ? '2' : (hour < 16 ? '3' : '4'))
                     const date = new Date()
                     let day = date.toLocaleDateString()
@@ -553,7 +553,8 @@ export default {
                     let dateTime = day.split("/").join("-")+' '+ time
                     this.activities[2].timestamp = dateTime;
                     this.activities[2].hollow = false;
-                    let str = new Date(res.data.data.maintain_time).toLocaleDateString();
+                    let str = new Date(res.data.data.maintain_time * 1000).toLocaleDateString();
+                    console.log(str)
                     this.input1.maintain_date = str
                     this.activities[3].timestamp = str.split("/").join("-") + ' ' + 
                      new Date(res.data.data.maintain_time).toLocaleTimeString();
