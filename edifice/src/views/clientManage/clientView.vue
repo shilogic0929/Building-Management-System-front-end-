@@ -306,8 +306,7 @@
 
 <script>
 import {computed,ref} from 'vue'
-import { ElMessage, ElMessageBox,ElDrawer,ElDatePicker } from 'element-plus'
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import { ElMessage, ElMessageBox} from 'element-plus'
 
 const _ResizeObserver = window.ResizeObserver;
 window.ResizeObserver = class ResizeObserver extends _ResizeObserver {

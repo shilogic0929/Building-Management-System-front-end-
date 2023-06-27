@@ -466,7 +466,6 @@ export default {
   },
   methods: {
     getGuestNumber(){
-      const that = this
       this.$axios({
         method: 'GET',
         url: '/getVisitorNumber'

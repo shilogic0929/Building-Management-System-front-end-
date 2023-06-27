@@ -225,7 +225,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import myCharts from "./myCharts.vue";
 import { option1, option2 } from './options.js'
 import { MoreFilled } from '@element-plus/icons-vue'

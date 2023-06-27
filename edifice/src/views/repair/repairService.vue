@@ -138,7 +138,11 @@ export default {
           var temp=request.data.data.taskCount
           console.log(request.data.data)
           that.sumTask=temp.sum
-          that.todayTask=eval(temp.today.join("+"));
+          try {
+            that.todayTask=eval(temp.today.join("+"));
+          } catch (error) {
+            console.error(error);
+          }
           that.todayFinish=0;
           /*problem here */
           var tod=that.getNowFormatDate()

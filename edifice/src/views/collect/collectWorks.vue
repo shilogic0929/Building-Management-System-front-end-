@@ -123,7 +123,6 @@ export default {
   },
   methods:{
     getWorksInfo(){
-      const that = this
       this.$axios({
         method:'get',
         url:'/getWorkNumber'

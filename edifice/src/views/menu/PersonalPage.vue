@@ -82,12 +82,12 @@ export default {
       }).then(res => {
         if (res.data.errno === 0) {
           var re = res.data.data
-          that.form.name = re.name,
-            that.form.phone = re.phone,
-            that.form.legal = re.legal_person,
-            that.form.company = re.company,
-            that.form.email = re.email,
-            that.form.desc = re.description
+          that.form.name = re.name
+          that.form.phone = re.phone
+          that.form.legal = re.legal_person
+          that.form.company = re.company
+          that.form.email = re.email
+          that.form.desc = re.description
           that.form.type = re.type
           that.form.is_available = re.is_available
           if (re.type == -1) that.disabled = false
