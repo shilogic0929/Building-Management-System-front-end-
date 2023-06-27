@@ -278,7 +278,17 @@ export default {
             this.$message("您已经申请过")
           setTimeout(() => {
             this.dialogVisible = false;
-          }, 1000);
+            this.input.user_name = ""
+            this.input.user_id = ""
+            this.input.phone_num = ""
+            this.input.visit_time = ""
+            this.activities[0].timestamp = ''
+            this.activities[0].color = ""
+            this.activities[1].timestamp = ''
+            this.activities[1].color = ""
+            this.activities[2].timestamp = ''
+            this.activities[2].color = ""
+          }, 3000);
         }
       })
     }
