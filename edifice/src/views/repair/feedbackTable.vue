@@ -22,6 +22,17 @@
             <el-form-item label="用户号：">
                 <el-input prefix-icon="el-icon-search" v-model="search_data.search_user_id" clearable></el-input>
             </el-form-item>
+            <el-form-item label="工单处理状态：">
+                <!-- <el-input prefix-icon="el-icon-search" v-model="search_data.search_status" clearable></el-input> -->
+                <el-select v-model="status_value" class="m-2" placeholder="检索工单状态">
+                    <el-option
+                    v-for="item in select_options"
+                    :key="item.status_value"
+                    :label="item.label"
+                    :value="item.status_value"
+                    />
+                </el-select>
+            </el-form-item>
             <el-form-item class="btnSearch">
                 <el-button type="primary" size="small"  @click="handleSearch()">筛选</el-button>
             </el-form-item>
@@ -228,6 +239,7 @@
 import myCharts from "./myCharts.vue";
 import { option1, option2 } from './options.js'
 import { MoreFilled } from '@element-plus/icons-vue'
+import { ref } from 'vue'
 export default {
     name: "FeedbackTable",
     components: {
@@ -244,13 +256,28 @@ export default {
             count: 0,
             option1: option1,
             option2 : option2,
+            status_value : ref(),
+            select_options : [{
+                status_value: -1,
+                label: '全部',
+            },{
+                status_value: 0,
+                label: '未处理',
+            }, {
+                status_value: 1,
+                label: '进行中',
+            }, {
+                status_value: 2,
+                label: '已完成',
+            },],
             tableData: [],
             selected_table_data: [], 
             all_table_data: [],
             //筛选条件数据
             search_data:{
                 search_room_id:'',
-                search_user_id:''
+                search_user_id:'',
+                // search_status:''
             },
             //format_status_list:['全部','已处理','未处理'],
             // 分页属性
@@ -356,6 +383,7 @@ export default {
                 console.log(res)
                 if(res.status == 200) {
                     this.tableData = res.data.data.reverse();
+                    this.all_table_data = res.data.data.reverse();
                     if(this.tableData.length == 0) 
                         this.tableData = data4Test.feedbackList
                     for(let i = 0; i < this.tableData.length; i++) 
@@ -433,13 +461,13 @@ export default {
             //console.log([...this.option.series[0].data])
         },
         handleCurrentChange(page) {
-            if(this.all_table_data.length === 0) {
-                this.all_table_data = this.tableData;
+            if(this.selected_table_data.length === 0) {
+                this.selected_table_data = this.all_table_data;
             }
             this.paginations.page_index = page;
             // 当前页
             let sortnum = this.paginations.page_size * (page - 1);
-            let table = this.all_table_data.filter((item, index) => {
+            let table = this.selected_table_data.filter((item, index) => {
                 return index >= sortnum;
             });
             // 设置默认分页数据
@@ -448,51 +476,53 @@ export default {
             });
         },
         handleSizeChange(page_size) {
-            if(this.all_table_data.length === 0) {
-                this.all_table_data = this.tableData;
+            if(this.selected_table_data.length === 0) {
+                this.selected_table_data = this.all_table_data;
             }
             // 切换size
             this.paginations.page_index = 1;
             this.paginations.page_size = page_size;
-            this.tableData = this.all_table_data.filter((item, index) => {
+            this.tableData = this.selected_table_data.filter((item, index) => {
                 return index < page_size;
             });
         },
         setPaginations() {
-            // if(this.all_table_data.length === 0) {
-                this.all_table_data = this.tableData;
-            //}
+            if(this.selected_table_data.length === 0) {
+                this.selected_table_data = this.all_table_data;
+            }
             // 总页数
-            this.paginations.total = this.all_table_data.length;
+            this.paginations.total = this.selected_table_data.length;
             this.paginations.page_index = 1;
-            this.paginations.page_size = Math.min(10, this.all_table_data.length);
+            this.paginations.page_size = Math.min(10, this.selected_table_data.length);
             // 设置默认分页数据
-            this.tableData = this.all_table_data.filter((item, index) => {
+            this.tableData = this.selected_table_data.filter((item, index) => {
                 return index < this.paginations.page_size;
             });
         },
         //筛选
         handleSearch() {
-            if(this.all_table_data.length === 0) {
-                this.all_table_data = this.tableData;
-            }
             let pojo;
             this.selected_table_data = [];
             pojo = {
                 room_id: this.search_data.search_room_id,  
-                user_id: this.search_data.search_user_id             
+                user_id: this.search_data.search_user_id,
+                status: this.status_value           
             }
             for(let item of this.all_table_data) {
                 console.log(item)
                 if((pojo.room_id === '' || item.room_id == pojo.room_id) &&
-                (pojo.user_id === '' || item.user_id == pojo.user_id)) {
+                (pojo.user_id === '' || item.user_id == pojo.user_id) && 
+                (pojo.status == -1 || pojo.status == item.status) ) {
                     this.selected_table_data.push(item);
                 }
             }
             //console.log(this.selected_table_data)
             this.tableData = this.selected_table_data;
             this.paginations.total = this.tableData.length;
-            this.paginations.page_size = 10;    
+            this.paginations.page_size = Math.min(this.paginations.total, 10);    
+            this.tableData = this.tableData.filter((item, index) => {
+                return index < this.paginations.page_size;
+            });
         },
         checkOperator(row) {
             this.data4Dlg.form_id = row.form_id;
@@ -505,6 +535,8 @@ export default {
             this.data4Dlg.type = row.type;
             this.activities[0].timestamp = row.repair_time;
             this.activities[1].timestamp = row.expect_time;
+            this.activities[3].timestamp = ''
+            this.activities[3].hollow = true
             console.log(row);
             this.addDialogVisible = true
         },
@@ -557,7 +589,7 @@ export default {
                     console.log(str)
                     this.input1.maintain_date = str
                     this.activities[3].timestamp = str.split("/").join("-") + ' ' + 
-                     new Date(res.data.data.maintain_time).toLocaleTimeString();
+                     new Date(res.data.data.maintain_time * 1000).toLocaleTimeString();
                     this.activities[3].hollow = false;
                 }
             })
