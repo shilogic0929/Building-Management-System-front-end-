@@ -87,7 +87,6 @@ import * as echarts from "echarts"
 import { ref, onMounted } from "vue";
 import myCharts from "../repair/myCharts.vue";
 import { option2 } from '../repair/options.js'
-import moment from "moment";
 
 export default {
   components: {
