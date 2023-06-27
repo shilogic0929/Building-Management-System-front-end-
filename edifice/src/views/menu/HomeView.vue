@@ -46,25 +46,35 @@
       <span class="analyse2">
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;维修类型分析</span>
+          <myCharts id="chart" :options="option" :width="width"></myCharts>
         </div>
         <div>
           <!-- TODO 维修类型 -->
         </div>
       </span>
-      <span class="analyse3">
+      <!-- <span class="analyse3">
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;访客公司统计</span>
         </div>
         <div>
-          <!-- TODO 访客公司统计 -->
         </div>
-      </span>
+      </span> -->
       <span class="analyse4" style="margin-left: 20px;">
         <div class="cludeTitle">
           <span class="Lline">|</span><span>&nbsp;今日待派发工单</span>
         </div>
         <div>
           <!-- TODO 今日待派发工单 -->
+          <el-table :data="OrderToday" style="width: 100%" max-height="252px" @click="toHandleRepair">
+            <el-table-column prop="contact_name" label="姓名" width="80">
+            </el-table-column>
+            <el-table-column prop="repair_time" label="提交时间" width="160">
+            </el-table-column>
+            <el-table-column prop="description" label="问题描述">
+            </el-table-column>
+            <el-table-column prop="room_id" label="房间号" width="80">
+            </el-table-column>
+          </el-table>
         </div>
       </span>
     </div>
@@ -75,14 +85,21 @@
 <script>
 import * as echarts from "echarts"
 import { ref, onMounted } from "vue";
+import myCharts from "../repair/myCharts.vue";
+import { option2 } from '../repair/options.js'
+import moment from "moment";
 
 export default {
+  components: {
+    myCharts,
+  },
   data() {
     return {
       visitors: 22356,
       repairs: 446,
       today_visit: 287,
       today_repair: 45,
+      option: option2,
       works_year: [
         {
           year: '2019',
@@ -183,12 +200,73 @@ export default {
           number: 8
         },
       ],
+      OrderToday: []
     }
   },
   mounted() {
+    this.typeAnalyse()
     this.init();
+    this.initOrderTable();
   },
   methods: {
+    toHandleRepair() {
+      this.$router.push('/handleRepair')
+    },
+    initOrderTable() {
+      var that = this;
+      const formData = new FormData()
+      formData.append('token', localStorage.getItem('token'))
+      this.$axios({
+        method: 'POST',
+        url: '/getTodayOrder',
+        data: formData
+      }).then((res) => {
+        console.log('repairList')
+        console.log(res)
+        if (res.data.errno == 0 && res.data.data.length != 0) {
+          that.OrderToday = res.data.data;
+          console.log(this.OrderToday);
+          this.OrderToday.sort(function (a, b) {
+            return b.repair_time - a.repair_time
+          });
+          that.OrderToday.forEach(element => {
+            element.repair_time = this.formatDate(element.repair_time)
+          });
+        }
+      })
+    },
+    formatDate: function (value) {
+      let date = new Date(value * 1000);//这个是纳秒的，想要毫秒的可以不用除以1000000
+      let y = date.getFullYear();
+      let MM = date.getMonth() + 1;
+      MM = MM < 10 ? ('0' + MM) : MM;
+      let d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      let h = date.getHours();
+      h = h < 10 ? ('0' + h) : h;
+      let m = date.getMinutes();
+      m = m < 10 ? ('0' + m) : m;
+      let s = date.getSeconds();
+      s = s < 10 ? ('0' + s) : s;
+      return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+    },
+
+    typeAnalyse() {
+      const formData = new FormData()
+      formData.append('token', localStorage.getItem('token'))
+      this.$axios({
+        method: 'POST',
+        url: '/repairList',
+        data: formData
+      }).then((res) => {
+        console.log(res)
+        if (res.status == 200) {
+          let tmp = res.data.data;
+          for (let i = 0; i < tmp.length; i++)
+            this.option.series[0].data[tmp[i].type - 1].value++
+        }
+      })
+    },
     init() {
       this.getManageData();
       this.drawChart1();
@@ -443,8 +521,8 @@ export default {
 
 .analyse2 {
   display: inline-block;
-  width: 25%;
-  height: 300px;
+  width: 49.3%;
+  height: 360px;
   background-color: white;
   box-shadow: 0 0 2px 2px #efefef;
   border-radius: 4px;

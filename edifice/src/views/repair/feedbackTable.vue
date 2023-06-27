@@ -33,11 +33,6 @@
         stripe style="width: 100%"
         :header-cell-style="{background:'#87CEFA'}"
         >
-        <el-table-column 
-        type="index"
-        label="#"
-        align="center">
-        </el-table-column>
         <el-table-column
             prop="form_id"
             label="反馈号"
@@ -82,13 +77,13 @@
         <el-table-column
             prop="repair_time"
             label="发起时间"
-            width="200"
+            width="280"
             align="center">
         </el-table-column>
         <el-table-column
             prop="expect_time"
             label="期望时间"
-            width="200"
+            width="280"
             align="center">
         </el-table-column>
         <el-table-column label="操作" 
@@ -116,6 +111,29 @@
     <!--添加对话框,查看明细-->
     <el-dialog title="查看明细" v-model="addDialogVisible"
     width="1000">
+    <el-divider content-position="center">工单处理流程</el-divider>
+    <el-row>
+    <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
+    <el-col :span="8">
+        <div class="block">
+            <el-timeline>
+                <el-timeline-item
+                    max-width="300px"
+                    v-for="(activity, index) in activities"
+                    :key="index"
+                    :icon="activity.icon"
+                    :type="activity.type"
+                    :color="activity.color"
+                    :hollow="activity.hollow"
+                    :timestamp="activity.timestamp"
+                    >
+                {{ activity.content }}
+                </el-timeline-item>
+            </el-timeline>
+        </div>
+    </el-col>
+    <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
+    </el-row>
     <el-tabs type="border-card">
         <el-tab-pane label="处理反馈">
             <el-card class="myCommit" style="margin-bottom: 10px">
@@ -168,7 +186,7 @@
                         </div>
                     </el-form-item>
                 </el-form>
-                <el-divider content-position="center">工单处理流程</el-divider>
+                <!-- <el-divider content-position="center">工单处理流程</el-divider>
                 <el-row>
                 <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
                 <el-col :span="8">
@@ -190,7 +208,7 @@
                     </div>
                 </el-col>
                 <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
-                </el-row>
+                </el-row> -->
             </el-card>
         </el-tab-pane>
     </el-tabs>
@@ -208,7 +226,6 @@
 
 <script>
 import axios from 'axios'
-import { data4Test } from './test.js';
 import myCharts from "./myCharts.vue";
 import { option1, option2 } from './options.js'
 import { MoreFilled } from '@element-plus/icons-vue'
@@ -339,7 +356,7 @@ export default {
             }).then((res)=>{
                 console.log(res)
                 if(res.status == 200) {
-                    this.tableData = res.data.data;
+                    this.tableData = res.data.data.reverse();
                     if(this.tableData.length == 0) 
                         this.tableData = data4Test.feedbackList
                     for(let i = 0; i < this.tableData.length; i++) 
@@ -663,4 +680,10 @@ export default {
 .block {
   margin-top: 20px;
 }
+.el-divider {
+    background-color: #5ea9ff;
+    height: 10px;
+    margin: 2px 0;
+}
+
 </style>

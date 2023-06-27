@@ -8,6 +8,12 @@
     position: relative;
     overflow: hidden;
   }
+  .carousel-control.left {
+    left: -80px;
+  }
+  .carousel-control.right {
+    right: -80px;
+  }
   .carousel:hover .carousel-control.left {
     -webkit-transform: translateX(100%);
     -moz-transform: translateX(100%);
@@ -22,6 +28,7 @@
     -o-transform: translateX(-100%);
     transform: translateX(-100%);
   }
+  
   .carousel-inner {
     position: relative;
     overflow: hidden;
@@ -101,12 +108,6 @@
   }
   .carousel-control .iconfont {
     font-size: 50px;
-  }
-  .carousel-control.left {
-    left: -80px;
-  }
-  .carousel-control.right {
-    right: -80px;
   }
   .carousel-control:hover,
   .carousel-control:focus {
