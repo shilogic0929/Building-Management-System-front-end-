@@ -588,7 +588,7 @@ export default {
                     console.log(str)
                     this.input1.maintain_date = str
                     this.activities[3].timestamp = str.split("/").join("-") + ' ' + 
-                     new Date(res.data.data.maintain_time).toLocaleTimeString();
+                     new Date(res.data.data.maintain_time * 1000).toLocaleTimeString();
                     this.activities[3].hollow = false;
                 }
             })
