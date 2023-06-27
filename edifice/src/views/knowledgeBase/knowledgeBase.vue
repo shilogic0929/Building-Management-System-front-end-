@@ -28,7 +28,7 @@
           </p>
           <p class="knowContent">
           <p class="solutionClass">解决方式：{{ item.solution }}</p>
-          <el-icon class="delete" size="20" @click="deletethis(item)" hover>
+          <el-icon class="delete" size="20" @click="deletethis(item)" hover v-show="clientType === '-1'">
             <delete />
           </el-icon>
           </p>
