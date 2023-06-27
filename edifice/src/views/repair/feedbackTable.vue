@@ -382,8 +382,8 @@ export default {
             }).then((res)=>{
                 console.log(res)
                 if(res.status == 200) {
-                    this.tableData = res.data.data.reverse();
-                    this.all_table_data = res.data.data.reverse();
+                    this.tableData = res.data.data.reverse()
+                    this.all_table_data = this.tableData
                     if(this.tableData.length == 0) 
                         this.tableData = data4Test.feedbackList
                     for(let i = 0; i < this.tableData.length; i++) 
