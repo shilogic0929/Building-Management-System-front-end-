@@ -10,15 +10,21 @@
         <template #header>
           <div class = "card-header" style = "margin:0px;">
             <span class="image-font">报修申请列表</span>
+            <div v-if="!isLookFinish">
+              <el-button class="button" type="text" @click="this.isLookFinish = true">查看已完成报修</el-button>
+            </div>
+            <div v-else>
+              <el-button class="button" type="text" @click="this.isLookFinish = false">返回</el-button>
+            </div>
           </div>
         </template>
 
-        <el-table :data="repair.slice((currentPage-1)*10,currentPage*10)" style="width: 100%">
+        <el-table :data="repair1.slice((currentPage1-1)*10,currentPage1*10)" style="width: 100%" v-if="!isLookFinish">
           <el-table-column
             label="序号"
             width="180">
             <template #default="scope">
-              <span class="red" v-if="scope.row.isNew"></span>
+              <span class="red" v-if="scope.row.status==1"></span>
               <a @click="lookInfo(scope.row)" style="cursor: pointer;">
                   {{scope.row.wid}}
               </a>
@@ -47,9 +53,6 @@
             prop="status"
             label="报修状态"
             width="150"
-            :filters="[{ text: '申请中', value: 0 },{ text: '进行中', value: 1 },{ text: '已完成', value: 2 }]"
-            :filter-method="filterTag"
-            filter-placement="bottom-end"
             >
             <template #default="scope">
               <el-tag @click="lookProcess(scope.row)" style="cursor: pointer;"
@@ -59,14 +62,66 @@
           </el-table-column>
         </el-table>
 
-        <div class="flexItem" style="margin-top:20px;">
+        <el-table :data="repair2.slice((currentPage2-1)*10,currentPage2*10)" style="width: 100%" v-else>
+          <el-table-column
+            label="序号"
+            width="180">
+            <template #default="scope">
+              <a @click="lookInfo(scope.row)" style="cursor: pointer;">
+                  {{scope.row.wid}}
+              </a>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="rid"
+            label="房间号"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="type"
+            label="报修类型"
+            width="200">
+            <template #default="scope">
+              {{types[scope.row.type-1]}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="repair_time"
+            label="申请时间"
+            sortable
+            column-key="repair_time">
+          </el-table-column>
+          <el-table-column
+            prop="status"
+            label="报修状态"
+            width="150"
+            >
+            <template #default="scope">
+              <el-tag @click="lookProcess(scope.row)" style="cursor: pointer;"
+                :type="buttonTypes[scope.row.status]"
+                disable-transitions>{{process[scope.row.status]}}</el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <div class="flexItem" style="margin-top:20px;" v-if="!isLookFinish">
           <el-pagination :align='center' 
-            @current-change="handleCurrentChange"
-            :current-page="currentPage" 
+            @current-change="handleCurrentChange1"
+            :current-page="currentPage1" 
             :page-size="[10]"
             layout="total, prev, pager, next, jumper" 
-            :total="repair.length"/>
+            :total="repair1.length"/>
         </div>
+
+        <div class="flexItem" style="margin-top:20px;" v-else>
+          <el-pagination :align='center' 
+            @current-change="handleCurrentChange2"
+            :current-page="currentPage2" 
+            :page-size="[10]"
+            layout="total, prev, pager, next, jumper" 
+            :total="repair2.length"/>
+        </div>
+
       </el-card>
     </div>
 
@@ -157,10 +212,12 @@ export default {
   data(){
     return{
         img:require("@/assets/image/inner-banner3.jpg"),
-        currentPage: 1,
+        currentPage1: 1,
+        currentPage2: 1,
         flow: "",
         visible:false,
         visible2:false,
+        isLookFinish: false,
         rid:"",
         type:1,
         info:"",
@@ -172,6 +229,7 @@ export default {
         types: ["水","电","机械","其他"],
         process:["申请中","进行中","已完成"],
         buttonTypes:["info","","success"],
+        getRepair: [],
         repair:[
             {
                 wid: "1",
@@ -185,6 +243,34 @@ export default {
                 maintainer_phone: "",
                 isNew: false
             }
+        ],
+        repair1: [
+          {
+            wid: "1",
+            rid:0,
+            type: 1,
+            repair_time: "2023-6-16",
+            status: 0,
+            description: "隔墙有眼",
+            maintain_time: "",
+            maintainer_name: "",
+            maintainer_phone: "",
+            isNew: false
+          }
+        ],
+        repair2: [
+          {
+            wid: "1",
+            rid:0,
+            type: 1,
+            repair_time: "2023-6-16",
+            status: 0,
+            description: "隔墙有眼",
+            maintain_time: "",
+            maintainer_name: "",
+            maintainer_phone: "",
+            isNew: false
+          }
         ]
     }
   },
@@ -194,7 +280,9 @@ export default {
   methods:{
     init(){
       var that=this;
-      
+      that.repair=[];
+      that.repair1=[];
+      that.repair2=[];
       const formData=new FormData();
       formData.append('token',localStorage.getItem('token'))
       this.$axios({
@@ -204,10 +292,20 @@ export default {
         .then(function (request) {
           console.log(request.data.data);
           that.repair=request.data.data
+          for(var i=0;i<that.repair.length;i++)
+          {
+            if(that.repair[i].status==2)
+              that.repair2.push(that.repair[i])
+            else
+              that.repair1.push(that.repair[i])
+          }
       })
     },
-    handleCurrentChange(val) {
-      this.currentPage = val;
+    handleCurrentChange1(val) {
+      this.currentPage1 = val;
+    },
+    handleCurrentChange2(val) {
+      this.currentPage2 = val;
     },
     filterTag(value, row) {
       return row.status === value;
